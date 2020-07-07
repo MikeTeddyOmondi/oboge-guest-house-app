@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-if (NODE_ENV = 'development') {
+if (process.env.NODE_ENV !== 'production') {
     dbPassword = 'mongodb://localhost:27017/admin-db';
 } else {
     dbPassword = 'mongodb+srv://' + DB_USER + ':' + DB_PASSWORD + '@guest-house-db.uqp8l.gcp.mongodb.net/' + CLUSTER_NAME + '?retryWrites=true&w=majority'
