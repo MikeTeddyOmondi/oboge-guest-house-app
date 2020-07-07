@@ -3,7 +3,7 @@ require('dotenv').config()
 if (process.env.NODE_ENV !== 'production') {
     dbPassword = 'mongodb://localhost:27017/admin-db';
 } else {
-    dbPassword = 'mongodb+srv://' + DB_USER + ':' + DB_PASSWORD + '@guest-house-db.uqp8l.gcp.mongodb.net/' + CLUSTER_NAME + '?retryWrites=true&w=majority'
+    dbPassword = 'mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASSWORD + '@guest-house-db.uqp8l.gcp.mongodb.net/' + process.env.CLUSTER_NAME + '?retryWrites=true&w=majority'
 }
 
 //dbPassword = 'mongodb://localhost:27017/admin-db';
