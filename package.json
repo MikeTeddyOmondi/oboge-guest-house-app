@@ -1,7 +1,7 @@
 {
-  "name": "admin_app",
+  "name": "oboge-guest-house-app",
   "version": "1.0.0",
-  "description": "admin web application",
+  "description": "web application for a hotel, bar and restaurant management system",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
