@@ -12,7 +12,13 @@ body {
 
 @media (max-width: 767px) {
   .nav.navbar-nav {
-    float: none;
+    float: left;
+  }
+}
+
+@media (max-width: 467px) {
+  .nav.navbar-nav {
+    float: left;
   }
 }
 
