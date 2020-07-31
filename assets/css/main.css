@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0px;
   padding: 0px;
@@ -10,15 +14,24 @@ body {
   margin: 0 auto;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .nav.navbar-nav {
     float: left;
+    width: 100%;
+  }
+  .navbar-toggle .collapsed button {
+    display: flex;
+    justify-content: right;
   }
 }
 
-@media (max-width: 467px) {
+@media (max-width: 480px) {
   .nav.navbar-nav {
-    float: left;
+    width: 100%;
+  }
+  .navbar-toggle .collapsed button {
+    display: flex;
+    justify-content: right;
   }
 }
 
