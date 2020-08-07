@@ -1,0 +1,14 @@
+version: "1"
+services:
+    web:
+        image: oboge-guest-house-app
+        build: .
+        command: "node server.js"
+        ports:
+            - "8080:3000"
+        depends_on:
+            - "mongo"
+    mongo:
+        image: "mongo"
+        ports:
+            - "27017:27017"
