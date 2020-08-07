@@ -26,6 +26,8 @@ mongoose
 // EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
+app.set('view options', { layout: false });
+//app.set("layout", path.join(__dirname, "layouts"));
 
 //static files
 app.use(express.static(path.join(__dirname, 'assets')))
