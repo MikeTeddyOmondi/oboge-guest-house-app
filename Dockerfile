@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . /admin_app
 
-CMD node server.js
+CMD [ "node" "server.js" ]
 
 EXPOSE 8080
