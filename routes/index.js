@@ -20,7 +20,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) =>
   res.render('admin/dashboard', {
     user: req.user,
     title: 'Admin',
-    layout: './layouts/adminLayout'
+    layout: './layouts/adminLayout.ejs'
   })
 );
 
@@ -29,7 +29,7 @@ router.get('/users', ensureAuthenticated, (req, res) =>
   res.render('admin/users', {
     user: req.user,
     title: 'Users',
-    layout: './layouts/adminLayout'
+    layout: './layouts/adminLayout.ejs'
   })
 );
 

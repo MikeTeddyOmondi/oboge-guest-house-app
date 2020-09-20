@@ -35,7 +35,9 @@ router.post('/register', (req, res) => {
       name,
       email,
       password,
-      password2
+      password2,
+      title: 'Register',
+      layout: './layouts/adminLayout'
     });
   } else {
     User.findOne({ email: email }).then(user => {
@@ -46,7 +48,9 @@ router.post('/register', (req, res) => {
           name,
           email,
           password,
-          password2
+          password2,
+          title: 'Register',
+          layout: './layouts/adminLayout'
         });
       } else {
         const newUser = new User({
