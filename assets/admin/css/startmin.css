@@ -670,25 +670,21 @@ table.dataTable thead .sorting:after {
 }
 
 .alert {
-    padding: 20px;
-    background-color: #f44336; /* Red */
-    color: white;
-    margin-bottom: 15px;
-  }
+    border-radius: 1px solid black;
+    margin-bottom: 4px;
+}
   
-  /* The close button */
-  .close {
+/* The close button */
+.close {
     margin-left: 15px;
-    color: white;
     font-weight: bold;
     float: right;
     font-size: 22px;
     line-height: 20px;
     cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  /* When moving the mouse over the close button */
-  .close:hover {
+}
+
+/* When moving the mouse over the close button */
+.close:hover {
     color: black;
-  }
+}
