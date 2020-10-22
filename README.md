@@ -2,6 +2,7 @@
 
 github repo: https://github.com/MikeTeddyOmondi/oboge-guest-house-app
 
-### Developer(s)
+## Links
+Website: https://oboge-guest-house.herokuapp.com
 
-Mike Teddy Omondi - Rancko Solutions Incorporation
+Administration panel: https://oboge-guest-house.herokuapp.com/admin
