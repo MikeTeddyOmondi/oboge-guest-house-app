@@ -33,4 +33,31 @@ router.get('/users', ensureAuthenticated, (req, res) =>
   })
 );
 
+// Customers
+router.get('/customers', ensureAuthenticated, (req, res) =>
+  res.render('admin/customers', {
+    user: req.user,
+    title: 'Customers',
+    layout: './layouts/adminLayout.ejs'
+  })
+);
+
+// Room Booking
+router.get('/room_bookings', ensureAuthenticated, (req, res) =>
+  res.render('admin/room_bookings', {
+    user: req.user,
+    title: 'Room Bookings',
+    layout: './layouts/adminLayout.ejs'
+  })
+);
+
+// Room Info
+router.get('/room_info', ensureAuthenticated, (req, res) =>
+  res.render('admin/room_info', {
+    user: req.user,
+    title: 'Room Info',
+    layout: './layouts/adminLayout.ejs'
+  })
+);
+
 module.exports = router;

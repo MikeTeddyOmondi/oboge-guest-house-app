@@ -8,7 +8,6 @@ body {
 }
 
 #user-auth-div {
-    width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -662,11 +661,6 @@ table.dataTable thead .sorting:after {
 .tabbed-panel.panel-danger .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
     color: #fff; /* active text color */
     background-color: #a94442; /* active bg color */
-}
-
-#user-auth-div {
-    width: 100%;
-    margin: auto 0;
 }
 
 .alert {
