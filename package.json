@@ -1,7 +1,7 @@
 {
   "name": "oboge-guest-house-app",
   "version": "1.0.0",
-  "description": "web application for a hotel, bar and restaurant management system",
+  "description": "Web application for a hotel, bar and restaurant management system",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,15 +12,21 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chart.js": "^2.9.4",
+    "cheerio": "^1.0.0-rc.5",
     "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.15.6",
+    "fs": "^0.0.1-security",
     "mongoose": "^5.7.5",
+    "node-html-parser": "^2.0.2",
     "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"

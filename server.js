@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
-const path = require('path')
+const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -32,15 +33,22 @@ app.set('view options', { layout: false });
 //static files
 app.use(express.static(path.join(__dirname, 'assets')))
 
+// Cookie Parser
+app.use(cookieParser())
+
 // Express body parser
 app.use(express.urlencoded({ extended: true }));
 
 // Express session
 app.use(
     session({
-        secret: 'secret',
-        resave: true,
-        saveUninitialized: true
+        secret: process.env.SESSION_SECRET,
+        saveUninitialized: true,
+        resave: false,
+        cookie: {
+            httpOnly: true,
+            maxAge: parseInt(process.env.SESSION_MAX_AGE)
+        }
     })
 );
 
