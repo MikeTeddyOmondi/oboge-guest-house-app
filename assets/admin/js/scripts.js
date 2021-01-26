@@ -39,7 +39,7 @@ let sales_Chart = new Chart(conversion_Chart, {
   options:{
     title:{
       display:true,
-      text:'Summary of Customer Checked-Ins Last week[20-01-2021 - 26-01-2021]',
+      text:'Summary of Customers Checked-In Last Week [ 20-01-2021 - 26-01-2021 ]',
       fontSize:25,
       alignment: 'left'
     },

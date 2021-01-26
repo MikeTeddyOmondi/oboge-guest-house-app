@@ -71,6 +71,11 @@ app.use(function (req, res, next) {
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 
+// Server Errors | Page(s) Not Found
+app.use((req, res, next) => {
+    res.status(404).render('404', { title: 'Page Not Found', layout: './layouts/siteLayout' })
+})
+
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, console.log(`> Application server initiated on port: ${PORT}`));

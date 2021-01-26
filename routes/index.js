@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
-const request = require('request'); 
-const cheerio = require('cheerio'); 
-const fs = require('fs'); 
+const bcrypt = require('bcryptjs');
 // Load User model
 const User = require('../models/User');
 
@@ -77,6 +75,8 @@ router.post('/users', ensureAuthenticated, (req, res) => {
             email,
             password,
             confirm_password,
+            user: req.user,
+            users: users,
             title: 'Users',
             layout: './layouts/adminLayout'
           });
