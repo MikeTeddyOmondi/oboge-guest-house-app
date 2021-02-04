@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { emailVerifier } = require('../config/emailVerifier');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const bcrypt = require('bcryptjs');
 // Load User model
@@ -66,6 +67,7 @@ router.post('/users', ensureAuthenticated, (req, res) => {
         layout: './layouts/adminLayout'
       }) 
     } else { 
+      // Check if the user's email exists in the database
       User.findOne({ email: email }).then(user => {
         if (user) {
           errors.push({ msg: 'Email already exists' });
@@ -81,12 +83,36 @@ router.post('/users', ensureAuthenticated, (req, res) => {
             layout: './layouts/adminLayout'
           });
         } else { 
+          // Email Verification through API call
+          emailVerifier.verify(email, (err, data) => {
+            if (data.smtpCheck !== 'true') {
+              errors.push({ msg: 'Please enter a valid email ...' });
+              res.statusCode().render('admin/users', {
+                errors,
+                name,
+                email,
+                password,
+                confirm_password,
+                user: req.user,
+                users: users,
+                title: 'Users',
+                layout: './layouts/adminLayout'
+              });
+              console.log(data);
+              console.log(`An error occurred while validating your email: ${err}`);
+            }
+          });
+
           const newUser = new User({
             name,
             email,
             password
           });
 
+          // Send email verification link to user's inbox  
+          
+          
+          // Hashing the password
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if (err) throw err;

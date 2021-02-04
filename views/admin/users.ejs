@@ -386,7 +386,7 @@
                         type="submit"
                         name="submit"
                         class="btn btn-primary btn-md"
-                        value="Add"
+                        value="Save"
                       />
                     </div>
                   </form>
@@ -404,13 +404,14 @@
             <div class="panel-body">
               <div class="table-responsive">
                 <table
-                  class="table table-striped table-bordered table-hover"
+                  class="table table-striped table-bordered table-hover table-dark"
                   id="dataTables-example"
                 >
                   <thead>
                     <tr>
                       <th>Username</th>
                       <th>Email</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -418,6 +419,24 @@
                     <tr class="">
                       <td><%= user.name %></td>
                       <td><%= user.email %></td>
+                      <td>
+                        <a
+                          href="/users/<%= user._id%>?_method=PUT"
+                          class="btn border-shadow update"
+                        >
+                          <span class="text-gradient"
+                            ><i class="fas fa-pencil-alt"></i
+                          ></span>
+                        </a>
+                        <a
+                          class="btn border-shadow delete"
+                          data-id="<%=user._id%>"
+                        >
+                          <span class="text-gradient"
+                            ><i class="fa fa-times"></i
+                          ></span>
+                        </a>
+                      </td>
                     </tr>
                     <% }) %>
                   </tbody>

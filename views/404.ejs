@@ -1,47 +1,42 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand navbar-link" href="#"
-        ><i class="fa fa-bed"></i> Oboge Guest House</a
-      >
-    </div>
-  </div>
-</nav>
-<div class="jumbotron" id="jumbotron">
-  <h1>Sorry! Page not found</h1>
-  <p>
-    <a class="btn btn-primary" role="button" href="/"
-      ><i class="glyphicon glyphicon-exclamation-sign"></i> Go Back</a
+<div class="container-scroller">
+  <div class="container-fluid page-body-wrapper full-page-wrapper">
+    <div
+      class="content-wrapper d-flex align-items-center text-center error-page bg-primary"
     >
-  </p>
-</div>
-<footer id="footer">
-  <div class="row">
-    <div class="col-md-4 col-sm-3 footer-contacts">
-      <div>
-        <span class="fa fa-map-marker footer-contacts-icon"> </span>
-        <p>
-          <span class="new-line-span">Awasi Town</span> Kisumu County, Kenya.
-        </p>
-      </div>
-      <div>
-        <i class="fa fa-phone footer-contacts-icon"></i>
-        <p class="footer-center-info email text-left">+254-721-238658</p>
-      </div>
-      <div>
-        <i class="fa fa-envelope footer-contacts-icon"></i>
-        <p><a href="#" target="_blank">info@obogeguesthouse.com</a></p>
-      </div>
-      <div>
-        <p class="company-name">
-          All Rights Reserved © <%= new Date().getFullYear();%> | Designed by
-          Rancko Solutions Incorporation.
-        </p>
+      <div class="row flex-grow">
+        <div class="col-lg-7 mx-auto text-white">
+          <div class="row align-items-center d-flex flex-row">
+            <div class="col-lg-6 text-lg-right pr-lg-4">
+              <h1 class="display-1 mb-0">404</h1>
+            </div>
+            <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
+              <h2>SORRY!</h2>
+              <h3 class="font-weight-light">
+                The page you’re looking for was not found.
+              </h3>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-12 text-center mt-xl-2">
+              <a class="text-white font-weight-medium" href="/">Back to home</a>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-12 mt-xl-2">
+              <p class="text-white font-weight-medium text-center">
+                Copyright &copy; <%= new Date().getFullYear();%> All Rights
+                Reserved. | Designed by Rancko Solutions LLC.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- content-wrapper ends -->
   </div>
-</footer>
-
+  <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="js/jquery.min.js"></script>
