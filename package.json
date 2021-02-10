@@ -23,6 +23,7 @@
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.15.6",
     "fs": "^0.0.1-security",
+    "googleapis": "^67.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.5",
     "node-html-parser": "^2.0.2",

@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const { emailVerifier } = require('../config/emailVerifier');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+const nodemailer = require('nodemailer')
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
+const jwt = require('jsonwebtoken');
+const JWT_KEY = "jwtactive987";
+const JWT_RESET_KEY = "jwtreset987";
 const bcrypt = require('bcryptjs');
 // Load User model
 const User = require('../models/User');
@@ -109,26 +115,78 @@ router.post('/users', ensureAuthenticated, (req, res) => {
             password
           });
 
+          const oAuth2Client = new OAuth2(
+            "84940899477-6922qin2mrfvkn9jjj3o28j9aimjh26k.apps.googleusercontent.com", // ClientID
+            "uy0yw3t8wVJaWSEPzwUqMwFE", // Client Secret
+            "https://developers.google.com/oauthplayground" // Redirect URL
+          )
+          oAuth2Client.setCredentials({
+            refresh_token: "1//04dJLrH27DoX6CgYIARAAGAQSNwF-L9IrZBkQk33Har2O57qrvQm8_WWjrDkgr9IvJeTUa9p83pGCT4N8O_pEyKF8-EkmNtPAdcU"
+          })
+
           // Send email verification link to user's inbox  
+          async function sendMail() {
+            try {
+              const senderMail = 'otisrancko@gmail.com'
+              const accessToken = await oAuth2Client.getAccessToken()
+
+              const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  type: 'OAuth2',
+                  user: senderMail,
+                  clientId: "84940899477-6922qin2mrfvkn9jjj3o28j9aimjh26k.apps.googleusercontent.com",
+                  clientSecret: "uy0yw3t8wVJaWSEPzwUqMwFE",
+                  refreshToken: "1//04dJLrH27DoX6CgYIARAAGAQSNwF-L9IrZBkQk33Har2O57qrvQm8_WWjrDkgr9IvJeTUa9p83pGCT4N8O_pEyKF8-EkmNtPAdcU",
+                  accessToken: accessToken
+                } 
+              })
+
+              console.log(accessToken, JSON.stringify(transporter))
+
+              const mailOptions = {
+                from: senderMail,
+                to: email,
+                subject: 'Account Verification | Oboge Guest House - Web Application',
+                text: `Hi ${name}, please verify your account by clicking on this link`,
+                html: `<h2>Hi ${name}, please verify your account by clicking on this link</h2>`  
+              }
+
+              const emailSent = await transporter.sendMail(mailOptions)
+              return emailSent
+
+            } catch (err) {
+              console.log(err)
+            }
+          }
+
+          sendMail()
+            .then((emailSent) => {
+              req.flash(
+                'success_msg',
+                `${newUser.name} verify yourself from your email to activate your account.`
+              )
+              console.log('Verification email has been sent ', emailSent)
+            })
+            .catch((error) => console.log(error.message))
           
-          
-          // Hashing the password
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-              if (err) throw err;
-              newUser.password = hash;
-              newUser
-                .save()
-                .then(user => {
-                  req.flash(
-                    'success_msg',
-                    `${newUser.name} is now a registered user and can currently log in`
-                  );
-                  res.redirect('/users');
-                })
-                .catch(err => console.log(err));
-            });
-          });
+            // Hashing the password
+            // bcrypt.genSalt(10, (err, salt) => {
+            //   bcrypt.hash(newUser.password, salt, (err, hash) => {
+            //     if (err) throw err;
+            //     newUser.password = hash;
+            //     newUser
+            //       .save()
+            //       .then(user => {
+            //         req.flash(
+            //           'success_msg',
+            //           `${newUser.name} is now registered; they can verify their authentication from the email to activate the account`
+            //         );
+            //         res.redirect('/users');
+            //       })
+            //       .catch(err => console.log(err));
+            //   });
+            // });  
         }
       });
     }
