@@ -1,0 +1,24 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+#main-row {
+  margin-top: 5%;
+}
+
+#card-row {
+  margin: 0% auto;
+}
+
+@media (max-width: 480px) {
+  #main-row {
+    margin-top: 5%;
+  }
+  #card-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
