@@ -116,18 +116,18 @@ router.post('/users', ensureAuthenticated, (req, res) => {
           });
 
           const oAuth2Client = new OAuth2(
-            "84940899477-6922qin2mrfvkn9jjj3o28j9aimjh26k.apps.googleusercontent.com", // ClientID
-            "uy0yw3t8wVJaWSEPzwUqMwFE", // Client Secret
+            process.env.CLIENT_ID, // ClientID
+            process.env.CLIENT_SECRET, // Client Secret
             "https://developers.google.com/oauthplayground" // Redirect URL
           )
           oAuth2Client.setCredentials({
-            refresh_token: "1//04dJLrH27DoX6CgYIARAAGAQSNwF-L9IrZBkQk33Har2O57qrvQm8_WWjrDkgr9IvJeTUa9p83pGCT4N8O_pEyKF8-EkmNtPAdcU"
+            refresh_token: process.env.REFRESH_TOKEN
           })
 
           // Send email verification link to user's inbox  
           async function sendMail() {
             try {
-              const senderMail = 'otisrancko@gmail.com'
+              const senderMail = process.env.SENDER_EMAIL
               const accessToken = await oAuth2Client.getAccessToken()
 
               const transporter = nodemailer.createTransport({
@@ -135,14 +135,12 @@ router.post('/users', ensureAuthenticated, (req, res) => {
                 auth: {
                   type: 'OAuth2',
                   user: senderMail,
-                  clientId: "84940899477-6922qin2mrfvkn9jjj3o28j9aimjh26k.apps.googleusercontent.com",
-                  clientSecret: "uy0yw3t8wVJaWSEPzwUqMwFE",
-                  refreshToken: "1//04dJLrH27DoX6CgYIARAAGAQSNwF-L9IrZBkQk33Har2O57qrvQm8_WWjrDkgr9IvJeTUa9p83pGCT4N8O_pEyKF8-EkmNtPAdcU",
+                  clientId: process.env.CLIENT_ID,
+                  clientSecret: process.env.CLIENT_SECRET,
+                  refreshToken: process.env.REFRESH_TOKEN,
                   accessToken: accessToken
                 } 
               })
-
-              console.log(accessToken, JSON.stringify(transporter))
 
               const mailOptions = {
                 from: senderMail,
@@ -166,7 +164,7 @@ router.post('/users', ensureAuthenticated, (req, res) => {
                 'success_msg',
                 `${newUser.name} verify yourself from your email to activate your account.`
               )
-              console.log('Verification email has been sent ', emailSent)
+              console.log('Verification email has been sent ', emailSent.envelope)
             })
             .catch((error) => console.log(error.message))
           

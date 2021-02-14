@@ -31,7 +31,15 @@
     />
   </head>
   <body>
-    <div id="#" class="container"><%- body %></div>
+    <div id="#" class="container">
+      <!-- Navbar Brand  link -->
+      <nav class="navbar fixed-top navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/user-panel">User Panel</a>
+        </div>
+      </nav>
+      <%- body %>
+    </div>
 
     <!-- Bootstrap Minified JavaScript -->
     <script src="/panel/js/bootstrap.min.js"></script>

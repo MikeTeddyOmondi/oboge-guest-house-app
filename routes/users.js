@@ -9,7 +9,7 @@ router.get('/login', forwardAuthenticated, (req, res) => res.render('login', { t
 // Login
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: '/user-panel',
     failureRedirect: '/users/login',
     failureFlash: true
   })(req, res, next);
@@ -17,7 +17,7 @@ router.post('/login', (req, res, next) => {
 
 // Logout
 router.get('/logout', (req, res) => {
-  req.logout();
+  req.logout()
   req.flash('success_msg', 'You are logged out');
   res.redirect('/users/login');
 });
