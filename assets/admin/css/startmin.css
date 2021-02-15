@@ -22,6 +22,10 @@ body {
   margin-block: 200px;
 }
 
+.modal .close {
+  margin-top: -18px;
+}
+
 #wrapper {
   width: 100%;
   height: 100%;
