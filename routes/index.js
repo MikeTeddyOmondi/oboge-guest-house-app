@@ -6,8 +6,6 @@ const nodemailer = require('nodemailer')
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const jwt = require('jsonwebtoken');
-const JWT_KEY = "jwtactive987";
-const JWT_RESET_KEY = "jwtreset987";
 const bcrypt = require('bcryptjs');
 // Load User model
 const User = require('../models/User');
@@ -124,6 +122,15 @@ router.post('/users', ensureAuthenticated, (req, res) => {
             refresh_token: process.env.REFRESH_TOKEN
           })
 
+          const token = jwt.sign({ name, email, password }, process.env.JWT_ACTIVATION_KEY, { expiresIn: '30m' });
+          const CLIENT_URL = 'http://' + req.headers.host;
+
+          const activation_link = `
+          <h5>Please click on below link to activate your account</h5>
+          <p>${CLIENT_URL}/activate/${token}</p>
+          <p><b>NOTE: </b> The above activation link expires in 30 minutes.</p>
+          `
+
           // Send email verification link to user's inbox  
           async function sendMail() {
             try {
@@ -146,8 +153,8 @@ router.post('/users', ensureAuthenticated, (req, res) => {
                 from: senderMail,
                 to: email,
                 subject: 'Account Verification | Oboge Guest House - Web Application',
-                text: `Hi ${name}, please verify your account by clicking on this link`,
-                html: `<h2>Hi ${name}, please verify your account by clicking on this link</h2>`  
+                text: `Hi ${name}, ${activation_link}`,
+                html: `<h2>Hi ${name}, ${activation_link}</h2>`  
               }
 
               const emailSent = await transporter.sendMail(mailOptions)
@@ -162,34 +169,79 @@ router.post('/users', ensureAuthenticated, (req, res) => {
             .then((emailSent) => {
               req.flash(
                 'success_msg',
-                `${newUser.name} verify yourself from your email to activate your account.`
+                `${newUser.name} can now verify their email with the link sent to activate their account.`
               )
-              console.log('Verification email has been sent ', emailSent.envelope)
+              res.redirect('/users');
+              console.log(`${emailSent.response}`)
+              console.log('Verification email has been sent ', emailSent.envelope.to)
             })
             .catch((error) => console.log(error.message))
-          
-            // Hashing the password
-            // bcrypt.genSalt(10, (err, salt) => {
-            //   bcrypt.hash(newUser.password, salt, (err, hash) => {
-            //     if (err) throw err;
-            //     newUser.password = hash;
-            //     newUser
-            //       .save()
-            //       .then(user => {
-            //         req.flash(
-            //           'success_msg',
-            //           `${newUser.name} is now registered; they can verify their authentication from the email to activate the account`
-            //         );
-            //         res.redirect('/users');
-            //       })
-            //       .catch(err => console.log(err));
-            //   });
-            // });  
         }
       });
     }
   });
 });
+
+//------------ Activate Account Handle ------------//
+router.get('/activate/:token', (req, res) => {
+  const token = req.params.token;
+  let errors = [];
+  if (token) {
+      jwt.verify(token, process.env.JWT_ACTIVATION_KEY, (err, decodedToken) => {
+          if (err) {
+              req.flash(
+                  'error_msg',
+                  'The link is incorrect or has already expired! Please request the administrator to register you once again.'
+              );
+              res.redirect('/users/login');
+          }
+          else {
+              const { name, email, password } = decodedToken;
+              User.findOne({ email: email }).then(user => {
+                  if (user) {
+                      //------------ User's email already exists ------------//
+                      req.flash(
+                          'error_msg',
+                          'The email provided is already registered! Please request you be registered with a new email ID.'
+                      );
+                      res.redirect('/users/login');
+                  } else
+                  {
+                    // Save user to the system's database
+                      const newUser = new User({
+                          name,
+                          email,
+                          password
+                      });
+
+                      //Hashing the password
+                      bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                          if (err) throw err;
+                          newUser.password = hash;
+                          newUser
+                            .save()
+                            .then(user => {
+                              req.flash(
+                                'success_msg',
+                                `Welcome ${newUser.name}, your user account is now verified.`
+                              );
+                              res.redirect('/users/login');
+                            })
+                            .catch(err => console.log(err));
+                        });
+                      });
+                  }
+              });
+          }
+
+      })
+  }
+  else {
+    res.status(404)
+    console.log("User account activation and verification error!")
+  }
+})
 
 // Customers
 router.get('/customers', ensureAuthenticated, (req, res) =>
