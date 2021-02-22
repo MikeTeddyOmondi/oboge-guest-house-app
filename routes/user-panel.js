@@ -9,12 +9,47 @@ router.get('/', ensureAuthenticated, (req, res) => res.render('panel/panel', {
   layout: './layouts/panelLayout' 
 }));
 
-// User Panel | Bookings Page
-router.get('/bookings', ensureAuthenticated, (req, res) => res.render('panel/bookings', { 
-  user: req.user,
-  title: 'Bookings', 
-  layout: './layouts/panelLayout' 
-}));
+// User Panel - GET | Bookings Page
+router.get('/bookings', ensureAuthenticated, (req, res) => {
+  res.render('panel/bookings', { 
+    user: req.user,
+    title: 'Bookings', 
+    layout: './layouts/panelLayout' 
+  })
+});
+
+// User Panel - POST | Bookings Page
+router.post('/bookings', ensureAuthenticated, (req, res) => {
+  const {
+    firstname,
+    lastname,
+    idNumber,
+    phoneNumber,
+    email_ID,
+    numberAdults,
+    numberKids,
+    room_type_select,
+    room_number_select,
+    check_out_date
+  } = req.body
+  console.log(
+    firstname,
+    lastname,
+    idNumber,
+    phoneNumber,
+    email_ID,
+    numberAdults,
+    numberKids,
+    room_type_select,
+    room_number_select,
+    check_out_date
+  );
+  // res.render('panel/bookings', { 
+  //   user: req.user,
+  //   title: 'Bookings', 
+  //   layout: './layouts/panelLayout' 
+  // })
+});
 
 // User Panel | Bar Page
 router.get('/bar', ensureAuthenticated, (req, res) => res.render('panel/bar', { 
