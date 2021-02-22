@@ -25,7 +25,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
   })
 });
 
-// Users
+// Users Route - GET
 router.get('/users', ensureAuthenticated, (req, res) => {
     User.find({}, (err , users) => {
         users !== 0 ? JSON.stringify(users) : console.log(err)
@@ -39,7 +39,7 @@ router.get('/users', ensureAuthenticated, (req, res) => {
   }
 );
 
-// Users
+// Users Route - POST
 router.post('/users', ensureAuthenticated, (req, res) => {
   User.find({}, (err , users) => {
     users !== 0 ? JSON.stringify(users) : console.log(err)
@@ -127,8 +127,8 @@ router.post('/users', ensureAuthenticated, (req, res) => {
 
           const activation_link = `
           <h5>Please click on below link to activate your account</h5>
-          <p>${CLIENT_URL}/activate/${token}</p>
-          <p><b>NOTE: </b> The above activation link expires in 30 minutes.</p>
+          <h5>${CLIENT_URL}/activate/${token}</h5>
+          <h5><b>NOTE: </b> The above account activation link expires in 30 minutes.</h5>
           `
 
           // Send email verification link to user's inbox  
@@ -154,7 +154,7 @@ router.post('/users', ensureAuthenticated, (req, res) => {
                 to: email,
                 subject: 'Account Verification | Oboge Guest House - Web Application',
                 text: `Hi ${name}, ${activation_link}`,
-                html: `<h2>Hi ${name}, ${activation_link}</h2>`  
+                html: `<h5>Hi ${name}, ${activation_link}</h5>`  
               }
 
               const emailSent = await transporter.sendMail(mailOptions)
@@ -169,11 +169,11 @@ router.post('/users', ensureAuthenticated, (req, res) => {
             .then((emailSent) => {
               req.flash(
                 'success_msg',
-                `${newUser.name} can now verify their email with the link sent to activate their account.`
+                `${newUser.name} can now verify their email with the link sent to activate their user account.`
               )
               res.redirect('/users');
               console.log(`${emailSent.response}`)
-              console.log('Verification email has been sent ', emailSent.envelope.to)
+              console.log('Verification email has been sent to', emailSent.envelope.to)
             })
             .catch((error) => console.log(error.message))
         }
@@ -224,7 +224,7 @@ router.get('/activate/:token', (req, res) => {
                             .then(user => {
                               req.flash(
                                 'success_msg',
-                                `Welcome ${newUser.name}, your user account is now verified.`
+                                `Welcome ${newUser.name}, you're verified and can now log in...`
                               );
                               res.redirect('/users/login');
                             })
@@ -241,6 +241,31 @@ router.get('/activate/:token', (req, res) => {
     res.status(404)
     console.log("User account activation and verification error!")
   }
+})
+
+// Users Route - PUT
+router.put('/users/:id', ensureAuthenticated, async (req, res, next) => {
+  req.user = User.findById(req.params.id)
+  User.find({}, (err, users) => {
+    users !== 0 ? JSON.stringify(users) : console.log(err)
+    // Edit user profile
+    let user = req.user
+    user.name = req.body.name
+    user.email = req.body.email
+    try {
+      updated_user = user.save()
+      res.redirect(`/users`)
+    } catch (err) {
+      console.log(err)
+      res.render(`/users`, {
+        //user: user,
+        user: req.user,
+        users: users,
+        title: 'Users',
+        layout: './layouts/adminLayout'
+      })
+    }
+  })
 })
 
 // Customers
