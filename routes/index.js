@@ -89,9 +89,9 @@ router.post('/users', ensureAuthenticated, (req, res) => {
         } else { 
           // Email Verification through API call
           emailVerifier.verify(email, (err, data) => {
-            if (data.smtpCheck !== 'true') {
+            if (data.smtpCheck !== 'true' || data.dnsCheck !== 'true') {
               errors.push({ msg: 'Please enter a valid email ...' });
-              res.statusCode().render('admin/users', {
+              res.render('admin/users', {
                 errors,
                 name,
                 email,

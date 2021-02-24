@@ -44,11 +44,11 @@ router.post('/bookings', ensureAuthenticated, (req, res) => {
     room_number_select,
     check_out_date
   );
-  // res.render('panel/bookings', { 
-  //   user: req.user,
-  //   title: 'Bookings', 
-  //   layout: './layouts/panelLayout' 
-  // })
+  res.render('panel/bookings', { 
+    user: req.user,
+    title: 'Bookings', 
+    layout: './layouts/panelLayout' 
+  })
 });
 
 // User Panel | Bar Page
