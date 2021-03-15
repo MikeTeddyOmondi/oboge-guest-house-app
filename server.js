@@ -5,6 +5,7 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 const path = require('path');
+const favicon = require('serve-favicon')
 const cookieParser = require('cookie-parser');
 
 const app = express();
@@ -12,14 +13,22 @@ const app = express();
 // Passport Config
 require('./config/passport')(passport);
 
+//static files
+app.use(express.static(path.join(__dirname, 'assets')))
+app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')))
+
 // DB Config
 const db = require('./config/keys').mongoURI;
 
-// Connect to MongoDB
+// Connection to database
 mongoose
     .connect(
-        process.env.MONGODB_URI || db,
-        { useNewUrlParser: true, useUnifiedTopology: true }
+        db, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false,
+            useCreateIndex: true
+        }
     )
     .then(() => console.log('> Database connection initiated ...'))
     .catch(err => console.log(err));
@@ -29,9 +38,6 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
 //app.set("layout", path.join(__dirname, "/layouts"));
-
-//static files
-app.use(express.static(path.join(__dirname, 'assets')))
 
 // Cookie Parser
 app.use(cookieParser())
@@ -73,7 +79,7 @@ app.use('/users', require('./routes/users.js'));
 app.use('/user-panel', require('./routes/user-panel.js'));
 
 // Server Errors | Page(s) Not Found
-app.use((req, res, next) => {
+app.get('*', (req, res, next) => {
     res.status(404).render('404', { title: '404 - Page Not Found', layout: './layouts/siteLayout' })
 })
 

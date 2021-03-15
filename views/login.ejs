@@ -47,18 +47,22 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="contactForm" class="form" action="/users/login/contact" method="POST">
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Username</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <label for="username" class="col-form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
           </div>
           <div class="form-group">
-            <label for="message-text" class="col-form-label">Message</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <label for="email" class="col-form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email">
+          </div>
+          <div class="form-group">
+            <label for="message" class="col-form-label">Message</label>
+            <textarea class="form-control" id="message-text" name="message"></textarea>
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">Error screenshot</label>
-            <input type="file" class="form-control" id="error-screenshot" aria-describedby="error-screenshot" aria-label="Upload">
+            <input type="file" class="form-control" id="screenshot" name="screenshot" aria-describedby="screenshot" aria-label="Upload">
           </div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Send message</button>
@@ -66,7 +70,7 @@
       </div>
       <div class="modal-footer">
         <p class="company-name">
-          All Rights Reserved © <%= new Date().getFullYear();%> | Developed by Rancko Solutions LLC
+          All Rights Reserved © <%= new Date().getFullYear();%> | Developed by Rancko Solutions LLC.
         </p>
       </div>
     </div>
