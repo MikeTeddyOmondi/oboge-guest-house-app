@@ -12,4 +12,9 @@ let emailVerifier = new Verifier(access_key, {
     validateSMTP: true,
 });
 
+// const NeverBounce = require('neverbounce');
+
+// // Initialize NeverBounce client
+// const clientEmailVerifier = new NeverBounce({apiKey: process.env.NEVEROUNCE_API_KEY});
+
 module.exports = { 'emailVerifier': emailVerifier }

@@ -1,28 +1,33 @@
 * {
-  padding: 0px;
-  margin: 0px;
-  box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
+    color: #fff;
+}
+
+.badge {
+    margin-top: -10px;
 }
 
 #main-row {
-  margin-top: 5%;
+    margin-top: 5%;
 }
 
 #card-row {
-  margin: 0% auto;
+    margin: 0% auto;
 }
 
 @media (max-width: 480px) {
-  #main-row {
-    margin-top: 5%;
-  }
-  #card-row {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
+    #main-row {
+        margin-top: 5%;
+    }
+    #card-row {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 }

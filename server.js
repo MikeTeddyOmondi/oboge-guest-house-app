@@ -43,6 +43,7 @@ app.set('view options', { layout: false });
 app.use(cookieParser())
 
 // Express body parser
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Express session
@@ -66,7 +67,7 @@ app.use(passport.session());
 app.use(flash());
 
 // Global variables
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
@@ -80,7 +81,7 @@ app.use('/user-panel', require('./routes/user-panel.js'));
 
 // Server Errors | Page(s) Not Found
 app.get('*', (req, res, next) => {
-    res.status(404).render('404', { title: '404 - Page Not Found', layout: './layouts/siteLayout' })
+    res.status(404).render('404', { title: '404 - Page Not Found', layout: './layouts/userLayout' })
 })
 
 const PORT = process.env.PORT || 8080;
