@@ -1,508 +1,162 @@
-<div id="wrapper">
-  <!-- Navigation -->
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="./dashboard">Oboge Guest House</a>
-    </div>
-
-    <button
-      type="button"
-      class="navbar-toggle"
-      data-toggle="collapse"
-      data-target=".navbar-collapse"
-    >
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-
-    <ul class="nav navbar-nav navbar-left navbar-top-links">
-      <li>
-        <a href="./dashboard"><i class="fa fa-home fa-fw"></i> Dashboard</a>
-      </li>
-    </ul>
-
-    <ul class="nav navbar-right navbar-top-links">
-      <li class="dropdown navbar-inverse">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu dropdown-alerts">
-          <li>
-            <a href="#">
-              <div>
-                <i class="fa fa-comment fa-fw"></i> New Booking
-                <span class="pull-right text-muted small">4 minutes ago</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <div>
-                <i class="fa fa-twitter fa-fw"></i> 3 New Bar Order
-                <span class="pull-right text-muted small">12 minutes ago</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <div>
-                <i class="fa fa-envelope fa-fw"></i> Message Sent
-                <span class="pull-right text-muted small">4 minutes ago</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <div>
-                <i class="fa fa-tasks fa-fw"></i> New Laundry Request
-                <span class="pull-right text-muted small">4 minutes ago</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <div>
-                <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                <span class="pull-right text-muted small">4 minutes ago</span>
-              </div>
-            </a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a class="text-center" href="#">
-              <strong>See All Notifications</strong>
-              <i class="fa fa-angle-right"></i>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          <i class="fa fa-user fa-fw"></i> <%= user.name %>
-          <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu dropdown-user">
-          <li>
-            <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-          </li>
-          <li>
-            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a href="users/logout"
-              ><i class="fa fa-sign-out fa-fw"></i> Logout</a
-            >
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <!-- /.navbar-top-links -->
-
-    <div class="navbar-default sidebar" role="navigation">
-      <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">
-          <li class="sidebar-search">
-            <div class="input-group custom-search-form">
-              <input type="text" class="form-control" placeholder="Search..." />
-              <span class="input-group-btn">
-                <button class="btn btn-primary" type="button">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-            <!-- /input-group -->
-          </li>
-          <li>
-            <a href="./dashboard" class="active"
-              ><i class="fa fa-dashboard fa-fw"></i> Dashboard</a
-            >
-          </li>
-          <li>
-            <a href="#"
-              ><i class="fa fa-user fa-fw"></i> Administration
-              <span class="fa arrow"></span
-            ></a>
-            <ul class="nav nav-second-level">
-              <li>
-                <a href="./users"> Add User </a>
-              </li>
-              <li>
-                <a href="./customers"> Add Customer </a>
-              </li>
-              <li>
-                <a href="#"> Add Room Booking </a>
-              </li>
-              <li>
-                <a href="#"> Add Room Information </a>
-              </li>
-              <li>
-                <a href="#"> Add Bar Menu </a>
-              </li>
-              <li>
-                <a href="#"> Add Bar Order </a>
-              </li>
-              <li>
-                <a href="#"> Add Restaurant Menu </a>
-              </li>
-              <li>
-                <a href="#"> Add Restaurant Order </a>
-              </li>
-              <li>
-                <a href="#"> Add Room Cleaning Request </a>
-              </li>
-              <li>
-                <a href="#"> Add Laundry Cleaning Request </a>
-              </li>
-              <li>
-                <a href="#"> Add Facility Booking </a>
-              </li>
-              <li>
-                <a href="#"> Add Facility Information </a>
-              </li>
-            </ul>
-            <!-- /.nav-second-level -->
-          </li>
-          <li>
-            <a href="#"
-              ><i class="fa fa-file fa-fw"></i> Reports
-              <span class="fa arrow"></span
-            ></a>
-            <ul class="nav nav-second-level">
-              <li>
-                <a href="#"
-                  >Bookings & Accomodation <span class="fa arrow"></span
-                ></a>
-                <ul class="nav nav-third-level">
-                  <li>
-                    <a href="#">Booked Customers</a>
-                  </li>
-                  <li>
-                    <a href="#">Rooms Booked</a>
-                  </li>
-                  <li>
-                    <a href="#">Cancelled Bookings</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#">Bar <span class="fa arrow"></span></a>
-                <ul class="nav nav-third-level">
-                  <li>
-                    <a href="#">Orders & Sales</a>
-                  </li>
-                  <li>
-                    <a href="#">Bar Menu</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#"> Restaurant <span class="fa arrow"></span></a>
-                <ul class="nav nav-third-level">
-                  <li>
-                    <a href="#">Orders & Sales</a>
-                  </li>
-                  <li>
-                    <a href="#">Restaurant Menu</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#"> Rooms <span class="fa arrow"></span></a>
-                <ul class="nav nav-third-level">
-                  <li>
-                    <a href="#">Cleaning Requests</a>
-                  </li>
-                  <li>
-                    <a href="#">Rooms Information</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#"> Laundry Cleaning Requests </a>
-              </li>
-              <li>
-                <a href="#"> Facilities <span class="fa arrow"></span></a>
-                <ul class="nav nav-third-level">
-                  <li>
-                    <a href="#">Booked Facilities</a>
-                  </li>
-                  <li>
-                    <a href="#">Facilities Information</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            <!-- /.nav-second-level -->
-          </li>
-          <li>
-            <a href="#"
-              ><i class="fa fa-wrench fa-fw"></i> Settings
-              <span class="fa arrow"></span
-            ></a>
-            <ul class="nav nav-second-level">
-              <li>
-                <a href="#"> Edit <span class="fa arrow"></span></a>
-                <ul class="nav nav-third-level">
-                  <li>
-                    <a href="#">Users Profile</a>
-                  </li>
-                  <li>
-                    <a href="#">Customer Information</a>
-                  </li>
-                  <li>
-                    <a href="#">Room Information</a>
-                  </li>
-                  <li>
-                    <a href="#">Room Bookings</a>
-                  </li>
-                  <li>
-                    <a href="#">Bar Orders</a>
-                  </li>
-                  <li>
-                    <a href="#">Restaurant Orders</a>
-                  </li>
-                  <li>
-                    <a href="#"> Room Cleaning Requests </a>
-                  </li>
-                  <li>
-                    <a href="#"> Laundry Cleaning Requests </a>
-                  </li>
-                  <li>
-                    <a href="#"> Facility Booking </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#"> System Settings<span class="fa arrow"></span></a>
-                <ul class="nav nav-third-level">
-                  <li>
-                    <a href="#">Backup System</a>
-                  </li>
-                  <li>
-                    <a href="#">Restore System</a>
-                  </li>
-                </ul>
-                <!-- /.nav-third-level -->
-              </li>
-            </ul>
-            <!-- /.nav-second-level -->
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Page Content -->
-  <div id="page-wrapper">
+<!-- Page Content -->
+<div id="page-wrapper">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          <h1 class="page-header">Dashboard</h1>
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Dashboard</h1>
+            </div>
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.col-lg-12 -->
-      </div>
-      <!-- /.row -->
-      <p class="lead mb-3">Welcome <%= user.name %></p>
+        <!-- /.row -->
+        <p class="lead mb-3">Welcome
+            <%= user.name %>
+        </p>
 
-      <!-- Dashboard Contents-->
-      <!-- <canvas id="customer-check-ins-Chart"></canvas> -->
-      <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-lg-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Overall Sales</h4>
-                  <canvas id="lineChart"></canvas>
+        <!-- Dashboard Contents-->
+        <!-- <canvas id="customer-check-ins-Chart"></canvas> -->
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Overall Sales</h4>
+                                <canvas id="lineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Bar Stocks</h4>
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-lg-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Bar Stocks</h4>
-                  <canvas id="barChart"></canvas>
+                <div class="row">
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Server Usage</h4>
+                                <canvas id="areaChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Revenue | Expenditure | Reserves</h4>
+                                <canvas id="pieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Server Usage</h4>
-                  <canvas id="areaChart"></canvas>
+            <!-- content-wrapper ends -->
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Customers</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Customer name</th>
+                                        <th>Timelapse</th>
+                                        <th>Amount Payable</th>
+                                        <th>Check-in Date</th>
+                                        <th>Check-out Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Herman Beck</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>Ksh 3,999</td>
+                                        <td>March 15, 2021</td>
+                                        <td>May 15, 2021</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Messsy Adam</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>Ksh 5,000</td>
+                                        <td>June 1, 2021</td>
+                                        <td>July 1, 2021</td>
+                                    </tr>
+                                    <tr>
+                                        <td>John Richards</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>Ksh 6,800</td>
+                                        <td>April 12, 2021</td>
+                                        <td>April 20, 2021</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Peter Meggik</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>Ksh 8,900</td>
+                                        <td>February 15, 2021</td>
+                                        <td>May 15, 2021</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dimitar Edwards</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>Ksh 2,050</td>
+                                        <td>March 31, 2021</td>
+                                        <td>April 01, 2021</td>
+                                    </tr>
+                                    <tr>
+                                        <td>John Doe</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>Ksh 5,350</td>
+                                        <td>March 05, 2021</td>
+                                        <td>April 30, 2021</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tom Ford</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>Ksh 1,500</td>
+                                        <td>June 10, 2021</td>
+                                        <td>August 31, 2021</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="col-lg-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Revenue | Expenditure | Reserves</h4>
-                  <canvas id="pieChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
+            <!-- /#Dashboard Contents -->
         </div>
-        <!-- content-wrapper ends -->
-        <div class="col-lg-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Customers</h4>
-              <div class="table-responsive">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Customer name</th>
-                      <th>Timelapse</th>
-                      <th>Amount Payable</th>
-                      <th>Check-in Date</th>
-                      <th>Check-out Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Herman Beck</td>
-                      <td>
-                        <div class="progress">
-                          <div
-                            class="progress-bar bg-success"
-                            role="progressbar"
-                            style="width: 25%"
-                            aria-valuenow="25"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </td>
-                      <td>Ksh 3,999</td>
-                      <td>March 15, 2021</td>
-                      <td>May 15, 2021</td>
-                    </tr>
-                    <tr>
-                      <td>Messsy Adam</td>
-                      <td>
-                        <div class="progress">
-                          <div
-                            class="progress-bar bg-danger"
-                            role="progressbar"
-                            style="width: 75%"
-                            aria-valuenow="75"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </td>
-                      <td>Ksh 5,000</td>
-                      <td>June 1, 2021</td>
-                      <td>July 1, 2021</td>
-                    </tr>
-                    <tr>
-                      <td>John Richards</td>
-                      <td>
-                        <div class="progress">
-                          <div
-                            class="progress-bar bg-warning"
-                            role="progressbar"
-                            style="width: 90%"
-                            aria-valuenow="90"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </td>
-                      <td>Ksh 6,800</td>
-                      <td>April 12, 2021</td>
-                      <td>April 20, 2021</td>
-                    </tr>
-                    <tr>
-                      <td>Peter Meggik</td>
-                      <td>
-                        <div class="progress">
-                          <div
-                            class="progress-bar bg-primary"
-                            role="progressbar"
-                            style="width: 50%"
-                            aria-valuenow="50"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </td>
-                      <td>Ksh 8,900</td>
-                      <td>February 15, 2021</td>
-                      <td>May 15, 2021</td>
-                    </tr>
-                    <tr>
-                      <td>Dimitar Edwards</td>
-                      <td>
-                        <div class="progress">
-                          <div
-                            class="progress-bar bg-danger"
-                            role="progressbar"
-                            style="width: 35%"
-                            aria-valuenow="35"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </td>
-                      <td>Ksh 2,050</td>
-                      <td>March 31, 2021</td>
-                      <td>April 01, 2021</td>
-                    </tr>
-                    <tr>
-                      <td>John Doe</td>
-                      <td>
-                        <div class="progress">
-                          <div
-                            class="progress-bar bg-info"
-                            role="progressbar"
-                            style="width: 65%"
-                            aria-valuenow="65"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </td>
-                      <td>Ksh 5,350</td>
-                      <td>March 05, 2021</td>
-                      <td>April 30, 2021</td>
-                    </tr>
-                    <tr>
-                      <td>Tom Ford</td>
-                      <td>
-                        <div class="progress">
-                          <div
-                            class="progress-bar bg-warning"
-                            role="progressbar"
-                            style="width: 20%"
-                            aria-valuenow="20"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </td>
-                      <td>Ksh 1,500</td>
-                      <td>June 10, 2021</td>
-                      <td>August 31, 2021</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /#Dashboard Contents -->
-      </div>
-      <!-- /.container-fluid -->
+        <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
-  </div>
-  <!-- /#wrapper -->
 </div>
