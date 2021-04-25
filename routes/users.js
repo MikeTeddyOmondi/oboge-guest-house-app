@@ -126,15 +126,14 @@ router.post('/forgot', (req, res) => {
                 const accessToken = oauth2Client.getAccessToken()
 
                 const token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_KEY, { expiresIn: '30m' });
-                const CLIENT_URL = 'http://' + req.headers.host;
+                const CLIENT_URL = `${req.protocol}://${req.headers.host}`;
 
-                const output = `
-                <h2>You requested for a password reset.</h2>
+                const output = ` <h2> You requested for a password reset. </h2>
                 <hr>
-                <h2>Please click on below link to reset your user account password</h2>
-                <p>${CLIENT_URL}/users/forgot/${token}</p>
+                <h2> Please click on below link to reset your user account password </h2>
+                <p>${ CLIENT_URL }/users/forgot/ ${ token } </p>
                 <hr>
-                <p><b>NOTE: </b> The activation link expires in 30 minutes.</p>
+                <p><b> NOTE: </b> The activation link expires in 30 minutes.</p >
                 `;
 
                 User.updateOne({ resetLink: token }, (err, success) => {
@@ -207,7 +206,8 @@ router.post('/reset/:id', async(req, res) => {
             'error_msg',
             'Please enter all fields.'
         );
-        res.redirect(`/users/reset/${id}`);
+        res.redirect(` / users / reset / $ { id }
+                                `);
     }
 
     //------------ Checking password length ------------//
@@ -216,7 +216,8 @@ router.post('/reset/:id', async(req, res) => {
             'error_msg',
             'Password must be at least 6 characters.'
         );
-        res.redirect(`/users/reset/${id}`);
+        res.redirect(` / users / reset / $ { id }
+                                `);
     }
 
     //------------ Checking password mismatch ------------//
@@ -225,7 +226,8 @@ router.post('/reset/:id', async(req, res) => {
             'error_msg',
             'Passwords do not match.'
         );
-        res.redirect(`/users/reset/${id}`);
+        res.redirect(` / users / reset / $ { id }
+                                `);
     } else {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, (err, hash) => {
@@ -239,7 +241,8 @@ router.post('/reset/:id', async(req, res) => {
                                 'error_msg',
                                 'Error resetting password!'
                             );
-                            res.redirect(`/users/reset/${id}`);
+                            res.redirect(` / users / reset / $ { id }
+                                `);
                         } else {
                             req.flash(
                                 'success_msg',
@@ -277,7 +280,8 @@ router.get('/forgot/:token', (req, res) => {
                         );
                         res.redirect('/users/login');
                     } else {
-                        res.redirect(`/users/reset/${_id}`)
+                        res.redirect(` / users / reset / $ { _id }
+                                `)
                     }
                 })
             }

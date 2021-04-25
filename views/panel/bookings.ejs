@@ -1,127 +1,70 @@
 <div id="main-row" class="row">
-  <div class="row">
-    <a href="/user-panel" class="">&#x21d0;</a>
-  </div>
-  <h1>Bookings | Accomodations</h1>
-  <% include ../partials/messages %>
-  <form id="bookingForm" class="form" action="/user-panel/bookings" method="POST">
-    <div class="form row">
-      <h5 class="mb-3">Customer Details:</h5>
-      <div class="col-md">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control"
-            id="firstname"
-            name="firstname"
-            placeholder="Firstname"
-            required
-          />
-          <label for="floatingInputGrid">Firstname</label>
-        </div>
-      </div>
-      <div class="col-md">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control"
-            id="lastname"
-            name="lastname"
-            placeholder="Lastname"
-            required
-          />
-          <label for="floatingInputGrid">Lastname</label>
-        </div>
-      </div>
-      <div class="col-md">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control"
-            id="idNumber"
-            name="idNumber"
-            placeholder="ID Number/ Passport/ Driver License"
-            required
-          />
-          <label for="floatingInputGrid">Identification number</label>
-        </div>
-      </div>
-      <div class="col-md">
-        <div class="form-floating">
-          <input
-            type="tel"
-            class="form-control"
-            id="phoneNumber"
-            name="phoneNumber"
-            placeholder="Phone number"
-            required
-          />
-          <label for="floatingInputGrid">Phone number</label>
-        </div>
-      </div>
-      <div class="col-md">
-        <div class="form-floating mb-3">
-          <input
-            type="email"
-            class="form-control"
-            id="email_ID"
-            name="email_ID"
-            placeholder="Email address"
-            required
-          />
-          <label for="floatingInputGrid">Email address</label>
-        </div>
-      </div>
+    <div class="row">
+        <a href="/user-panel" class="">&#x21d0;</a>
     </div>
-    <div class="form row">
-      <h5 class="mb-3">Booking Details:</h5>
-      <div class="col-md">
-        <div class="form-floating">
-          <input
-            type="number"
-            class="form-control"
-            id="numberAdults"
-            name="numberAdults"
-            placeholder="Number of Adults"
-            required
-          />
-          <label for="floatingInputGrid">Number of Adults</label>
-        </div>
-      </div>
-      <div class="col-md">
-        <div class="form-floating">
-          <input
-            type="number"
-            class="form-control"
-            id="numberKids"
-            name="numberKids"
-            placeholder="Number of Kids"
-            required
-          />
-          <label for="floatingInputGrid">Number of Kids</label>
-        </div>
-      </div>
-      <div class="col-md">
-        <div class="form-floating">
-          <select
-            class="form-select"
-            id="room_type_select"
-            name="room_type_select"
-          >
+    <h1>Bookings | Accomodations</h1>
+    <%- include ('../partials/messages') %>
+        <form id="bookingForm" class="form" action="/user-panel/bookings" method="POST">
+            <div class="form row">
+                <h5 class="mb-3">Customer Details:</h5>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" required />
+                        <label for="floatingInputGrid">Firstname</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" required />
+                        <label for="floatingInputGrid">Lastname</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="idNumber" name="idNumber" placeholder="ID Number/ Passport/ Driver License" required />
+                        <label for="floatingInputGrid">Identification number</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone number" required />
+                        <label for="floatingInputGrid">Phone number</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email_ID" name="email_ID" placeholder="Email address" required />
+                        <label for="floatingInputGrid">Email address</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form row">
+                <h5 class="mb-3">Booking Details:</h5>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="numberAdults" name="numberAdults" placeholder="Number of Adults" required />
+                        <label for="floatingInputGrid">Number of Adults</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="numberKids" name="numberKids" placeholder="Number of Kids" required />
+                        <label for="floatingInputGrid">Number of Kids</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <select class="form-select" id="room_type_select" name="room_type_select">
             <option selected="SingleRoom">Single Room</option>
             <option value="DoubleRoom">Double Room</option>
             <option value="DeluxeRoom">Deluxe Room</option>
           </select>
-          <label for="floatingSelectGrid">Room Type</label>
-        </div>
-      </div>
-      <div class="col-md">
-        <div class="form-floating">
-          <select
-            class="form-select"
-            id="room_number_select"
-            name="room_number_select"
-          >
+                        <label for="floatingSelectGrid">Room Type</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <select class="form-select" id="room_number_select" name="room_number_select">
             <option value="1">Room G1</option>
             <option value="2">Room G2</option>
             <option value="3">Room G3</option>
@@ -159,27 +102,27 @@
             <option value="35">Room T8</option>
             <option value="36">Room T9</option>
           </select>
-          <label for="floatingInputGrid">Room number</label>
-        </div>
-      </div>
-      <div class="col md">
-        <div class="form-floating">
-          <!-- <label for="check-in-date">Check-in Date</label> -->
-          <input type="date" id="check_out_date" name="check_out_date">
-        </div>
-      </div>
-      <!-- <div class="col md">
+                        <label for="floatingInputGrid">Room number</label>
+                    </div>
+                </div>
+                <div class="col md">
+                    <div class="form-floating">
+                        <!-- <label for="check-in-date">Check-in Date</label> -->
+                        <input type="date" id="check_out_date" name="check_out_date">
+                    </div>
+                </div>
+                <!-- <div class="col md">
         <div class="form-floating">
           <label for="check-out-date">Check-out Date</label>
           <input type="date" id="check-out-date">
         </div>
       </div> -->
-    </div>
-    <div class="form row">
-      <div class="mt-3">
-        <input type="button" class="btn btn-secondary" value="Cancel" name="Cancel">
-        <input type="submit" class="btn btn-primary" value="Save" name="Save">
-      </div>
-    </div>
-  </form>
+            </div>
+            <div class="form row">
+                <div class="mt-3">
+                    <input type="button" class="btn btn-secondary" value="Cancel" name="Cancel">
+                    <input type="submit" class="btn btn-primary" value="Save" name="Save">
+                </div>
+            </div>
+        </form>
 </div>

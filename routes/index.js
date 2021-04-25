@@ -150,7 +150,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                 })
 
                 const token = jwt.sign({ name, email, password, isAdmin }, process.env.JWT_ACTIVATION_KEY, { expiresIn: '30m' });
-                const CLIENT_URL = 'http://' + req.headers.host;
+                const CLIENT_URL = `${req.protocol}://${req.headers.host}`;
 
                 const activation_link = `
                     <h5>Please click on below link to activate your account</h5>
