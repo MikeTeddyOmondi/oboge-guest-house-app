@@ -47,7 +47,7 @@ router.post('/bookings', ensureAuthenticated, (req, res) => {
     res.render('panel/bookings', {
         user: req.user,
         title: 'Bookings',
-        layout: './layoutspanelLayout'
+        layout: './layouts/panelLayout'
     })
 });
 
