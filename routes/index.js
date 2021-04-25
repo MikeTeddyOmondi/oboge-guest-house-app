@@ -59,8 +59,6 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
         role
     } = req.body;
 
-    console.log(req.body);
-
     let errors = [];
     let isAdmin;
 
@@ -110,7 +108,6 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                         if (err) throw `An error occurred while validating your email: ${err.message}`
                         else if (data.smtpCheck === 'false') {
                             errors.push({ msg: 'Please enter a valid email ...' });
-                            console.log(data);
                             res.render('admin/addUsers', {
                                 errors,
                                 name,
@@ -122,6 +119,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                                 title: 'Add Users',
                                 layout: './layouts/adminLayout'
                             });
+                            return res
                         }
                     });
                 } catch (err) {
@@ -134,16 +132,12 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                     isAdmin = false
                 }
 
-                //console.log(`Email verification and validation success: ${email}`);
-
                 const newUser = new User({
                     name,
                     email,
                     password,
                     isAdmin
                 });
-
-                console.log(newUser);
 
                 const oAuth2Client = new OAuth2(
                     process.env.CLIENT_ID, // ClientID
@@ -185,7 +179,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                         const mailOptions = {
                             from: senderMail,
                             to: email,
-                            subject: 'Account Verification | Oboge Guest House - Web Application',
+                            subject: 'Account Verification | Oboge Guest House',
                             text: `Hi ${name}, ${activation_link}`,
                             html: `<h5>Hi ${name}, ${activation_link}</h5>`
                         }
@@ -206,7 +200,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                         )
                         res.redirect('/users/add');
                         console.log(`Mail sent: ${emailSent.response}`)
-                        console.log('Verification email has been sent to', emailSent.envelope.to)
+                            //console.log('Verification email has been sent to', emailSent.envelope.to)
                     })
                     .catch((error) => console.log(error.message))
             }
@@ -214,7 +208,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
     }
 });
 
-//------------ Activate Account Handle ------------//
+// Activate Account Handle 
 router.get('/activate/:token', (req, res) => {
     const token = req.params.token;
     let errors = [];
