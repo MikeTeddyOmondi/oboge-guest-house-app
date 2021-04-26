@@ -33,7 +33,7 @@
         "multer-gridfs-storage": "^4.2.0",
         "neverbounce": "^4.4.1",
         "node-html-parser": "^2.0.2",
-        "nodemailer": "^6.4.17",
+        "nodemailer": "^6.5.0",
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
         "request": "^2.88.2",
