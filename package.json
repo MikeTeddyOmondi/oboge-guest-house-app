@@ -32,7 +32,7 @@
         "mongoose": "^5.12.5",
         "multer-gridfs-storage": "^4.2.0",
         "neverbounce": "^4.4.1",
-        "node-html-parser": "^2.0.2",
+        "node-html-parser": "^2.2.1",
         "nodemailer": "^6.4.17",
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
