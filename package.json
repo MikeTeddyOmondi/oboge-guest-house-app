@@ -27,7 +27,7 @@
         "express-ejs-layouts": "^2.5.0",
         "express-session": "^1.15.6",
         "fs": "^0.0.1-security",
-        "googleapis": "^67.0.0",
+        "googleapis": "^67.1.1",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.12.5",
         "multer-gridfs-storage": "^4.2.0",
