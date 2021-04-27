@@ -30,23 +30,35 @@ router.post('/bookings', ensureAuthenticated, (req, res) => {
         numberKids,
         room_type_select,
         room_number_select,
+        check_in_date,
         check_out_date
     } = req.body
-    console.log(
-        firstname,
-        lastname,
-        idNumber,
-        phoneNumber,
-        email_ID,
-        numberAdults,
-        numberKids,
-        room_type_select,
-        room_number_select,
-        check_out_date
-    );
-    res.render('panel/bookings', {
+
+    let customerDetails = {
+        firstname: firstname,
+        lastname: lastname,
+        idNumber: idNumber,
+        phoneNumber: phoneNumber,
+        emailID: email_ID,
+    }
+
+    let bookingDetails = {
+        numberAdults: numberAdults,
+        numberKids: numberKids,
+        room_type_select: room_type_select,
+        room_number_select: room_number_select,
+        check_in_date: check_in_date,
+        check_out_date: check_out_date
+    }
+
+    console.log(customerDetails);
+    console.log(bookingDetails);
+
+    res.render('panel/bookingsInvoice', {
         user: req.user,
-        title: 'Bookings',
+        customerDetails,
+        bookingDetails,
+        title: 'Hotel Booking Invoice | Receipt',
         layout: './layouts/panelLayout'
     })
 });
@@ -79,4 +91,5 @@ router.get('/logout', (req, res) => {
     res.redirect('/users/login');
 });
 
+module.exports = router;
 module.exports = router;

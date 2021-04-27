@@ -61,7 +61,7 @@ router.post('/login/contact', upload.single('screenshot'), async(req, res) => {
                 .then(() => {
                     req.flash(
                         'success_msg',
-                        `Thanks ${username}, your message has been received and it being porcessed...`
+                        `Thanks ${username}. Your message has been received and it being processed...`
                     );
                     res.redirect('/users/login');
                 })

@@ -46,18 +46,27 @@ app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// MongoStore | Sessions Store
+const MongoDBStore = require('connect-mongodb-session')(session)
+
+// Session Storage
+const sessionStore = new MongoDBStore({
+    uri: db,
+    collection: 'sessions'
+})
+
 // Express session
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
         saveUninitialized: true,
         resave: false,
+        store: sessionStore,
         cookie: {
             httpOnly: true,
             maxAge: parseInt(process.env.SESSION_MAX_AGE)
         }
-    })
-);
+    }));
 
 // Passport middleware
 app.use(passport.initialize());
