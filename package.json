@@ -32,6 +32,7 @@
         "googleapis": "^67.0.0",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.12.5",
+        "morgan": "^1.10.0",
         "multer-gridfs-storage": "^4.2.0",
         "neverbounce": "^4.4.1",
         "node-html-parser": "^2.0.2",

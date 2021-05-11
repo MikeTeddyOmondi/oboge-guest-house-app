@@ -1,15 +1,18 @@
-FROM node:12.0.0
+FROM node:14.0.0
 
-LABEL maintainer="mike_omondi@outlook.com"
+LABEL maintainer="MikeTeddyOmondi | mike_omondi@outlook.com"
 
-WORKDIR /hotel_app
+WORKDIR /src
 
-COPY package.json /hotel_app
+COPY package.json /src
 
 RUN npm install
 
-COPY . /hotel_app
+COPY . /src
+
+USER 1000
+
+EXPOSE 80
 
 CMD [ "node" "server.js" ]
 
-EXPOSE 80

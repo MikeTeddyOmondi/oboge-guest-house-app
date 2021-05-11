@@ -14,7 +14,7 @@ a {
 }
 
 #main-row {
-    margin-top: 5%;
+    margin-top: 12%;
 }
 
 #card-row {
@@ -23,7 +23,7 @@ a {
 
 @media (max-width: 480px) {
     #main-row {
-        margin-top: 5%;
+        margin-top: 12px;
     }
     #card-row {
         width: 100%;

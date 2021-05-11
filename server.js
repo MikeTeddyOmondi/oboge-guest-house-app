@@ -7,6 +7,7 @@ const session = require('express-session');
 const path = require('path');
 const favicon = require('serve-favicon')
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan')
 
 const app = express();
 
@@ -31,7 +32,7 @@ mongoose
         }
     )
     .then(() => console.log('> Database connection initiated ...'))
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err.message));
 
 // EJS
 app.use(expressLayouts);
@@ -83,14 +84,32 @@ app.use(function(req, res, next) {
     next();
 });
 
+// Logs | Routes
+app.use(morgan('dev'))
+
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/user-panel', require('./routes/user-panel.js'));
 
 // Server Errors | Page(s) Not Found
-app.get('*', (req, res, next) => {
-    res.status(404).render('404', { title: '404 - Page Not Found', layout: './layouts/userLayout' })
+app.use(async(req, res, next) => {
+    const error = new Error('404 - Not Found')
+    error.status = 404
+    next(error)
+})
+
+app.use((error, req, res, next) => {
+    if (error.status == 404) {
+        res.status(404).render('404', { title: '404 - Page Not Found', layout: './layouts/userLayout' })
+    } else if (error.status == 401) {
+        res.status(404).render('401', { title: '401 - Unauthorized Access', layout: './layouts/userLayout' })
+    } else if (error.status == 403) {
+        res.status(404).render('403', { title: '403 - Forbidden', layout: './layouts/userLayout' })
+    } else {
+        res.status(404).render('500', { title: '500 - Internal Server Error', error: error, layout: './layouts/userLayout' })
+    }
+    next()
 })
 
 const PORT = process.env.PORT || 8080;

@@ -12,13 +12,13 @@ const bcrypt = require('bcryptjs');
 // Load User model
 const User = require('../models/User');
 
-// Website - Homepage
+// Website - Homepage | GET
 router.get('/', forwardAuthenticated, (req, res) => res.render('site', { title: 'Welcome', layout: './layouts/siteLayout' }));
 
-// Administration
+// Administration | GET
 router.get('/admin', forwardAuthenticated, (req, res) => res.render('welcome', { title: 'Administration', layout: './layouts/userLayout' }));
 
-// Admin dashboard
+// Admin dashboard | GET
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
     res.render('admin/dashboard', {
         user: req.user,
@@ -27,7 +27,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
     })
 });
 
-// Users Route - GET
+// Users Route | GET
 router.get('/users', ensureAuthenticated, (req, res) => {
     User.find({}, (err, users) => {
         users !== 0 ? JSON.stringify(users) : console.log(err)
@@ -40,7 +40,7 @@ router.get('/users', ensureAuthenticated, (req, res) => {
     });
 });
 
-// Add Users Route - GET
+// Add Users Route | GET
 router.get('/users/add', ensureAuthenticated, (req, res) => {
     res.render('admin/addUsers', {
         user: req.user,
@@ -49,7 +49,7 @@ router.get('/users/add', ensureAuthenticated, (req, res) => {
     })
 });
 
-// Add Users Route - POST
+// Add Users Route | POST
 router.post('/users/add', ensureAuthenticated, (req, res) => {
     const {
         name,
@@ -208,7 +208,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
     }
 });
 
-// Activate Account Handle 
+// Activate Account Handle | GET 
 router.get('/activate/:token', (req, res) => {
     const token = req.params.token;
     let errors = [];
@@ -268,7 +268,7 @@ router.get('/activate/:token', (req, res) => {
     }
 })
 
-// Update Users Route - PUT
+// Update Users Route | PUT
 router.put('/users/:id', ensureAuthenticated, async(req, res, next) => {
     req.user = User.findById(req.params.id)
     User.find({}, (err, users) => {
@@ -293,29 +293,65 @@ router.put('/users/:id', ensureAuthenticated, async(req, res, next) => {
     })
 })
 
-// Customers
-router.get('/customers', ensureAuthenticated, (req, res) =>
-    res.render('admin/customers', {
+// Add Customers | GET
+router.get('/customers', ensureAuthenticated, (req, res) => {
+    res.render('admin/addCustomer', {
         user: req.user,
-        title: 'Customers',
+        title: 'Add Customer',
         layout: './layouts/adminLayout.ejs'
     })
-);
+});
 
-// Room Booking
-router.get('/room_bookings', ensureAuthenticated, (req, res) =>
-    res.render('admin/room_bookings', {
+// Add Customers | POST
+router.post('/customers', ensureAuthenticated, (req, res) => {
+    const { firstname, lastname, id_number, phone_number, email } = req.body
+    console.log(firstname, lastname, id_number, phone_number, email)
+
+    let errors = [];
+
+    if (!firstname || !lastname || !id_number || !phone_number || !email) {
+        errors.push({ msg: 'Please enter all fields' });
+    }
+
+    if (firstname.length || lastname < 3) {
+        errors.push({ msg: 'Names must be at least 3 characters long' });
+    }
+
+    if (errors.length > 0) {
+        res.render('admin/addCustomer', {
+            errors,
+            firstname,
+            lastname,
+            id_number,
+            phone_number,
+            email,
+            user: req.user,
+            title: 'Add Customer',
+            layout: './layouts/adminLayout'
+        })
+    } else {
+        res.render('admin/addCustomer', {
+            user: req.user,
+            title: 'Add Customer',
+            layout: './layouts/adminLayout.ejs'
+        })
+    }
+});
+
+// Room Booking | GET
+router.get('/room-bookings', ensureAuthenticated, (req, res) =>
+    res.render('admin/addRoomBookings', {
         user: req.user,
         title: 'Room Bookings',
         layout: './layouts/adminLayout.ejs'
     })
 );
 
-// Room Info
-router.get('/room_info', ensureAuthenticated, (req, res) =>
-    res.render('admin/room_info', {
+// Room Info | GET
+router.get('/room-info', ensureAuthenticated, (req, res) =>
+    res.render('admin/addRoomInfo', {
         user: req.user,
-        title: 'Room Info',
+        title: 'Add Room Info',
         layout: './layouts/adminLayout.ejs'
     })
 );

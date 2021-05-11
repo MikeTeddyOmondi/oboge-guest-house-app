@@ -101,7 +101,9 @@ router.post('/forgot', (req, res) => {
     if (errors.length > 0) {
         res.render('forgot', {
             errors,
-            email
+            email,
+            title: 'Forgot Password',
+            layout: './layouts/userLayout'
         });
     } else {
         User.findOne({ email: email }).then(user => {
@@ -110,7 +112,9 @@ router.post('/forgot', (req, res) => {
                 errors.push({ msg: 'User with Email ID does not exist!' });
                 res.render('forgot', {
                     errors,
-                    email
+                    email,
+                    title: 'Forgot Password',
+                    layout: './layouts/userLayout'
                 });
             } else {
 
@@ -141,7 +145,9 @@ router.post('/forgot', (req, res) => {
                         errors.push({ msg: 'Error resetting password!' });
                         res.render('forgot', {
                             errors,
-                            email
+                            email,
+                            title: 'Forgot Password',
+                            layout: './layouts/userLayout'
                         });
                     } else {
                         const transporter = nodemailer.createTransport({
@@ -206,8 +212,7 @@ router.post('/reset/:id', async(req, res) => {
             'error_msg',
             'Please enter all fields.'
         );
-        res.redirect(` / users / reset / $ { id }
-                                `);
+        res.redirect(`/users/reset/${ id }`);
     }
 
     //------------ Checking password length ------------//
@@ -216,8 +221,7 @@ router.post('/reset/:id', async(req, res) => {
             'error_msg',
             'Password must be at least 6 characters.'
         );
-        res.redirect(` / users / reset / $ { id }
-                                `);
+        res.redirect(`/users/reset/${ id }`);
     }
 
     //------------ Checking password mismatch ------------//
@@ -226,8 +230,7 @@ router.post('/reset/:id', async(req, res) => {
             'error_msg',
             'Passwords do not match.'
         );
-        res.redirect(` / users / reset / $ { id }
-                                `);
+        res.redirect(`/users/reset/${ id }`);
     } else {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, (err, hash) => {
@@ -241,8 +244,7 @@ router.post('/reset/:id', async(req, res) => {
                                 'error_msg',
                                 'Error resetting password!'
                             );
-                            res.redirect(` / users / reset / $ { id }
-                                `);
+                            res.redirect(`/users/reset/${ id }`);
                         } else {
                             req.flash(
                                 'success_msg',
@@ -280,8 +282,7 @@ router.get('/forgot/:token', (req, res) => {
                         );
                         res.redirect('/users/login');
                     } else {
-                        res.redirect(` / users / reset / $ { _id }
-                                `)
+                        res.redirect(`/users/reset/${ _id }`)
                     }
                 })
             }

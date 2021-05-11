@@ -1,19 +1,22 @@
 <div id="user-auth-div" class="row mt-5 ml-5">
     <div class="col-md-12 m-auto">
-        <div class="bg-primary error-page text-center d-flex" style="display:flex; align-items:center; justify-content:center;">
+        <div class="bg-danger error-page text-center d-flex" style="display:flex; align-items:center; justify-content:center;">
             <div class="row flex-grow">
                 <div class="col-lg-7 mx-auto text-white">
                     <div class="row align-items-center d-flex flex-row">
                         <div class="col-lg-6 text-lg-right pr-lg-4">
-                            <h1 class="" style="font-size:60px;">404</h1>
+                            <h1 class="" style="font-size:60px;">500</h1>
                         </div>
                         <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
                             <h1>Sorry! :(</h1>
-                            <h4 class="font-weight-light">
-                                The page you’re looking for was not found.
-                            </h4>
+                            <h3 class="font-weight-light">
+                                Internal Server Error.
+                            </h3>
                         </div>
                     </div>
+                    <p>
+                        <%= error %>
+                    </p>
                     <div class="row mt-5">
                         <div class="col-12 text-center mt-xl-2">
                             <a class="text-info btn btn-sm btn-danger" href="" onclick="goBack()">Go Back</a>
