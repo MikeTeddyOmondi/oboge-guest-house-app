@@ -193,7 +193,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                 }
 
                 sendMail()
-                    .then((emailSent) => {
+                    .then((err, emailSent) => {
                         if (!emailSent) {
                             throw err
                         }
