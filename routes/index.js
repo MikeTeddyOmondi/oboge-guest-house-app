@@ -205,7 +205,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                         console.log(`Verification email has been sent to: ${emailSent.envelope.to}`)
                     })
                     .catch((error) => {
-                        console.log(error.message)
+                        console.log(error)
                         req.flash(
                             'error_msg',
                             `An error occurred while creating ${newUser.name}'s user account.`
