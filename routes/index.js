@@ -199,10 +199,15 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                             `${newUser.name} can now verify their email with the link sent to activate their user account.`
                         )
                         res.redirect('/users/add');
-                        console.log(`Mail sent: ${emailSent.response}`)
-                            //console.log('Verification email has been sent to', emailSent.envelope.to)
+                        console.log(`Verification email has been sent to: ${emailSent.envelope.to}`)
                     })
-                    .catch((error) => console.log(error.message))
+                    .catch((error) => {
+                        console.log(error.message)
+                        req.flash(
+                            'error_msg',
+                            `An error occurred while creating ${newUser.name}'s user account.`
+                        )
+                    })
             }
         });
     }
@@ -254,7 +259,13 @@ router.get('/activate/:token', (req, res) => {
                                         );
                                         res.redirect('/users/login');
                                     })
-                                    .catch(err => console.log(err));
+                                    .catch((err) => {
+                                        console.log(err.message)
+                                        req.flash(
+                                            'error_msg',
+                                            `An error occurred while verifying ${newUser.name}'s user account.`
+                                        )
+                                    });
                             });
                         });
                     }
