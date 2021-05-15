@@ -194,6 +194,9 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
 
                 sendMail()
                     .then((emailSent) => {
+                        if (!emailSent) {
+                            throw err
+                        }
                         req.flash(
                             'success_msg',
                             `${newUser.name} can now verify their email with the link sent to activate their user account.`
@@ -207,6 +210,7 @@ router.post('/users/add', ensureAuthenticated, (req, res) => {
                             'error_msg',
                             `An error occurred while creating ${newUser.name}'s user account.`
                         )
+                        res.redirect('/users/add');
                     })
             }
         });
