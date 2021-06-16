@@ -1,4 +1,4 @@
-FROM node:14.0.0
+FROM node:14.17
 
 LABEL maintainer="MikeTeddyOmondi | mike_omondi@outlook.com"
 
