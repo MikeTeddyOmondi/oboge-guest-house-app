@@ -1,14 +1,21 @@
 version: "3.6"
 services:
-    web:
-        image: hotel-app
-        build: .
-        command: "node server.js"
-        ports:
-            - "8080:3000"
-        depends_on:
-            - "mongo"
-    mongo:
-        image: "mongo"
-        ports:
-            - "27017:27017"
+  web-server:
+    build: .
+    container_name: web-server
+    ports:
+      - "3000:3000"
+    # depends_on: 
+    #   - mongo
+# mongo:
+#   image: mongo
+#   container_name: mongo
+#   environment:
+#     -  MONGO_INITDB_ROOT_USERNAME=dbadmin
+#     -  MONGO_INITDB_ROOT_PASSWORD=dbpassword
+#     -  MONGO_INITDB_DATABASE=hotel-app-db
+#   volumes:
+#     -  mongo-db:/data/db 
+#     - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+#volumes:
+# mongo-db:

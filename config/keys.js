@@ -1,11 +1,13 @@
-require('dotenv').config()
+const {
+    MONGO_IP,
+    MONGO_PORT,
+    MONGODB_URI
+} = require("../config/config")
 
-if (process.env.NODE_ENV == 'production') {
-    dbPassword = process.env.MONGODB_URI
-} else {
-    dbPassword = 'mongodb://localhost:27017/hotel-app-db';
-}
+// Database Connection | Remote network
+//const URI = `mongodb://${MONGO_ADMIN_USER}:${MONGO_ADMIN_PASSWORD}@${MONGO_IP}:${MONGO_PORT}`;
+const URI = `mongodb://${MONGO_IP}:${MONGO_PORT}/hotel-app-db`;
 
 module.exports = {
-    mongoURI: dbPassword
+    'mongoURI': MONGODB_URI
 };

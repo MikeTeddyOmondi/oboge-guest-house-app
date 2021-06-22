@@ -9,7 +9,7 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "dev": "nodemon server.js"
+        "dev": "nodemon -L server.js"
     },
     "keywords": [],
     "author": "",
@@ -33,6 +33,7 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.12.5",
         "morgan": "^1.10.0",
+        "multer": "^1.4.2",
         "multer-gridfs-storage": "^4.2.0",
         "neverbounce": "^4.4.1",
         "node-html-parser": "^2.0.2",

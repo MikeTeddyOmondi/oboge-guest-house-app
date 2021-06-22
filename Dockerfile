@@ -1,18 +1,25 @@
-FROM node:14.0.0
+FROM node:14-alpine
 
 LABEL maintainer="MikeTeddyOmondi | mike_omondi@outlook.com"
 
 WORKDIR /src
 
-COPY package.json /src
+COPY package.json . 
 
 RUN npm install
 
-COPY . /src
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ]; \
+        then npm install; \
+        else npm install --only=production; \
+        fi
+
+COPY . ./
 
 USER 1000
 
-EXPOSE 80
+ENV PORT 3000
 
-CMD [ "node" "server.js" ]
+EXPOSE $PORT
 
+CMD ["node", "server.js"]

@@ -47,7 +47,7 @@ module.exports = {
             });
         return roomFound._id
     },
-    saveBooking: (booking) => {
+    saveBooking: async(booking) => {
         // Logic here
     }
 }
