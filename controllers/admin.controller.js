@@ -144,8 +144,6 @@ exports.postAddUsersPanel = async(req, res) => {
                     "https://developers.google.com/oauthplayground" // Redirect URL
                 )
 
-
-
                 oAuth2Client.setCredentials({
                     refresh_token: process.env.REFRESH_TOKEN
                 })
@@ -211,7 +209,7 @@ exports.postAddUsersPanel = async(req, res) => {
                                 `${newUser.name} can now verify their email with the link sent to activate their user account.`
                             )
                             res.redirect('/admin/users/add');
-                            console.log(`Verification email has been sent to: ${emailSent}`)
+                            console.log(`Verification email has been sent to: ${email}`)
                         }
                     })
                     .catch((error) => {
@@ -227,30 +225,46 @@ exports.postAddUsersPanel = async(req, res) => {
     }
 };
 
-// Update Users Route | PUT
-exports.putUpdateUsersPanel = async(req, res, next) => {
-    req.user = User.findById(req.params.id)
-    User.find({}, (err, users) => {
-        users !== 0 ? JSON.stringify(users) : console.log(err)
-            // Edit user profile
-        let user = req.user
-        user.name = req.body.name
-        user.email = req.body.email
-        try {
-            updated_user = user.save()
-            res.redirect(`/admin/users`)
-        } catch (err) {
-            console.log(err)
-            res.render(`/users`, {
-                //user: user,
+// Update Users Route | GET
+exports.getUpdateUsersPanel = async(req, res) => {
+    const { id } = req.params
+    await User.findById(id, (err, userFound) => {
+        if (!err) {
+            res.render('admin/editUserProfile', {
+                userFound: userFound,
                 user: req.user,
-                users: users,
-                title: 'Users',
+                title: 'Edit Users',
                 layout: './layouts/adminLayout'
             })
         }
     })
 };
+
+// Update Users Route | PUT
+exports.putUpdateUsersPanel = async(eq, res) => {
+
+}
+
+// Delete Users Route | DELETE
+exports.deleteUsersPanel = async(req, res) => {
+    const { id } = req.params
+
+    await User.findByIdAndDelete(id)
+        .then(() => {
+            req.flash(
+                'success_msg',
+                `The user was deleted successfully...`)
+            res.redirect('/admin/users')
+        })
+        .catch((err) => {
+            console.log(err)
+            req.flash(
+                'error_msg',
+                `An error occurred while deleting this user...`)
+            res.redirect('/admin/users')
+        })
+};
+
 
 // Add Customers | GET
 exports.getAddCustomersPanel = (req, res) => {
@@ -264,7 +278,13 @@ exports.getAddCustomersPanel = (req, res) => {
 // Add Customers | POST
 exports.postAddCustomersPanel = (req, res) => {
     const { firstname, lastname, id_number, phone_number, email } = req.body
-    console.log(firstname, lastname, id_number, phone_number, email)
+    console.log({
+        firstname,
+        lastname,
+        id_number,
+        phone_number,
+        email
+    })
 
     let errors = [];
 
@@ -272,7 +292,7 @@ exports.postAddCustomersPanel = (req, res) => {
         errors.push({ msg: 'Please enter all fields' });
     }
 
-    if (firstname.length || lastname < 3) {
+    if (firstname.length || lastname.length < 3) {
         errors.push({ msg: 'Names must be at least 3 characters long' });
     }
 

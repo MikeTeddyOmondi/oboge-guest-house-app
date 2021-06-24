@@ -21,28 +21,30 @@ router
     .get(ensureAuthenticated, adminController.getUsersPanel);
 
 // Add Users Route | GET
-router
-    .route('/users/add')
-    .get(ensureAuthenticated, adminController.getAddUsersPanel);
-
 // Add Users Route | POST
 router
     .route('/users/add')
+    .get(ensureAuthenticated, adminController.getAddUsersPanel)
     .post(ensureAuthenticated, adminController.postAddUsersPanel);
 
+// Update Users Route | GET
 // Update Users Route | PUT
 router
-    .route('/users/:id')
+    .route('/users/edit/:id')
+    .get(ensureAuthenticated, adminController.getUpdateUsersPanel)
     .put(ensureAuthenticated, adminController.putUpdateUsersPanel)
 
-// Add Customers | GET
+// Delete User Route | GET
+// Delete User Route | DELETE
 router
-    .route('/add-customers')
-    .get(ensureAuthenticated, adminController.getAddCustomersPanel);
+    .route('/users/delete/:id')
+    .get(ensureAuthenticated, adminController.deleteUsersPanel)
 
+// Add Customers | GET
 // Add Customers | POST
 router
     .route('/add-customers')
+    .get(ensureAuthenticated, adminController.getAddCustomersPanel)
     .post(ensureAuthenticated, adminController.postAddCustomersPanel);
 
 // Room Booking | GET
