@@ -2,28 +2,28 @@
     <div class="col-md-12 m-auto">
         <div class="bg-danger error-page text-center d-flex" style="display:flex; align-items:center; justify-content:center;">
             <div class="row flex-grow">
-                <div class="col-lg-7 mx-auto text-white">
-                    <div class="row align-items-center d-flex flex-row">
-                        <div class="col-lg-6 text-lg-right pr-lg-4">
-                            <h1 class="" style="font-size:60px;">500</h1>
+                <div class="col-lg-12 mx-auto text-white">
+                    <div class="row align-items-center d-flex flex-column">
+                        <div class="col-lg-12 text-lg-right pr-lg-4">
+                            <h1 class="" style="font-size:72px;">500</h1>
                         </div>
-                        <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
+                        <div class="col-lg-12 error-page-divider text-lg-left pl-lg-4">
                             <h1>Sorry! :(</h1>
                             <h3 class="font-weight-light">
                                 Internal Server Error.
                             </h3>
                         </div>
                     </div>
-                    <p>
+                    <div class="well">
                         <%= error %>
-                    </p>
+                    </div>
                     <div class="row mt-5">
                         <div class="col-12 text-center mt-xl-2">
                             <a class="text-info btn btn-sm btn-danger" href="" onclick="goBack()">Go Back</a>
                         </div>
                     </div>
                     <div class="row mt-5">
-                        <div class="col-12 mt-xl-2">
+                        <div class="col-12 mt-2">
                             <p class="text-white font-weight-medium text-center">
                                 Copyright &copy;
                                 <%= new Date().getFullYear();%> All Rights Reserved. | Designed by Rancko Solutions LLC.

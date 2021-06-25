@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Add | Users</h1>
+                <h1 class="page-header">Edit | User Profile</h1>
             </div>
         </div>
         <div id="add-user-form" class="form row">
@@ -14,32 +14,21 @@
                                 <%- include ('../partials/messages') %>
                                     <form id="login-form" class="form" action="/admin/users/add" method="POST">
                                         <div class="form">
-                                            <h3 class="text-center text-info">Add User</h3>
-                                            <div class="form-group">
-                                                <label for="name" class="text-info">Username:</label>
+                                            <h3 class="text-center text-info">Edit User</h3>
+                                            <input type="hidden" name="_id" value="<%= typeof _id != 'undefined' ? userFound._id : '' %>">
+                                            <div class="form-group ">
+                                                <label for="name " class="text-info ">Username:</label>
                                                 <br />
-                                                <input autocomplete="off" type="text" name="name" id="name" class="form-control" value="<%= typeof name != 'undefined' ? name : '' %>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="email" class="text-info">Email:</label><br />
-                                                <input type="email" name="email" id="email" class="form-control" value="<%= typeof email != 'undefined' ? email : '' %>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="password" class="text-info">Password:</label><br />
-                                                <input type="password" name="password" id="password" class="form-control" value="<%= typeof password != 'undefined' ? password : '' %>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="confirm-password" class="text-info">Confirm password:</label><br />
-                                                <input type="password" name="confirm_password" id="confirm_password" class="form-control" value="<%= typeof confirm_password != 'undefined' ? confirm_password : '' %>" />
+                                                <input autocomplete="off " type="text " name="name " id="name " class="form-control " value="<%= userFound.name %>" />
                                             </div>
                                             <div class="form-group">
                                                 <label for="role" class="text-info">Role:</label><br />
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="radio1" name="role" value="admin" class="custom-control-input">
+                                                    <input type="radio" id="radio1" name="role" value="admin" class="custom-control-input" <%=userFound.isAdmin ? 'checked' : '' %>>
                                                     <label class="custom-control-label" for="adminRadio">Admin</label>
                                                 </div>
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="radio2" name="role" value="employee" class="custom-control-input">
+                                                    <input type="radio" id="radio2" name="role" value="employee" class="custom-control-input" <%=userFound.isAdmin ? '' : 'checked' %>>
                                                     <label class="custom-control-label" for="employeeRadio">Employee</label>
                                                 </div>
                                             </div>

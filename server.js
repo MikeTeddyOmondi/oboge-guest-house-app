@@ -11,34 +11,26 @@ const morgan = require('morgan')
 
 const app = express();
 
-// Passport Config
+// Env | Config
+const {
+    PORT,
+    SESSION_MAX_AGE,
+} = require('./config/config')
+
+// Passport | Config
 require('./config/passport')(passport);
 
-//static files
+// Static Files
 app.use(express.static(path.join(__dirname, 'assets')))
 app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')))
 
-// DB Config
-const db = require('./config/keys').mongoURI;
-
-// Connection to database
-mongoose
-    .connect(
-        db, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useFindAndModify: false,
-            useCreateIndex: true
-        }
-    )
-    .then(() => console.log('> Database connection initiated ...'))
-    .catch((err) => console.log(err.message));
+// DB | Config
+const db_URI = require('./config/keys').mongoURI;
 
 // EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
-//app.set("layout", path.join(__dirname, "/layouts"));
 
 // Cookie Parser
 app.use(cookieParser())
@@ -52,9 +44,18 @@ const MongoDBStore = require('connect-mongodb-session')(session)
 
 // Session Storage
 const sessionStore = new MongoDBStore({
-    uri: db,
+    uri: db_URI,
+    databaseName: "hotel-app-db",
     collection: 'sessions'
 })
+
+sessionStore.on('error', function(error) {
+    // Error catched and thrown to handler
+    console.log(`_________________________________________`);
+    console.log(`Session error:`);
+    console.log(`_________________________________________`);
+    console.log(`> ${error.message}`);
+});
 
 // Express session
 app.use(
@@ -64,10 +65,13 @@ app.use(
         resave: false,
         store: sessionStore,
         cookie: {
+            name: 'cookieStore',
+            secure: false,
             httpOnly: true,
-            maxAge: parseInt(process.env.SESSION_MAX_AGE)
+            maxAge: parseInt(SESSION_MAX_AGE)
         }
-    }));
+    })
+);
 
 // Passport middleware
 app.use(passport.initialize());
@@ -89,6 +93,7 @@ app.use(morgan('dev'))
 
 // Routes
 app.use('/', require('./routes/index.js'));
+app.use('/admin', require('./routes/admin-panel.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/user-panel', require('./routes/user-panel.js'));
 
@@ -101,17 +106,76 @@ app.use(async(req, res, next) => {
 
 app.use((error, req, res, next) => {
     if (error.status == 404) {
-        res.status(404).render('404', { title: '404 - Page Not Found', layout: './layouts/userLayout' })
+        res.status(404).render('404', {
+            title: '404 - Page Not Found',
+            layout: './layouts/userLayout'
+        })
     } else if (error.status == 401) {
-        res.status(404).render('401', { title: '401 - Unauthorized Access', layout: './layouts/userLayout' })
+        res.status(404).render('401', {
+            title: '401 - Unauthorized Access',
+            layout: './layouts/userLayout'
+        })
     } else if (error.status == 403) {
-        res.status(404).render('403', { title: '403 - Forbidden', layout: './layouts/userLayout' })
+        res.status(404).render('403', {
+            title: '403 - Forbidden',
+            layout: './layouts/userLayout'
+        })
     } else {
-        res.status(404).render('500', { title: '500 - Internal Server Error', error: error, layout: './layouts/userLayout' })
+        res.status(500).render('500', {
+            title: '500 - Internal Server Error',
+            error: error,
+            layout: './layouts/userLayout'
+        })
     }
     next()
 })
 
-const PORT = process.env.PORT || 8080;
+process.on('unhandledRejection', (error, promise) => {
+    console.log(`Unhandled promise rejection: ${ promise }`)
+    console.log(`Unhandled promise error: ${ error.stack || error.message }`)
+        // Recommended: send the information to sentry.io
+        // or whatever crash reporting service you use
+})
 
-app.listen(PORT, console.log(`> Application server initiated on port: ${PORT}`));
+process.on('uncaughtException', (error) => {
+    console.log(`Uncaught exception occurred: `)
+    console.log(`_____________________________ `)
+    console.log(`> ${ error }`)
+        // Recommended: send the information to sentry.io or whatever crash reporting service you use
+    process.exit(1); // exit application 
+})
+
+// Connection to database
+const connectWithRetry = () => {
+    mongoose
+        .connect(db_URI, {
+            useCreateIndex: true,
+            useNewUrlParser: true,
+            useFindAndModify: false,
+            useUnifiedTopology: true
+        })
+        .then(() => {
+            startServer()
+            console.log(`_________________________________________`)
+            console.log(`> Database connection initiated...`)
+            console.log(`> Database connection successfull!!!`)
+            console.log(`_________________________________________`)
+        })
+        .catch((err) => {
+            console.log(`> Error connecting to the database: ${err.message}`)
+            setTimeout(connectWithRetry, 5000)
+        })
+}
+
+// Ping | Database Connection
+connectWithRetry()
+
+// Start the server
+const startServer = async() => {
+    app.listen(PORT, () => {
+        console.log(`_________________________________________ `)
+        console.log(`> Backend services server initiated...`)
+        console.log(`> Backend services served on port: ${ PORT }`)
+        console.log(`_________________________________________ `)
+    });
+}
