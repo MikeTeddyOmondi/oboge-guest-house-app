@@ -1,0 +1,19 @@
+version: "3.6"
+services:
+   web-server:
+      build:
+         context: .
+         args:
+            NODE_ENV: development
+      volumes:
+         - ./:/src:ro
+         - /src/node_modules
+      environment:
+         - NODE_ENV=development
+         - MONGO_ADMIN_USER=dbadmin
+         - MONGO_ADMIN_PASSWORD=dbadminpassword
+         - MONGO_USER=dbuser
+         - MONGO_PASSWORD=dbuserpassword
+      env_file:
+         - ./.env
+      command: npm run dev
