@@ -1,15 +1,25 @@
-FROM node:12.0.0
+FROM node:14.17-alpine
 
-LABEL maintainer="mike_omondi@outlook.com"
+LABEL maintainer="MikeTeddyOmondi | mike_omondi@outlook.com"
 
-WORKDIR /hotel_app
+WORKDIR /src
 
-COPY package.json /hotel_app
+COPY package.json . 
 
 RUN npm install
 
-COPY . /hotel_app
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ]; \
+        then npm install; \
+        else npm install --only=production; \
+        fi
 
-CMD [ "node" "server.js" ]
+COPY . ./
 
-EXPOSE 80
+USER 1000
+
+ENV PORT 3000
+
+EXPOSE $PORT
+
+CMD ["node", "server.js"]

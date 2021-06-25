@@ -1,0 +1,55 @@
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add | Customers</h1>
+            </div>
+        </div>
+        <div id="add-user-form" class="form row">
+            <div id="add-user" autocomplete="off">
+                <div class="container-fluid">
+                    <div id="add-user-row" class="row justify-content-center align-items-center">
+                        <div id="add-user-column" class="">
+                            <div id="login-box" class="">
+                                <%- include ('../partials/messages') %>
+                                    <form id="login-form" class="form" action="/customers" method="POST">
+                                        <div class="form">
+                                            <h3 class="text-center text-info">Add Customer</h3>
+                                            <div class="form-group">
+                                                <label for="firstname" class="text-info">Firstname:</label>
+                                                <br />
+                                                <input type="text" name="firstname" id="firstname" class="form-control" value="<%= typeof firstname != 'undefined' ? firstname : '' %>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lastname" class="text-info">Lastname:</label>
+                                                <br />
+                                                <input type="text" name="lastname" id="lastname" class="form-control" value="<%= typeof lastname != 'undefined' ? lastname : '' %>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="id_number" class="text-info">ID Number:</label>
+                                                <br />
+                                                <input type="number" name="id_number" id="id_number" class="form-control" value="<%= typeof id_number != 'undefined' ? id_number : '' %>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone_number" class="text-info">Phone Number:</label>
+                                                <br />
+                                                <input type="phone_number" name="phone_number" id="phone_number" class="form-control" value="<%= typeof phone_number != 'undefined' ? phone_number : '' %>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email" class="text-info">Email:</label><br />
+                                                <input type="email" name="email" id="email" class="form-control" value="<%= typeof email != 'undefined' ? email : '' %>" />
+                                            </div>
+                                            <div class="form-group" style="display: flex; justify-content: center; padding: 10px;">
+                                                <input type="button" name="cancel" class="btn btn-secondary btn-md m-2" value="Cancel" />
+                                                <input type="submit" name="submit" class="btn btn-primary btn-md m-2" value="Save" />
+                                            </div>
+                                        </div>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

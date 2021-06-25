@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Add | Users</h1>
+                <h1 class="page-header">Add | Room Information</h1>
             </div>
         </div>
         <div id="add-user-form" class="form row">
@@ -12,35 +12,35 @@
                         <div id="add-user-column" class="">
                             <div id="login-box" class="">
                                 <%- include ('../partials/messages') %>
-                                    <form id="login-form" class="form" action="/admin/users/add" method="POST">
+                                    <form id="login-form" class="form" action="/room-info" method="POST">
                                         <div class="form">
-                                            <h3 class="text-center text-info">Add User</h3>
+                                            <h3 class="text-center text-info">Add Room Information</h3>
                                             <div class="form-group">
-                                                <label for="name" class="text-info">Username:</label>
+                                                <label for="roomType" class="text-info">Room Type:</label>
                                                 <br />
-                                                <input autocomplete="off" type="text" name="name" id="name" class="form-control" value="<%= typeof name != 'undefined' ? name : '' %>" />
+                                                <input autocomplete="off" type="text" name="roomType" id="roomType" class="form-control" value="<%= typeof roomType != 'undefined' ? roomType : '' %>" />
                                             </div>
                                             <div class="form-group">
-                                                <label for="email" class="text-info">Email:</label><br />
-                                                <input type="email" name="email" id="email" class="form-control" value="<%= typeof email != 'undefined' ? email : '' %>" />
+                                                <label for="roomCapacity" class="text-info">Room Capacity:</label><br />
+                                                <input type="number" name="roomCapacity" id="roomCapacity" class="form-control" value="<%= typeof roomCapacity != 'undefined' ? roomCapacity : '' %>" />
                                             </div>
                                             <div class="form-group">
-                                                <label for="password" class="text-info">Password:</label><br />
-                                                <input type="password" name="password" id="password" class="form-control" value="<%= typeof password != 'undefined' ? password : '' %>" />
+                                                <label for="roomNumber" class="text-info">Room Number:</label><br />
+                                                <input type="text" name="roomNumber" id="roomNumber" class="form-control" value="<%= typeof roomNumber != 'undefined' ? roomNumber : '' %>" />
                                             </div>
                                             <div class="form-group">
-                                                <label for="confirm-password" class="text-info">Confirm password:</label><br />
-                                                <input type="password" name="confirm_password" id="confirm_password" class="form-control" value="<%= typeof confirm_password != 'undefined' ? confirm_password : '' %>" />
+                                                <label for="roomRate" class="text-info">Room Rate:</label><br />
+                                                <input type="number" name="roomRate" id="roomRate" class="form-control" value="<%= typeof roomRate != 'undefined' ? roomRate : '' %>" />
                                             </div>
                                             <div class="form-group">
-                                                <label for="role" class="text-info">Role:</label><br />
+                                                <label for="role" class="text-info">Room booked:</label><br />
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="radio1" name="role" value="admin" class="custom-control-input">
-                                                    <label class="custom-control-label" for="adminRadio">Admin</label>
+                                                    <input type="radio" id="isBooked" name="booked" value="true" class="custom-control-input">
+                                                    <label class="custom-control-label" for="bookedRadioBtn">Booked</label>
                                                 </div>
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="radio2" name="role" value="employee" class="custom-control-input">
-                                                    <label class="custom-control-label" for="employeeRadio">Employee</label>
+                                                    <input type="radio" id="notBooked" name="booked" value="false" class="custom-control-input">
+                                                    <label class="custom-control-label" for="notBookedRadioBtn">Not booked</label>
                                                 </div>
                                             </div>
                                             <div class="form-group" style="display: flex; justify-content: center; padding: 10px;">

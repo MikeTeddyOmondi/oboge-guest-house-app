@@ -2,7 +2,7 @@
     <div class="col-md-6 m-auto">
         <div class="card card-body text-center">
             <h1 class="mb-3"><i class="fa fa-cogs"></i>Reset Password</h1>
-            <%- include ./partials/messages %>
+            <%- include ('./partials/messages') %>
                 <form action="/users/reset/<%= id %>" method="POST">
                     <div class="form-group">
                         <label for="password">Password</label>

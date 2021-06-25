@@ -1,82 +1,43 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticated } = require('../middleware/auth');
+
+// Controllers | User Panel
+const panelController = require('../controllers/user_panel.controller')
 
 // User Panel | Dashboard Page
-router.get('/', ensureAuthenticated, (req, res) => res.render('panel/panel', {
-    user: req.user,
-    title: 'User Panel',
-    layout: './layouts/panelLayout'
-}));
+router
+    .route('/')
+    .get(ensureAuthenticated, panelController.getUserPanel);
 
 // User Panel - GET | Bookings Page
-router.get('/bookings', ensureAuthenticated, (req, res) => {
-    res.render('panel/bookings', {
-        user: req.user,
-        title: 'Bookings',
-        layout: './layouts/panelLayout'
-    })
-});
+router
+    .route('/bookings')
+    .get(ensureAuthenticated, panelController.getBoookingPanel);
 
 // User Panel - POST | Bookings Page
-router.post('/bookings', ensureAuthenticated, (req, res) => {
-    const {
-        firstname,
-        lastname,
-        idNumber,
-        phoneNumber,
-        email_ID,
-        numberAdults,
-        numberKids,
-        room_type_select,
-        room_number_select,
-        check_out_date
-    } = req.body
-    console.log(
-        firstname,
-        lastname,
-        idNumber,
-        phoneNumber,
-        email_ID,
-        numberAdults,
-        numberKids,
-        room_type_select,
-        room_number_select,
-        check_out_date
-    );
-    res.render('panel/bookings', {
-        user: req.user,
-        title: 'Bookings',
-        layout: './layouts/panelLayout'
-    })
-});
+router
+    .route('/bookings')
+    .post(ensureAuthenticated, panelController.postBookingPanel);
 
 // User Panel | Bar Page
-router.get('/bar', ensureAuthenticated, (req, res) => res.render('panel/bar', {
-    user: req.user,
-    title: 'Bar',
-    layout: './laouts/panelLayout'
-}));
+router
+    .route('/bar')
+    .get(ensureAuthenticated, panelController.getBarPanel);
 
 // User Panel | Restaurant Page
-router.get('/restaurant', ensureAuthenticated, (req, res) => res.render('panel/restaurant', {
-    user: req.user,
-    title: 'Restaurant',
-    layout: './layouts/pnelLayout'
-}));
+router
+    .route('/restaurant')
+    .get(ensureAuthenticated, panelController.getRestaurantPanel);
 
 // User Panel | Facility Page
-router.get('/facilities', ensureAuthenticated, (req, res) => res.render('panel/facilities', {
-    user: req.user,
-    title: 'Facilities',
-    layout: './layouts/pnelLayout'
-}));
+router
+    .route('/facilities')
+    .get(ensureAuthenticated, panelController.getFacilitiesPanel);
 
 // Logout
-router.get('/logout', (req, res) => {
-    req.logout();
-    req.flash('success_msg', 'You are logged out');
-    res.redirect('/users/login');
-});
+router
+    .route('/logout')
+    .get(panelController.logout);
 
 module.exports = router;

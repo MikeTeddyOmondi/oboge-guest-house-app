@@ -1,26 +1,26 @@
 const mongoose = require('mongoose');
 
-const CustomerSchema = new mongoose.Schema({
-    firstname: {
+const RoomSchema = new mongoose.Schema({
+    roomType: {
         type: String,
         required: true
     },
-    lastname: {
-        type: String,
+    roomCapacity: {
+        type: Number,
         required: true
     },
-    id_number: {
+    roomNumber: {
         type: String,
         required: true,
         unique: true
     },
-    email: {
-        type: String,
-        required: true
-    },
-    phone_number: {
+    roomRate: {
         type: Number,
         required: true
+    },
+    isBooked: {
+        type: Boolean,
+        default: false
     },
     createdDate: {
         type: Date,
@@ -28,10 +28,10 @@ const CustomerSchema = new mongoose.Schema({
     },
     updatedDate: {
         type: Date,
-        defualt: ''
+        default: ''
     }
 });
 
-const Customer = mongoose.model('Customer', CustomerSchema);
+const Room = mongoose.model('Room', RoomSchema);
 
-module.exports = Customer;
+module.exports = Room;

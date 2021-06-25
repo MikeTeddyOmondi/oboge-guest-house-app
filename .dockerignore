@@ -1,0 +1,8 @@
+node_modules
+Dockerfile
+docker-compose*
+.env
+.git
+.cache
+*.md
+**/*.class
