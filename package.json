@@ -21,7 +21,7 @@
         "connect-mongo": "^4.4.1",
         "connect-mongodb-session": "^2.4.1",
         "cookie-parser": "^1.4.5",
-        "dotenv": "^8.2.0",
+        "dotenv": "^8.6.0",
         "ejs": "^3.1.6",
         "email-verifier": "^0.4.1",
         "express": "^4.16.4",
