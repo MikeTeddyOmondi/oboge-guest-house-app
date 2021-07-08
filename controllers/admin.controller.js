@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 
 // Load User model
 const User = require('../models/User');
+const Customer = require('../models/Customer');
 
 // Administration | GET
 exports.getAdminPanel = (req, res) => {
@@ -292,8 +293,11 @@ exports.postAddCustomersPanel = (req, res) => {
         errors.push({ msg: 'Please enter all fields' });
     }
 
-    if (firstname.length || lastname.length < 3) {
-        errors.push({ msg: 'Names must be at least 3 characters long' });
+    if (firstname.length < 3) {
+        errors.push({ msg: 'Firstname must be at least 3 characters long!' });
+    }
+    if (lastname.length < 3) {
+        errors.push({ msg: 'Lastname must be at least 3 characters long!' });
     }
 
     if (errors.length > 0) {
@@ -309,13 +313,38 @@ exports.postAddCustomersPanel = (req, res) => {
             layout: './layouts/adminLayout'
         })
     } else {
-        res.render('admin/addCustomer', {
-            user: req.user,
-            title: 'Add Customer',
-            layout: './layouts/adminLayout.ejs'
+        // Check if the customer's ID exists in the database
+        Customer.findOne({ id_number: id_number }).then(idNumber => {
+            if (idNumber) {
+                errors.push({
+                    msg: `A customer with that ID Number already exists!`
+                });
+                res.render('admin/addCustomer', {
+                    errors,
+                    firstname,
+                    lastname,
+                    id_number,
+                    phone_number,
+                    email,
+                    user: req.user,
+                    title: 'Add Customer',
+                    layout: './layouts/adminLayout'
+                });
+            } else {
+                res.render('admin/addCustomer', {
+                    firstname,
+                    lastname,
+                    id_number,
+                    phone_number,
+                    email,
+                    user: req.user,
+                    title: 'Add Customer',
+                    layout: './layouts/adminLayout'
+                });
+            }
         })
     }
-};
+}
 
 // Room Booking | GET
 exports.getAddRoomBookingsPanel = (req, res) => {

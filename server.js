@@ -45,7 +45,7 @@ const MongoDBStore = require('connect-mongodb-session')(session)
 // Session Storage
 const sessionStore = new MongoDBStore({
     uri: db_URI,
-    databaseName: "hotel-app-db",
+    databaseName: "guest-house-db",
     collection: 'sessions'
 })
 

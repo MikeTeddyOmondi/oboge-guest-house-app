@@ -21,4 +21,5 @@ module.exports = {
     JWT_RESET_KEY: process.env.JWT_RESET_KEY,
     JWT_ACTIVATION_KEY: process.env.JWT_ACTIVATION_KEY,
     SENDER_EMAIL: process.env.SENDER_EMAIL,
+    ACCESS_KEY_EMAIL_VERIFIER_API: process.env.ACCESS_KEY_EMAIL_VERIFIER_API,
 };
