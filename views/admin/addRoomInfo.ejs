@@ -1,59 +1,191 @@
 <div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">Add | Room Information</h1>
-            </div>
-        </div>
-        <div id="add-user-form" class="form row">
-            <div id="add-user" autocomplete="off">
-                <div class="container-fluid">
-                    <div id="add-user-row" class="row justify-content-center align-items-center">
-                        <div id="add-user-column" class="">
-                            <div id="login-box" class="">
-                                <%- include ('../partials/messages') %>
-                                    <form id="login-form" class="form" action="/room-info" method="POST">
-                                        <div class="form">
-                                            <h3 class="text-center text-info">Add Room Information</h3>
-                                            <div class="form-group">
-                                                <label for="roomType" class="text-info">Room Type:</label>
-                                                <br />
-                                                <input autocomplete="off" type="text" name="roomType" id="roomType" class="form-control" value="<%= typeof roomType != 'undefined' ? roomType : '' %>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="roomCapacity" class="text-info">Room Capacity:</label><br />
-                                                <input type="number" name="roomCapacity" id="roomCapacity" class="form-control" value="<%= typeof roomCapacity != 'undefined' ? roomCapacity : '' %>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="roomNumber" class="text-info">Room Number:</label><br />
-                                                <input type="text" name="roomNumber" id="roomNumber" class="form-control" value="<%= typeof roomNumber != 'undefined' ? roomNumber : '' %>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="roomRate" class="text-info">Room Rate:</label><br />
-                                                <input type="number" name="roomRate" id="roomRate" class="form-control" value="<%= typeof roomRate != 'undefined' ? roomRate : '' %>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="role" class="text-info">Room booked:</label><br />
-                                                <div class="custom-control custom-radio">
-                                                    <input type="radio" id="isBooked" name="booked" value="true" class="custom-control-input">
-                                                    <label class="custom-control-label" for="bookedRadioBtn">Booked</label>
-                                                </div>
-                                                <div class="custom-control custom-radio">
-                                                    <input type="radio" id="notBooked" name="booked" value="false" class="custom-control-input">
-                                                    <label class="custom-control-label" for="notBookedRadioBtn">Not booked</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group" style="display: flex; justify-content: center; padding: 10px;">
-                                                <input type="button" name="cancel" class="btn btn-secondary btn-md m-2" value="Cancel" />
-                                                <input type="submit" name="submit" class="btn btn-primary btn-md m-2" value="Save" />
-                                            </div>
-                                        </div>
-                                    </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Add | Room Information</h1>
+			</div>
+		</div>
+		<div id="add-user-form" class="form row">
+			<div id="add-user" autocomplete="off">
+				<div class="container-fluid">
+					<div
+						id="add-user-row"
+						class="row justify-content-center align-items-center"
+					>
+						<div id="add-user-column" class="">
+							<div id="login-box" class="">
+								<%- include ('../partials/messages') %>
+								<form
+									id="login-form"
+									class="form"
+									action="/admin/add-room-info"
+									method="POST"
+								>
+									<div class="form">
+										<h3 class="text-center text-info">Add Room Information</h3>
+										<div class="form-group">
+											<label for="roomType" class="text-info">Room Type:</label>
+											<br />
+											<input
+												autocomplete="off"
+												type="text"
+												name="roomType"
+												list="roomtypes"
+												id="roomType"
+												class="form-control"
+												value="<%= typeof roomType != 'undefined' ? roomType : '' %>"
+											/>
+											<datalist id="roomtypes">
+												<option value="Basic"></option>
+												<option value="Economy"></option>
+												<option value="Standard"></option>
+												<option value="Executive"></option>
+											</datalist>
+										</div>
+										<div class="form-group">
+											<label for="roomCapacity" class="text-info"
+												>Room Capacity:</label
+											><br />
+											<input
+												type="number"
+												name="roomCapacity"
+												id="roomCapacity"
+												class="form-control"
+												value="<%= typeof roomCapacity != 'undefined' ? roomCapacity : '' %>"
+											/>
+										</div>
+										<div class="form-group">
+											<label for="roomNumber" class="text-info"
+												>Room Number:</label
+											><br />
+											<input
+												type="text"
+												name="roomNumber"
+												list="roomnumber"
+												id="roomNumber"
+												class="form-control"
+												value="<%= typeof roomNumber != 'undefined' ? roomNumber : '' %>"
+											/>
+											<datalist id="roomnumber">
+												<option value="G001"></option>
+												<option value="G002"></option>
+												<option value="G003"></option>
+												<option value="G004"></option>
+												<option value="G005"></option>
+												<option value="G006"></option>
+												<option value="G007"></option>
+												<option value="G008"></option>
+												<option value="G009"></option>
+												<option value="G010"></option>
+												<option value="F101"></option>
+												<option value="F102"></option>
+												<option value="F103"></option>
+												<option value="F104"></option>
+												<option value="F105"></option>
+												<option value="F106"></option>
+												<option value="F107"></option>
+												<option value="F108"></option>
+												<option value="F109"></option>
+												<option value="F110"></option>
+												<option value="F111"></option>
+												<option value="F112"></option>
+												<option value="T301"></option>
+												<option value="T302"></option>
+												<option value="T303"></option>
+												<option value="T304"></option>
+												<option value="T305"></option>
+												<option value="T306"></option>
+												<option value="T307"></option>
+												<option value="T308"></option>
+												<option value="T309"></option>
+												<option value="T310"></option>
+												<option value="T311"></option>
+												<option value="T312"></option>
+												<option value="T313"></option>
+												<option value="F401"></option>
+												<option value="F402"></option>
+												<option value="F403"></option>
+												<option value="F404"></option>
+												<option value="F405"></option>
+												<option value="F406"></option>
+												<option value="F407"></option>
+												<option value="F408"></option>
+												<option value="F409"></option>
+												<option value="F410"></option>
+												<option value="F411"></option>
+												<option value="F412 "></option>
+												<option value="F413 "></option>
+											</datalist>
+										</div>
+										<div class="form-group">
+											<label for="roomRate" class="text-info">Room Rate:</label
+											><br />
+											<input
+												type="number"
+												name="roomRate"
+												id="roomRate"
+												class="form-control"
+												value="<%= typeof roomRate != 'undefined' ? roomRate : '' %>"
+											/>
+										</div>
+										<div class="form-group">
+											<label for="role" class="text-info">Room booked:</label
+											><br />
+											<div class="custom-control custom-radio">
+												<input
+													type="radio"
+													id="isBooked"
+													name="booked"
+													value="true"
+													class="custom-control-input"
+												/>
+												<label class="custom-control-label" for="bookedRadioBtn"
+													>Booked</label
+												>
+											</div>
+											<div class="custom-control custom-radio">
+												<input
+													type="radio"
+													id="notBooked"
+													name="booked"
+													value="false"
+													class="custom-control-input"
+												/>
+												<label
+													class="custom-control-label"
+													for="notBookedRadioBtn"
+													>Not booked</label
+												>
+											</div>
+										</div>
+										<div
+											class="form-group"
+											style="
+												display: flex;
+												justify-content: center;
+												padding: 10px;
+											"
+										>
+											<input
+												type="button"
+												name="cancel"
+												class="btn btn-secondary btn-md m-2"
+												value="Cancel"
+											/>
+											<input
+												type="submit"
+												name="submit"
+												class="btn btn-primary btn-md m-2"
+												value="Save"
+											/>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

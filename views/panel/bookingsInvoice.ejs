@@ -1,140 +1,127 @@
 <div id="main-row" class="row">
-    <div class="mt-2">
-        <a href="/user-panel/bookings" class="btn btn-secondary rounded">&#x21d0;</a>
-        <div class="print" style="float: right;">
-            <a href="#" class="btn btn-secondary rounded" onClick="printInvoice('print_section')">
-                <i class="fas fa-print"></i> Print Invoice
-            </a>
-        </div>
-    </div>
-    <div id="print_section" class="print-section">
-        <h1 style="text-align:center;">Booking Invoice | Accomodation Fee</h1>
-        <hr>
-        <div class="receipt-content mt-1">
-            <div class="container bootstrap snippets bootdey">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="invoice-wrapper">
-                            <div class="intro">
-                                Hi <strong><%= customerDetails.firstname %></strong>,
-                                <br> This is the invoice for a payment of <strong><% %></strong> (KShs.) for your accomodation fee
-                            </div>
+	<div class="mt-2">
+		<a href="/user-panel/bookings" class="btn btn-secondary rounded"
+			>&#x21d0;</a
+		>
+		<div class="print" style="float: right">
+			<a
+				href="#"
+				class="btn btn-secondary rounded"
+				onClick="printInvoice('print_section')"
+			>
+				<i class="fas fa-print"></i> Print Invoice
+			</a>
+		</div>
+	</div>
+	<div id="print_section" class="print-section">
+		<h1 style="text-align: center">Booking Invoice | Accomodation Fee</h1>
+		<hr />
+		<div class="receipt-content mt-1">
+			<div class="container bootstrap snippets bootdey">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="invoice-wrapper">
+							<div class="intro">
+								Hi <strong><%= customerDetails.firstname %></strong>, <br />
+								This is the invoice for the payment of your accomodation fee.
+							</div>
 
-                            <div class="payment-info">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <span>Payment No.</span>
-                                        <strong><% %></strong>
-                                    </div>
-                                    <div class="col-sm-6 text-right">
-                                        <span>Payment Date</span>
-                                        <strong><%= bookingDetails.check_out_date %></strong>
-                                    </div>
-                                </div>
-                            </div>
+							<div class="payment-info">
+								<div class="row">
+									<div class="col-sm-6">
+										<span>Payment No.</span>
+										<strong><% %></strong>
+									</div>
+									<div class="col-sm-6 text-right">
+										<span>Payment Date</span>
+										<strong><%= bookingDetails.check_out_date %></strong>
+									</div>
+								</div>
+							</div>
 
-                            <div class="payment-details">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <span>Client</span>
-                                        <strong>
-									<%= customerDetails.firstname %> <%= customerDetails.lastname %>
-								</strong>
-                                        <p>
-                                            989 <br> Awasi <br>
-                                            <%= customerDetails.phoneNumber %> <br> Kenya <br>
-                                                <a href="#">
-                                                    <%= customerDetails.emailID %>
-                                                </a>
-                                        </p>
-                                    </div>
-                                    <div class="col-sm-6 text-right">
-                                        <span>Payment To</span>
-                                        <strong>
-									Oboge Guest House
-								</strong>
-                                        <p>
-                                            6592 G.P.O <br> Kisumu <br> 00100 <br> Kenya <br>
-                                            <a href="#">
-										noreply.obogeguesthouse@gmail.com
-									</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+							<div class="payment-details">
+								<div class="row">
+									<div class="col-sm-6">
+										<span>Client</span>
+										<strong>
+											<%= customerDetails.firstname %> <%=
+											customerDetails.lastname %>
+										</strong>
+										<p>
+											989 <br />
+											Awasi <br />
+											<%= customerDetails.phoneNumber %> <br />
+											Kenya <br />
+											<a href="#"> <%= customerDetails.emailID %> </a>
+										</p>
+									</div>
+									<div class="col-sm-6 text-right">
+										<span>Payment To</span>
+										<strong> Oboge Guest House </strong>
+										<p>
+											6592 G.P.O <br />
+											Kisumu <br />
+											00100 <br />
+											Kenya <br />
+											<a href="#"> noreply.obogeguesthouse@gmail.com </a>
+										</p>
+									</div>
+								</div>
+							</div>
 
-                            <div class="line-items">
-                                <div class="headers clearfix">
-                                    <div class="row">
-                                        <div class="col-xs-4">Particulars</div>
-                                        <div class="col-xs-3">Description</div>
-                                        <div class="col-xs-5 text-right">Amount</div>
-                                    </div>
-                                </div>
-                                <div class="items">
-                                    <div class="row item">
-                                        <div class="col-xs-4 desc">
-                                            Room Type
-                                        </div>
-                                        <div class="col-xs-3 qty">
-                                            <%= bookingDetails.room_type_select %>
-                                        </div>
-                                        <div class="col-xs-5 amount text-right">
-                                            KShs. 1200.00
-                                        </div>
-                                    </div>
-                                    <div class="row item">
-                                        <div class="col-xs-4 desc">
-                                            Number of Occupants
-                                        </div>
-                                        <div class="col-xs-3 qty">
-                                            <%= (parseInt(bookingDetails.numberAdults) + parseInt(bookingDetails.numberKids)) %>
-                                        </div>
-                                        <div class="col-xs-5 amount text-right">
-                                            KShs.
-                                            <%= 1200.00 * (parseInt(bookingDetails.numberAdults) + parseInt(bookingDetails.numberKids)) %>
-                                        </div>
-                                    </div>
-                                    <div class="row item">
-                                        <div class="col-xs-4 desc">
-                                            Other Services
-                                        </div>
-                                        <div class="col-xs-3 qty">
-                                            Laundry
-                                        </div>
-                                        <div class="col-xs-5 amount text-right">
-                                            KShs. 208.00
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="total text-right">
-                                    <p class="extra-notes">
-                                        <strong>Extra Notes</strong> Please note the bill is subject to Value Added Tax. Thanks.
-                                    </p>
-                                    <div class="field">
-                                        Subtotal <span>KShs. 1200.00</span>
-                                    </div>
-                                    <div class="field">
-                                        V.A.T <span>KShs. 130.00</span>
-                                    </div>
-                                    <div class="field">
-                                        Discount <span>3.6%</span>
-                                    </div>
-                                    <div class="field grand-total">
-                                        Total <span>KSh. 2000.00</span>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <div class="footer">
-                            Copyright ©
-                            <%= new Date().getFullYear();%> | Oboge Guest House
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+							<div class="line-items">
+								<div class="headers clearfix">
+									<div class="row">
+										<div class="col-xs-4">Particulars</div>
+										<div class="col-xs-3">Description</div>
+										<div class="col-xs-5 text-right">Amount</div>
+									</div>
+								</div>
+								<div class="items">
+									<div class="row item">
+										<div class="col-xs-4 desc">Room Type</div>
+										<div class="col-xs-3 qty">
+											<%= bookingDetails.room_type_select %>
+										</div>
+										<div class="col-xs-5 amount text-right">KShs. 1200.00</div>
+									</div>
+									<div class="row item">
+										<div class="col-xs-4 desc">Number of Occupants</div>
+										<div class="col-xs-3 qty">
+											<%= (parseInt(bookingDetails.numberAdults) +
+											parseInt(bookingDetails.numberKids)) %>
+										</div>
+										<div class="col-xs-5 amount text-right">
+											KShs. <%= 1200.00 * (parseInt(bookingDetails.numberAdults)
+											+ parseInt(bookingDetails.numberKids)) %>
+										</div>
+									</div>
+									<div class="row item">
+										<div class="col-xs-4 desc">Other Services</div>
+										<div class="col-xs-3 qty">Laundry</div>
+										<div class="col-xs-5 amount text-right">KShs. 208.00</div>
+									</div>
+								</div>
+								<div class="total text-right">
+									<p class="extra-notes">
+										<strong>Extra Notes</strong> Please note the bill is subject
+										to Value Added Tax. Thanks.
+									</p>
+									<div class="field">Subtotal <span>KShs. 1200.00</span></div>
+									<div class="field">V.A.T <span>KShs. 130.00</span></div>
+									<div class="field">Discount <span>3.6%</span></div>
+									<div class="field grand-total">
+										Total <span>KSh. 2000.00</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="footer">
+							Copyright © <%= new Date().getFullYear();%> | Oboge Guest House
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
