@@ -28,32 +28,63 @@ module.exports = {
 		return newCustomer._id;
 	},
 	searchCustomer: async (customerID) => {
-		// Logic here
-		let id;
+		// Searching for customer given the ID number
+		let customer;
 
 		await Customer.findOne({ id_number: String(customerID) })
 			.then((customerFound) => {
-				id = customerFound._id;
+				console.log(`> CustomerFound: ${customerFound._id}`);
+				customer = customerFound;
 			})
 			.catch((err) => {
 				console.log(`> [Config] error - ${err}`);
 			});
-		return id;
+		return customer;
 	},
-	findRoom: async (room) => {
+	findCustomer: async (objectID) => {
+		// Searching for customer given the unique Object ID
+		let customer;
+
+		await Customer.findOne({ _id: objectID })
+			.then((customerFound) => {
+				console.log(`> Customer Found: ${customerFound._id}`);
+				customer = customerFound;
+			})
+			.catch((err) => {
+				console.log(`> [Config] error - ${err.message}`);
+			});
+
+		return customer;
+	},
+	findRoom: async (roomNumber) => {
 		// Logic here
-		let roomIDFound;
-		await Room.findOne({ roomNumber: room.roomNumber }, function (err, docs) {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log("RoomFound: ", docs._id);
-			}
-			roomIDFound = docs._id;
-		});
-		return roomIDFound;
+		let roomFound;
+
+		await Room.findOne({ roomNumber })
+			.then((room) => {
+				console.log(`> Room Found: ${room._id}`);
+				roomFound = room;
+			})
+			.catch((err) => {
+				console.log(`> [Config] error - ${err.message}`);
+			});
+
+		return roomFound;
 	},
 	saveBooking: async (booking) => {
-		// Logic here
+		// Booking Config Logic
+		const {} = booking;
+
+		let newBooking = new Booking({});
+
+		newBooking
+			.save()
+			.then(() => {
+				console.log("Saved a new booking!");
+			})
+			.catch((err) => {
+				console.log("> [Config] error - ", err.message);
+			});
+		return newBooking;
 	},
 };

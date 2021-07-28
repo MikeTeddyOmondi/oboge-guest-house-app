@@ -4,7 +4,8 @@ const Customer = require("../models/Customer");
 // Import Booking Config
 const {
 	saveCustomer,
-	searchCustomer,
+	searchCustomer, // search by customer's ID number
+	findCustomer, // search by customer's unique Object ID
 	findRoom,
 	saveBooking,
 } = require("../config/booking.config");
@@ -149,13 +150,18 @@ exports.postSearchCustomerPanel = async (req, res) => {
 
 	// Search customer with the id
 	await searchCustomer(id_number)
-		.then((foundID) => {
-			console.log(`Customer Details: ${foundID}`);
-			customerID = foundID;
+		.then((customerFound) => {
+			console.log(`> Customer Details: ${customerFound._id}`);
+			customerID = customerFound._id;
 			req.session.customerID = customerID;
 		})
 		.catch((err) => {
 			console.log(`> [Controller] error - ${err.message}`);
+			req.flash(
+				"error_msg",
+				`There is no customer with this ID number: ${id_number}...`,
+			);
+			return res.redirect("/user-panel/bookings/search-customer");
 		});
 
 	res.redirect("/user-panel/bookings/booking-details");
@@ -181,7 +187,7 @@ exports.getBookingsDetailsPanel = (req, res) => {
 
 // User Panel - POST | Bookings Details Page
 exports.postBookingsDetailsPanel = async (req, res) => {
-	// Body of Request
+	// Body | Request
 	const {
 		customerId,
 		numberAdults,
@@ -192,35 +198,82 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 		check_out_date,
 	} = req.body;
 
-	// // Create a room details | Object
-	// let roomDetails = {
-	// 	roomType,
-	// 	roomCapacity: parseInt(numberAdults) + parseInt(numberKids),
-	// 	roomNumber,
-	// };
+	let errors = [];
 
-	// findRoom(roomDetails)
-	// 	.then((roomIDFound) => {
-	// 		console.log(`> RoomIDFound: ${roomIDFound}`);
-	// 	})
-	// 	.catch((err) => {
-	// 		console.log("> [Controller] error - " + err.message);
-	// 	});
+	// Initialize booking, customer & room details
+	let bookingDetails;
+	let customerDetails;
+	let roomDetails;
 
-	// let bookingDetails = {
-	// 	customerID,
-	// 	numberAdults,
-	// 	numberKids,
-	// 	roomID,
-	// 	check_in_date,
-	// 	check_out_date,
-	// };
+	// Find customer with the customerId
+	await findCustomer(customerId)
+		.then((customerFound) => {
+			console.log(`> Customer Details: ${customerFound}`);
+			customerDetails = customerFound;
+		})
+		.catch((err) => {
+			console.log(`[Controller] error: ${err}`);
+		});
+
+	// Find room given the room number
+	await findRoom(roomNumber)
+		.then((roomFound) => {
+			console.log(`> Room Details: ${roomFound}`);
+			roomDetails = roomFound;
+		})
+		.catch((err) => {
+			console.log(`[Controller] error: ${err}`);
+		});
+
+	// Booking Logic
+	let numberOccupants = parseInt(numberAdults) + parseInt(numberKids);
+	// let VAT = 0.16
+
+	if (
+		!numberAdults ||
+		!numberKids ||
+		!roomType ||
+		!roomNumber ||
+		!check_in_date ||
+		!check_out_date
+	) {
+		errors.push({ msg: "Please enter all fields" });
+	}
+
+	if (numberOccupants > roomDetails.roomCapacity) {
+		errors.push({ msg: "Room capacity of the chosen room has been exceeded!" });
+	}
+
+	if (errors.length > 0) {
+		res.render("panel/bookingsDetails", {
+			errors,
+			customerID: req.session.customerID,
+			numberAdults,
+			numberKids,
+			roomType,
+			roomNumber,
+			check_in_date,
+			check_out_date,
+			user: req.user,
+			title: "Bookings Details",
+			layout: "./layouts/panelLayout",
+		});
+	}
+	bookingDetails = {
+		customerId,
+		numberAdults,
+		numberKids,
+		roomType,
+		roomNumber,
+		check_in_date,
+		check_out_date,
+	};
 
 	res.render("panel/bookingsInvoice", {
-		user: req.user,
 		customerDetails,
 		roomDetails,
 		bookingDetails,
+		user: req.user,
 		title: "Hotel Booking Invoice | Receipt",
 		layout: "./layouts/panelLayout",
 	});
