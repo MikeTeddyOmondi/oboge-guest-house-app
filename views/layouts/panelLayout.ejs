@@ -1,130 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<meta http-equiv="refresh" content="1800" />
+		<meta name="Oboge Guest House" content="Hotel Management System" />
+		<meta name="Mike Teddy Omondi" content="Founder, Rancko Solutions LLC" />
+		<title><%= title %> | Oboge Guest House</title>
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+			integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+			crossorigin="anonymous"
+		/>
+		<!-- Bootstrap Minified CSS -->
+		<link href="/panel/css/bootstrap.min.css" rel="stylesheet" />
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta http-equiv="refresh" content="1800" />
-    <meta name="Oboge Guest House" content="Hotel Management System" />
-    <meta name="Mike Teddy Omondi" content="Founder, Rancko Solutions LLC" />
-    <title>
-        <%= title %> | Oboge Guest House</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" />
-    <!-- Bootstrap Minified CSS -->
-    <link href="/panel/css/bootstrap.min.css" rel="stylesheet" />
+		<!-- Bootstrap CSS -->
+		<link href="/panel/css/bootstrap.css" rel="stylesheet" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+			crossorigin="anonymous"
+		/>
 
-    <!-- Bootstrap CSS -->
-    <link href="/panel/css/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+		<!-- Datepicker CSS -->
+		<link href="/panel/css/datepicker.css" rel="stylesheet" />
 
-    <!-- Datepicker CSS -->
-    <link href="/panel/css/datepicker.css" rel="stylesheet" />
+		<!-- Custom CSS -->
+		<link href="/panel/css/panel.css" rel="stylesheet" />
 
-    <!-- Custom CSS -->
-    <link href="/panel/css/panel.css" rel="stylesheet" />
+		<!-- Custom Fonts -->
+		<link
+			href="/panel/css/font-awesome.min.css"
+			rel="stylesheet"
+			type="text/css"
+		/>
+	</head>
 
-    <!-- Custom Fonts -->
-    <link href="/panel/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar fixed-top navbar-dark bg-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/user-panel">User Panel</a>
+				<ul class="nav justify-content-end">
+					<li class="nav-item dropdown">
+						<a
+							class="nav-link dropdown-toggle"
+							href="#"
+							data-bs-toggle="dropdown"
+							id="navbarDropdown"
+							role="button"
+							aria-haspopup="true"
+							aria-expanded="false"
+						>
+							Notifications
+							<span class="badge badge-pill badge-warning">5</span>
+						</a>
+						<ul class="dropdown-menu dropdown-alerts">
+							<li>
+								<a class="dropdown-item" href="#">
+									<div>
+										<i class="fas fa-comment fa-fw"></i> New Booking
+										<span class="pull-right text-muted small">
+											4 minutes ago
+										</span>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<div>
+										<i class="fas fa-beer fa-fw"></i> 3 New Bar Order
+										<span class="pull-right text-muted small">
+											12 minutes ago
+										</span>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<div>
+										<i class="fas fa-envelope fa-fw"></i> Message Sent
+										<span class="pull-right text-muted small">
+											4 minutes ago
+										</span>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<div>
+										<i class="fas fa-tasks fa-fw"></i> New Laundry Request
+										<span class="pull-right text-muted small">
+											4 minutes ago
+										</span>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<div>
+										<i class="fas fa-upload fa-fw"></i> Server Rebooted
+										<span class="pull-right text-muted small">
+											4 minutes ago
+										</span>
+									</div>
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a class="dropdown-item" class="text-center" href="#">
+									<strong>See All Notifications</strong>
+									<i class="fas fa-angle-right"></i>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="nav-item dropdown">
+						<a
+							class="nav-link dropdown-toggle"
+							data-bs-toggle="dropdown"
+							id="navbarDropdown"
+							href="#"
+							role="button"
+							aria-haspopup="true"
+							aria-expanded="false"
+						>
+							<%= user.name %>
+						</a>
+						<ul
+							class="dropdown-menu dropdown-user"
+							aria-labelledby="navbarDropdown"
+							role="menu"
+							style="position: relative; right: 1px"
+						>
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-user"></i> User Profile
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">
+									<i class="fas fa-gear"></i> Settings
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a class="dropdown-item" href="/users/logout">
+									<i class="fas fa-sign-out"></i> Logout
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div id="#" class="container"><%- body %></div>
 
-</head>
+		<!-- Scripts -->
+		<!-- jQuery and Bootstrap Bundle (includes Popper) -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap5@1.1.9/src/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap5@1.1.9/dist/index.min.js"></script>
 
-<body>
-    <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/user-panel">User Panel</a>
-            <ul class="nav justify-content-end">
-                <li class="nav-item ">
-                    <a class="nav-link" href="# ">Notifications<span class="badge badge-pill badge-warning">1</span></a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i> New Booking
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Bar Order
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Laundry Request
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Notifications</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle " data-toggle="dropdown " href="# " role="button " aria-haspopup="true " aria-expanded="false ">
-                        <%= user.name %>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/users/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div id="#" class="container">
-        <%- body %>
-    </div>
+		<!-- Datepicker JavaScript -->
+		<script src="/panel/js/bootstrap-datepicker.js "></script>
 
-    <!-- Scripts -->
-    <!-- jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+		<!-- Bootstrap Minified JavaScript -->
+		<script src="/panel/js/bootstrap.min.js "></script>
 
-    <!-- Datepicker JavaScript -->
-    <script src="/panel/js/bootstrap-datepicker.js "></script>
+		<!-- Bootstrap JavaScript -->
+		<!-- <script src="/panel/js/bootstrap.js "></script> -->
 
-    <!-- Bootstrap Minified JavaScript -->
-    <script src="/panel/js/bootstrap.min.js "></script>
-
-    <!-- Bootstrap JavaScript -->
-    <script src="/panel/js/bootstrap.js "></script>
-
-    <!-- Custom Javascript | Main file -->
-    <script src="/panel/js/scripts.js "></script>
-
-</body>
-
+		<!-- Custom Javascript | Main file -->
+		<script src="/panel/js/scripts.js "></script>
+	</body>
 </html>

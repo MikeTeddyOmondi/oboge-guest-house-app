@@ -1,0 +1,151 @@
+<div id="main-row" class="row">
+	<div class="mt-2">
+		<a href="/user-panel/bookings" class="btn btn-secondary rounded"
+			>&#x21d0;
+		</a>
+	</div>
+	<h1>Bookings | Accomodations</h1>
+	<hr />
+	<%- include ('../partials/messages') %>
+	<form
+		id="bookingDetailsForm"
+		class="form"
+		action="/user-panel/bookings/booking-details"
+		method="POST"
+	>
+		<div class="form row">
+			<fieldset>
+				<legend class="mb-3">Booking Details:</legend>
+				<div class="col-md">
+					<div class="form-floating">
+						<input
+							type="text"
+							class="form-control"
+							id="customerId"
+							name="customerId"
+							placeholder="CustomerId"
+							value="<%= typeof customerID != 'undefined' ? customerID : ''  %>"
+							readonly="true"
+						/>
+						<label for="floatingInputGrid">Customer ID</label>
+					</div>
+				</div>
+				<div class="col-md">
+					<div class="form-floating">
+						<input
+							type="number"
+							class="form-control"
+							id="numberAdults"
+							name="numberAdults"
+							placeholder="Number of Adults"
+						/>
+						<label for="floatingInputGrid">Number of Adults</label>
+					</div>
+				</div>
+				<div class="col-md">
+					<div class="form-floating">
+						<input
+							type="number"
+							class="form-control"
+							id="numberKids"
+							name="numberKids"
+							placeholder="Number of Kids"
+						/>
+						<label for="floatingInputGrid">Number of Kids</label>
+					</div>
+				</div>
+				<div class="col-md">
+					<div class="form-floating">
+						<select class="form-select" id="roomType" name="roomType">
+							<option selected="Basic">Basic</option>
+							<option value="Economy">Economy</option>
+							<option value="Standard">Standard</option>
+							<option value="Executive">Executive</option>
+						</select>
+						<label for="floatingSelectGrid ">Room Type</label>
+					</div>
+				</div>
+				<div class="col-md">
+					<div class="form-floating">
+						<select class="form-select" id="roomNumber" name="roomNumber">
+							<option value="G001">Room G001</option>
+							<option value="G002">Room G002</option>
+							<option value="G003">Room G003</option>
+							<option value="G004">Room G004</option>
+							<option value="G005">Room G005</option>
+							<option value="G006">Room G006</option>
+							<option value="G007">Room G007</option>
+							<option value="G008">Room G008</option>
+							<option value="G009">Room G009</option>
+							<option value="G010">Room G010</option>
+							<option value="F101">Room F101</option>
+							<option value="F102">Room F102</option>
+							<option value="F103">Room F103</option>
+							<option value="F104">Room F104</option>
+							<option value="F105">Room F105</option>
+							<option value="F106">Room F106</option>
+							<option value="F107">Room F107</option>
+							<option value="F108">Room F108</option>
+							<option value="F109">Room F109</option>
+							<option value="F110">Room F110</option>
+							<option value="F111">Room F111</option>
+							<option value="F112">Room F112</option>
+							<option value="T301">Room T301</option>
+							<option value="T302">Room T302</option>
+							<option value="T303">Room T303</option>
+							<option value="T304">Room T304</option>
+							<option value="T305">Room T305</option>
+							<option value="T306">Room T306</option>
+							<option value="T307">Room T307</option>
+							<option value="T308">Room T308</option>
+							<option value="T309">Room T309</option>
+							<option value="T310">Room T310</option>
+							<option value="T311">Room T311</option>
+							<option value="T312">Room T312</option>
+							<option value="T313">Room T313</option>
+							<option value="F401">Room F401</option>
+							<option value="F402">Room F402</option>
+							<option value="F403">Room F403</option>
+							<option value="F404">Room F404</option>
+							<option value="F405">Room F405</option>
+							<option value="F406">Room F406</option>
+							<option value="F407">Room F407</option>
+							<option value="F408">Room F408</option>
+							<option value="F409">Room F409</option>
+							<option value="F410">Room F410</option>
+							<option value="F411">Room F411</option>
+							<option value="F412">Room F412</option>
+							<option value="F413">Room F413</option>
+						</select>
+						<label for="floatingInputGrid ">Room number</label>
+					</div>
+				</div>
+				<div class="col md mt-3">
+					<div class="form mb-3">
+						<label for="check_in_date" class="">Check-in Date :</label>
+						<br />
+						<input type="date" id="check_in_date" name="check_in_date" />
+					</div>
+				</div>
+				<div class="col md">
+					<div class="form mb-3">
+						<label for="check_out_date" class="">Check-out Date :</label>
+						<br />
+						<input type="date" id="check_out_date" name="check_out_date" />
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="form row">
+			<div class="mt-3 mb-5">
+				<input
+					type="button"
+					class="btn btn-secondary"
+					value="Cancel"
+					name="Cancel"
+				/>
+				<input type="submit" class="btn btn-primary" value="Save" name="Save" />
+			</div>
+		</div>
+	</form>
+</div>
