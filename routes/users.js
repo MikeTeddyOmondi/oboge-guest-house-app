@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { upload } = require('../config/screenshotUpload')
+const { upload } = require('../services/screenshotUpload')
 
 // Controller
 const userController = require("../controllers/user.controller.js")

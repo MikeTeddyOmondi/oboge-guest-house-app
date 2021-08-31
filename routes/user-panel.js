@@ -32,6 +32,11 @@ router
 	.get(ensureAuthenticated, panelController.getSearchCustomerPanel)
 	.post(ensureAuthenticated, panelController.postSearchCustomerPanel);
 
+// 	User Panel - GET | Bookings Invoice Page
+router
+	.route("/bookings/invoice")
+	.get(ensureAuthenticated, panelController.getBookingInvoice);
+
 // User Panel | Bar Page
 router.route("/bar").get(ensureAuthenticated, panelController.getBarPanel);
 

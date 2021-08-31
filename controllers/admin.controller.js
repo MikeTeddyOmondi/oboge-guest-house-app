@@ -1,5 +1,5 @@
 const NeverBounce = require("neverbounce");
-const { emailVerifier } = require("../config/emailVerifier");
+const { emailVerifier } = require("../services/emailVerifier");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;

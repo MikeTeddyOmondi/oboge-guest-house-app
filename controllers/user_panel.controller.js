@@ -8,7 +8,7 @@ const {
 	findCustomer, // search by customer's unique Object ID
 	findRoom,
 	saveBooking,
-} = require("../config/booking.config");
+} = require("../services/booking.service");
 
 // User Panel | Dashboard Page
 exports.getUserPanel = (req, res) => {
@@ -98,6 +98,7 @@ exports.postNewCustomerPanel = async (req, res) => {
 						console.log(`[NEW] CustomerID: ${id}`);
 						customerID = id;
 						req.session.customerID = customerID;
+						res.redirect("/user-panel/bookings/booking-details");
 					})
 					.catch((err) => {
 						console.log("> [Controller] error - " + err.message);
@@ -116,9 +117,6 @@ exports.postNewCustomerPanel = async (req, res) => {
 							layout: "./layouts/panelLayout",
 						});
 					});
-
-				console.log(req.session.customerID);
-				res.redirect("/user-panel/bookings/booking-details");
 
 				// res.render("panel/bookingsDetails", {
 				// 	customerID,
@@ -217,17 +215,20 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 
 	// Find room given the room number
 	await findRoom(roomNumber)
+		.catch((err) => {
+			console.log(`> [Controller] error: ${err}`);
+		})
 		.then((roomFound) => {
 			console.log(`> Room Details: ${roomFound}`);
 			roomDetails = roomFound;
-		})
-		.catch((err) => {
-			console.log(`[Controller] error: ${err}`);
 		});
+
+	const { roomRate, _id } = roomDetails;
+	const roomID = _id;
 
 	// Booking Logic
 	let numberOccupants = parseInt(numberAdults) + parseInt(numberKids);
-	// let VAT = 0.16
+	let VAT = 0.16;
 
 	if (
 		!numberAdults ||
@@ -263,18 +264,80 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 		customerId,
 		numberAdults,
 		numberKids,
+		roomID,
 		roomType,
 		roomNumber,
+		roomRate,
 		check_in_date,
 		check_out_date,
 	};
 
+	// Save booking
+	await saveBooking(bookingDetails)
+		.then((invoiceInfo) => {
+			console.log(`> [NEW] Booking Info: ${invoiceInfo}`);
+
+			// Load invoice information into the session | request object
+			req.session.bookingID = invoiceInfo._id;
+			req.session.firstname = customerDetails.firstname;
+			req.session.lastname = customerDetails.lastname;
+			req.session.phoneNumber = customerDetails.phone_number;
+			req.session.email = customerDetails.email;
+			req.session.roomType = bookingDetails.roomType;
+			req.session.roomRate = bookingDetails.roomRate;
+			req.session.numberOccupants = numberOccupants;
+			req.session.check_out_date = invoiceInfo.checkOutDate;
+			req.session.subTotal = invoiceInfo.subTotalCost;
+			req.session.VAT = invoiceInfo.vat;
+			req.session.totalCost = invoiceInfo.totalCost;
+
+			res.redirect("/user-panel/bookings/invoice");
+		})
+		.catch((err) => {
+			console.log(`> [Controller] error: ${err}`);
+		});
+
+	// res.render("panel/bookingsInvoice", {
+	// 	customerDetails,
+	// 	roomDetails,
+	// 	bookingDetails,
+	// 	user: req.user,
+	// 	title: "Hotel Booking Invoice | Receipt",
+	// 	layout: "./layouts/panelLayout",
+	// });
+};
+
+// User Panel - GET | Bookings Invoice Page
+exports.getBookingInvoice = (req, res) => {
+	const {
+		bookingID,
+		firstname,
+		lastname,
+		phoneNumber,
+		email,
+		roomType,
+		roomRate,
+		numberOccupants,
+		check_out_date,
+		subTotal,
+		VAT,
+		totalCost,
+	} = req.session;
 	res.render("panel/bookingsInvoice", {
-		customerDetails,
-		roomDetails,
-		bookingDetails,
+		bookingID,
+		firstname,
+		lastname,
+		phoneNumber,
+		email,
+		roomType,
+		roomRate,
+		numberOccupants,
+		check_out_date,
+		subTotal,
+		VAT,
+		totalCost,
 		user: req.user,
-		title: "Hotel Booking Invoice | Receipt",
+		title: "Bookings | Invoice",
 		layout: "./layouts/panelLayout",
 	});
 };

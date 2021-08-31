@@ -23,7 +23,8 @@ module.exports = {
 				console.log("Saved a new customer!");
 			})
 			.catch((err) => {
-				console.log("> [Config] error - ", err.message);
+				console.log("> [Booking Service] error - ", err.message);
+				return err;
 			});
 		return newCustomer._id;
 	},
@@ -37,7 +38,8 @@ module.exports = {
 				customer = customerFound;
 			})
 			.catch((err) => {
-				console.log(`> [Config] error - ${err}`);
+				console.log(`> [Booking Service] error - ${err}`);
+				return err;
 			});
 		return customer;
 	},
@@ -51,7 +53,8 @@ module.exports = {
 				customer = customerFound;
 			})
 			.catch((err) => {
-				console.log(`> [Config] error - ${err.message}`);
+				console.log(`> [Booking Service] error - ${err.message}`);
+				return err;
 			});
 
 		return customer;
@@ -66,16 +69,44 @@ module.exports = {
 				roomFound = room;
 			})
 			.catch((err) => {
-				console.log(`> [Config] error - ${err.message}`);
+				console.log(`> [Booking Service] error - ${err.message}`);
+				return err;
 			});
 
 		return roomFound;
 	},
 	saveBooking: async (booking) => {
-		// Booking Config Logic
-		const {} = booking;
+		// Booking Service Logic
+		const {
+			customerId,
+			numberAdults,
+			numberKids,
+			roomRate,
+			roomID,
+			check_in_date,
+			check_out_date,
+		} = booking;
 
-		let newBooking = new Booking({});
+		// Total number of occupants
+		const numberOccupants = parseInt(numberAdults) + parseInt(numberKids);
+
+		// Initialized Variables
+		const vatPercentage = 16 / 100;
+		const subTotal = numberOccupants * parseInt(roomRate);
+		const VAT = vatPercentage * subTotal;
+		const total = subTotal + VAT;
+
+		let newBooking = new Booking({
+			customer: customerId,
+			numberAdults,
+			numberKids,
+			roomsBooked: roomID,
+			checkInDate: check_in_date,
+			checkOutDate: check_out_date,
+			vat: VAT,
+			subTotalCost: subTotal,
+			totalCost: total,
+		});
 
 		newBooking
 			.save()
@@ -83,7 +114,8 @@ module.exports = {
 				console.log("Saved a new booking!");
 			})
 			.catch((err) => {
-				console.log("> [Config] error - ", err.message);
+				console.log("> [Booking Service] error - ", err.message);
+				return err;
 			});
 		return newBooking;
 	},

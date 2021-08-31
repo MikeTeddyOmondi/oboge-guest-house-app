@@ -14,19 +14,25 @@ const BookingSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
-	roomsBooked: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			required: true,
-			ref: "Room",
-		},
-	],
+	roomsBooked: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: "Room",
+	},
 	checkInDate: {
 		type: Date,
 		required: true,
 	},
 	checkOutDate: {
 		type: Date,
+		required: true,
+	},
+	vat: {
+		type: Number,
+		required: true,
+	},
+	subTotalCost: {
+		type: Number,
 		required: true,
 	},
 	totalCost: {
