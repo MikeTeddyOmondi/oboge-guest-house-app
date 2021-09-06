@@ -39,14 +39,6 @@ const BookingSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
-	createdDate: {
-		type: Date,
-		default: Date.now,
-	},
-	updatedDate: {
-		type: Date,
-		default: "",
-	},
 });
 
 BookingSchema.virtual("occupant", {

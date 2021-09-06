@@ -10,6 +10,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const Customer = require("../models/Customer");
 const Room = require("../models/Room");
+const Drink = require("../models/Drink");
 
 // Administration | GET
 exports.getAdminPanel = (req, res) => {
@@ -432,4 +433,85 @@ exports.postAddRoomInfoPanel = (req, res) => {
 			}
 		});
 	}
+};
+
+// Add Bar Drink | Menu Updates | GET
+exports.getAddBarDrinkPanel = (req, res) => {
+	res.render("admin/addBarDrink", {
+		user: req.user,
+		title: "Add Bar Drink | Menu Updates",
+		layout: "./layouts/adminLayout.ejs",
+	});
+};
+
+// Add Bar Drink | Menu Updates | POST
+exports.postAddBarDrinkPanel = (req, res) => {
+	const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice } = req.body;
+
+	let errors = [];
+
+	if (!drinkName || !drinkCode || !typeOfDrink || !uom || !buyingPrice) {
+		errors.push({ msg: "Please enter all fields" });
+	}
+
+	if (errors.length > 0) {
+		res.render("admin/addRoomInfo", {
+			errors,
+			drinkName,
+			drinkCode,
+			typeOfDrink,
+			uom,
+			buyingPrice,
+			user: req.user,
+			title: "Add Bar Drink | Menu Updates",
+			layout: "./layouts/adminLayout.ejs",
+		});
+	} else {
+		// Check if the drink code exists in the database
+		Drink.findOne({ drinkCode: drinkCode }).then((drinkCode) => {
+			if (roomNumber) {
+				errors.push({
+					msg: `That drink code already exists!`,
+				});
+				res.render("admin/addRoomInfo", {
+					errors,
+					drinkName,
+					drinkCode,
+					typeOfDrink,
+					uom,
+					buyingPrice,
+					user: req.user,
+					title: "Add Bar Drink | Menu Updates",
+					layout: "./layouts/adminLayout.ejs",
+				});
+			} else {
+				const newDrink = new Drink({
+					drinkName,
+					drinkCode,
+					typeOfDrink,
+					uom,
+					buyingPrice,
+				});
+
+				newDrink
+					.save()
+					.then(() => {
+						req.flash("success_msg", `Drink information saved successfully!`);
+						res.redirect("/admin/add-bar-drink");
+					})
+					.catch((err) => {
+						req.flash(
+							"error_msg",
+							`An error occurred while saving the drink information...`,
+						);
+						res.redirect("/admin/add-bar-drink");
+					});
+			}
+		});
+	}
+	// res.render("admin/addBarDrink", {
+	// 	user: req.user,
+	// 	title: "Add Bar Drink | Menu Updates",
+	// 	layout: "./layouts/adminLayout.ejs",
+	// });
 };

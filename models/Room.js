@@ -22,14 +22,6 @@ const RoomSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
-	createdDate: {
-		type: Date,
-		default: Date.now,
-	},
-	updatedDate: {
-		type: Date,
-		default: "",
-	},
 });
 
 const Room = mongoose.model("Room", RoomSchema);

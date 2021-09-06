@@ -52,9 +52,17 @@ router
 	.get(ensureAuthenticated, adminController.getAddRoomBookingsPanel);
 
 // Room Info | GET
+// Room Info | POST
 router
 	.route("/add-room-info")
 	.get(ensureAuthenticated, adminController.getAddRoomInfoPanel)
 	.post(ensureAuthenticated, adminController.postAddRoomInfoPanel);
+
+// Add Bar Drink | Menu Updates | GET
+// Add Bar Drink | Menu Updates | POST
+router
+	.route("/add-bar-drink")
+	.get(ensureAuthenticated, adminController.getAddBarDrinkPanel)
+	.post(ensureAuthenticated, adminController.postAddBarDrinkPanel);
 
 module.exports = router;
