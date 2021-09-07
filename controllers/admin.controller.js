@@ -448,6 +448,8 @@ exports.getAddBarDrinkPanel = (req, res) => {
 exports.postAddBarDrinkPanel = (req, res) => {
 	const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice } = req.body;
 
+	console.log(req.body);
+
 	let errors = [];
 
 	if (!drinkName || !drinkCode || !typeOfDrink || !uom || !buyingPrice) {
@@ -455,7 +457,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 	}
 
 	if (errors.length > 0) {
-		res.render("admin/addRoomInfo", {
+		res.render("admin/addBarDrink", {
 			errors,
 			drinkName,
 			drinkCode,
@@ -469,11 +471,11 @@ exports.postAddBarDrinkPanel = (req, res) => {
 	} else {
 		// Check if the drink code exists in the database
 		Drink.findOne({ drinkCode: drinkCode }).then((drinkCode) => {
-			if (roomNumber) {
+			if (drinkCode) {
 				errors.push({
 					msg: `That drink code already exists!`,
 				});
-				res.render("admin/addRoomInfo", {
+				res.render("admin/addBarDrink", {
 					errors,
 					drinkName,
 					drinkCode,
@@ -487,7 +489,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 			} else {
 				const newDrink = new Drink({
 					drinkName,
-					drinkCode,
+					drinkCode: req.body.drinkCode,
 					typeOfDrink,
 					uom,
 					buyingPrice,
@@ -504,6 +506,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 							"error_msg",
 							`An error occurred while saving the drink information...`,
 						);
+						console.log(`Error: ${err}`);
 						res.redirect("/admin/add-bar-drink");
 					});
 			}

@@ -11,11 +11,11 @@ const DrinkSchema = new mongoose.Schema({
 		unique: true,
 	},
 	typeOfDrink: {
-		type: { alcoholic, non_alcoholic, water },
+		type: String,
 		required: true,
 	},
 	uom: {
-		type: { crates, bottles },
+		type: String,
 		required: true,
 	},
 	buyingPrice: {
@@ -24,6 +24,6 @@ const DrinkSchema = new mongoose.Schema({
 	},
 });
 
-const Drink = mongoose.model("DrinkDetail", DrinkSchema);
+const Drink = mongoose.model("Drink", DrinkSchema);
 
 module.exports = Drink;
