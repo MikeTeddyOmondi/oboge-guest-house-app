@@ -24,7 +24,7 @@
 									<div class="form">
 										<h3 class="text-center text-info">Add Bar Drink Information</h3>
 										<div class="form-group">
-											<label for="roomType" class="text-info">Drink Name:</label>
+											<label for="drinkName" class="text-info">Drink Name:</label>
 											<br />
 											<input
 												autocomplete="off"
@@ -36,9 +36,10 @@
 											/>
 										</div>
 										<div class="form-group">
-											<label for="roomCapacity" class="text-info"
-												>Drink Code:</label
-											><br />
+											<label for="drinkCode" class="text-info">
+												Drink Code:
+											</label>
+												<br />
 											<input
 												type="text"
 												name="drinkCode"
@@ -48,9 +49,10 @@
 											/>
 										</div>
 										<div class="form-group">
-											<label for="roomNumber" class="text-info"
-												>Type of Drink:</label
-											><br />
+											<label for="drinkType" class="text-info">
+												Type of Drink:
+											</label>
+											<br />
 											<input
 												type="text"
 												name="typeOfDrink"
@@ -60,13 +62,16 @@
 												value="<%= typeof typeOfDrink != 'undefined' ? typeOfDrink : '' %>"
 											/>
 											<datalist id="drinkType">
-												<option value="Alcoholic"></option>
-												<option value="Non-alcoholic"></option>
+												<option value="Beer"></option>
+												<option value="Spirit"></option>
+												<option value="Wine"></option>
+												<option value="RTD"></option>
+												<option value="Soft-drink"></option>
 												<option value="Water"></option>
 											</datalist>
 										</div>
 										<div class="form-group">
-											<label for="roomRate" class="text-info">Unit of Measurement:</label
+											<label for="uom" class="text-info">Unit of Measurement:</label
 											><br />
 											<input
 												type="text"
@@ -82,10 +87,10 @@
 											</datalist>
 										</div>
 										<div class="form-group">
-											<label for="roomRate" class="text-info">Buying Price:</label
+											<label for="buyingPrice" class="text-info">Buying Price:</label
 											><br />
 											<input
-												type="text"
+												type="number"
 												name="buyingPrice"
 												id="buyingPrice"
 												class="form-control"
@@ -104,6 +109,7 @@
 												type="button"
 												name="cancel"
 												class="btn btn-secondary btn-md m-2"
+												onclick="window.location='/admin/dashboard';"
 												value="Cancel"
 											/>
 											<input

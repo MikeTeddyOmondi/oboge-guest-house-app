@@ -1,7 +1,7 @@
 // Import model
 const Customer = require("../models/Customer");
 
-// Import Booking Config
+// Import Booking Service
 const {
 	saveCustomer,
 	searchCustomer, // search by customer's ID number
@@ -117,13 +117,6 @@ exports.postNewCustomerPanel = async (req, res) => {
 							layout: "./layouts/panelLayout",
 						});
 					});
-
-				// res.render("panel/bookingsDetails", {
-				// 	customerID,
-				// 	user: req.user,
-				// 	title: "Bookings Details",
-				// 	layout: "./layouts/panelLayout",
-				// });
 			}
 		});
 	}

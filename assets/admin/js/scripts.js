@@ -205,3 +205,19 @@ $(function () {
 function goBack() {
 	window.history.go(-1);
 }
+
+// $("#add").click(function () {
+// 	addNewRow();
+// });
+
+// $("#remove").click(function () {
+// 	deleteRow();
+// });
+
+function addNewRow() {
+	document.getElementById("drinkList").insertRow(1);
+}
+
+function deleteRow() {
+	document.getElementById("drinkList").deleteRow(1);
+}

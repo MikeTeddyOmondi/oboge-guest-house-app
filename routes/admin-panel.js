@@ -65,4 +65,11 @@ router
 	.get(ensureAuthenticated, adminController.getAddBarDrinkPanel)
 	.post(ensureAuthenticated, adminController.postAddBarDrinkPanel);
 
+// Bar Purchases | GET
+// Bar Purchases | POST
+router
+	.route("/bar-purchases")
+	.get(ensureAuthenticated, adminController.getBarPurchasesPanel)
+	.post(ensureAuthenticated, adminController.postBarPurchasesPanel);
+
 module.exports = router;

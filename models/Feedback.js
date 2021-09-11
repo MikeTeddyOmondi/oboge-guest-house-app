@@ -1,27 +1,30 @@
 const mongoose = require("mongoose");
 
-const FeedbackSchema = new mongoose.Schema({
-	username: {
-		type: String,
-		required: true,
+const FeedbackSchema = new mongoose.Schema(
+	{
+		username: {
+			type: String,
+			required: true,
+		},
+		email: {
+			type: String,
+			required: true,
+		},
+		message: {
+			type: String,
+			required: true,
+		},
+		screenshot: {
+			type: String,
+			default: "screenshot.jpg",
+		},
+		createdDate: {
+			type: Date,
+			default: Date.now,
+		},
 	},
-	email: {
-		type: String,
-		required: true,
-	},
-	message: {
-		type: String,
-		required: true,
-	},
-	screenshot: {
-		type: String,
-		default: "screenshot.jpg",
-	},
-	createdDate: {
-		type: Date,
-		default: Date.now,
-	},
-});
+	{ timestamps: true },
+);
 
 const Feedback = mongoose.model("Feedback", FeedbackSchema);
 
