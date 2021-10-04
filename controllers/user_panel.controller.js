@@ -279,6 +279,7 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 			req.session.roomType = bookingDetails.roomType;
 			req.session.roomRate = bookingDetails.roomRate;
 			req.session.numberOccupants = numberOccupants;
+			req.session.check_in_date = invoiceInfo.checkInDate;
 			req.session.check_out_date = invoiceInfo.checkOutDate;
 			req.session.subTotal = invoiceInfo.subTotalCost;
 			req.session.VAT = invoiceInfo.vat;
@@ -311,6 +312,7 @@ exports.getBookingInvoice = (req, res) => {
 		roomType,
 		roomRate,
 		numberOccupants,
+		check_in_date,
 		check_out_date,
 		subTotal,
 		VAT,
@@ -325,6 +327,7 @@ exports.getBookingInvoice = (req, res) => {
 		roomType,
 		roomRate,
 		numberOccupants,
+		check_in_date,
 		check_out_date,
 		subTotal,
 		VAT,
