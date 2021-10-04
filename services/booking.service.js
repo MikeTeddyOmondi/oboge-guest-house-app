@@ -1,3 +1,6 @@
+// Lib imports
+const { DateTime } = require("luxon");
+
 // Models
 const Customer = require("../models/Customer");
 const Room = require("../models/Room");
@@ -90,9 +93,16 @@ module.exports = {
 		// Total number of occupants
 		const numberOccupants = parseInt(numberAdults) + parseInt(numberKids);
 
+		// Calculate the number of days to stay in the room
+		const days = DateTime.fromISO(check_out_date)
+			.diff(DateTime.fromISO(check_in_date), "days")
+			.toObject().days;
+
+		// console.log(`Accomodation Duration = ${days} days`);
+
 		// Initialized Variables
 		const vatPercentage = 16 / 100;
-		const subTotal = numberOccupants * parseInt(roomRate);
+		const subTotal = numberOccupants * parseInt(roomRate) * days;
 		const VAT = vatPercentage * subTotal;
 		const total = subTotal + VAT;
 
