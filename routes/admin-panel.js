@@ -72,4 +72,18 @@ router
 	.get(ensureAuthenticated, adminController.getBarPurchasesPanel)
 	.post(ensureAuthenticated, adminController.postBarPurchasesPanel);
 
+// Bar Purchases - Add Receipt Number | GET
+// Bar Purchases - Add Receipt Number | POST
+router
+	.route("/bar-purchases/add-receipt-number")
+	.get(ensureAuthenticated, adminController.getBarPurchasesNumberPanel)
+	.post(ensureAuthenticated, adminController.postBarPurchasesNumberPanel);
+
+// Bar Purchases - Add List | GET
+// Bar Purchases - Add List | POST
+router
+	.route("/bar-purchases/add-list")
+	.get(ensureAuthenticated, adminController.getBarPurchasesListPanel)
+	.post(ensureAuthenticated, adminController.postBarPurchasesListPanel);
+
 module.exports = router;

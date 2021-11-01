@@ -181,7 +181,8 @@ exports.postAddUsersPanel = async (req, res) => {
 						});
 
 						const mailOptions = {
-							from: '"Admin | Oboge Guest House" <noreply.obogeguesthouse@gmail.com>', // sender address,
+							from:
+								'"Admin | Oboge Guest House" <noreply.obogeguesthouse@gmail.com>', // sender address,
 							to: email,
 							subject: "Account Verification | Oboge Guest House",
 							text: `Hi ${name}, ${activation_link}`,
@@ -569,6 +570,103 @@ exports.postBarPurchasesPanel = (req, res) => {
 					drinkCodes,
 					user: req.user,
 					title: "Bar Purchases",
+					layout: "./layouts/adminLayout.ejs",
+				});
+			} else {
+				// const newDrink = new Drink({
+				// 	drinkName,
+				// 	drinkCode: req.body.drinkCode,
+				// 	typeOfDrink,
+				// 	uom,
+				// 	buyingPrice,
+				// });
+				// newDrink
+				// 	.save()
+				// 	.then(() => {
+				// 		req.flash("success_msg", `Drink information saved successfully!`);
+				// 		res.redirect("/admin/add-bar-drink");
+				// 	})
+				// 	.catch((err) => {
+				// 		req.flash(
+				// 			"error_msg",
+				// 			`An error occurred while saving the drink information...`,
+				// 		);
+				// 		res.redirect("/admin/add-bar-drink");
+				// 	});
+			}
+		})
+		.catch((err) => {
+			console.log(`> An error occurred while fetching data: ${err.message}`);
+		});
+};
+
+exports.getBarPurchasesNumberPanel = (req, res) => {
+	res.render("admin/barPurchasesNumber", {
+		user: req.user,
+		title: "Bar Purchases | Add Receipt Number",
+		layout: "./layouts/adminLayout.ejs",
+	});
+};
+
+exports.postBarPurchasesNumberPanel = (req, res) => {
+	res.render("admin/barPurchasesNumber", {
+		user: req.user,
+		title: "Bar Purchases - Add Receipt Number",
+		layout: "./layouts/adminLayout.ejs",
+	});
+};
+
+exports.getBarPurchasesListPanel = (req, res) => {
+	// Initialize drink codes to display
+	let drinkCodes;
+
+	// fetch all drink codes from database
+	fetchAllDrinkCodes()
+		.then((allDrinkCodes) => {
+			drinkCodes = allDrinkCodes;
+			console.log(drinkCodes);
+
+			// render the page
+			res.render("admin/barPurchasesList", {
+				drinkCodes,
+				user: req.user,
+				title: "Bar Purchases - Add List",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		})
+		.catch((err) => {
+			console.log(`> An error occurred while fetching data: ${err.message}`);
+		});
+};
+
+exports.postBarPurchasesListPanel = (req, res) => {
+	const { drinkCode, quantity, availability } = req.body;
+
+	console.log({ drinkCode, quantity, availability });
+
+	let errors = [];
+	let drinkCodes;
+
+	// fetch all drink codes from database
+	fetchAllDrinkCodes()
+		.then((allDrinkCodes) => {
+			drinkCodes = allDrinkCodes;
+			console.log(drinkCodes);
+
+			// Bar Purchases Logic
+			if (!drinkCode || !quantity || !availability) {
+				errors.push({ msg: "Please enter all fields" });
+			}
+
+			if (errors.length > 0) {
+				res.render("admin/barPurchasesList", {
+					errors,
+					drinkCode,
+					quantity,
+					availability,
+					drinkCodes,
+					user: req.user,
+					title: "Bar Purchases | Add List",
 					layout: "./layouts/adminLayout.ejs",
 				});
 			} else {

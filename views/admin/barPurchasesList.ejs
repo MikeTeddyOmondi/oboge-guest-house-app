@@ -1,0 +1,97 @@
+<div id="page-wrapper">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Bar Purchases (Stock In)</h1>
+			</div>
+		</div>
+        <div id="add-user-form" class="form row">
+            <div id="add-user" autocomplete="off">
+                <div class="container-fluid">
+                    <div
+                        id="add-user-row"
+                        class="row justify-content-center align-items-center"
+                    >
+                        <div id="add-user-column" class="">
+                            <div id="login-box" class="">
+                                <%- include ('../partials/messages') %>
+                                <form
+                                    id="login-form"
+                                    class="form"
+                                    action="/admin/bar-purchases/add-list"
+                                    method="POST"
+                                >
+                                    <div class="form">
+                                        <h3 class="text-center text-info">Add Drinks Purchased</h3>
+                                        <br>
+                                        <label for="drinkList" class="text-info">Drink List:</label>
+                                        <div class="card" style="box-shadow:0 0 15px 0 lightgrey;">
+                                            <div class="card-body">
+                                                <table align="center" id="drinkList" style="width:800px;">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th style="text-align:center;">Drink Code</th>
+                                                        <th style="text-align:center;">Drink Name</th>
+                                                        <th style="text-align:center;">Quantity</th>
+                                                        <th style="text-align:center;">Stock Value</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="drink_list">
+                                                    <tr>
+                                                        <td><b id="number">1</b></td>
+                                                        <td>
+                                                        <select id="Drink_Codes" name="Drink_Codes" class="form-control" placeholder="Drink_Codes" >
+                                                            <option value=""></option>
+                                                            <!-- for loop code start -->
+                                                            <% for(var i=0; i < drinkCodes.length; i++) { %>
+                                                                <option value="<%= drinkCodes[i] %>"><%= drinkCodes[i] %></option>
+                                                            <% } %>
+                                                            <!-- for loop code end -->
+                                                        </select>
+                                                        </td>
+                                                        <td><input name="tqty[]" readonly type="text" class="form-control form-control-sm"></td>   
+                                                        <td><input name="qty[]" type="text" class="form-control form-control-sm" required></td>
+                                                        <td><input name="price[]" type="text" class="form-control form-control-sm" readonly></td>
+                                                        <td style="padding: 4px">KShs. 0</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table> <!--Table Ends-->
+                                                <center style="padding:10px;">
+                                                    <button id="add" style="width:150px;" class="btn btn-success" onClick="addRow();" value="Add">Add</button>
+                                                    <button id="remove" style="width:150px;" class="btn btn-danger" onClick="deleteRow();" value="Remove">Remove</button>
+                                                </center>
+                                            </div> <!--Crad Body Ends-->
+                                        </div> <!-- Order List Crad Ends-->
+                                        <div
+                                            class="form-group"
+                                            style="
+                                                display: flex;
+                                                justify-content: center;
+                                                padding: 10px;
+                                            ">
+                                            <input
+                                                type="button"
+                                                name="cancel"
+                                                class="btn btn-secondary btn-md m-2"
+                                                onclick="window.location='/admin/dashboard';"
+                                                value="Cancel"
+                                            />
+                                            <input
+                                                type="submit"
+                                                name="submit"
+                                                class="btn btn-primary btn-md m-2"
+                                                value="Save"
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>

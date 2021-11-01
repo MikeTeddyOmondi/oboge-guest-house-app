@@ -46,7 +46,7 @@ const sessionStore = new MongoDBStore({
 	collection: "sessions",
 });
 
-sessionStore.on("error", function (error) {
+sessionStore.on("error", function(error) {
 	// Error catched and thrown to handler
 	console.log(`_________________________________________`);
 	console.log(`Session error:`);
@@ -78,7 +78,7 @@ app.use(passport.session());
 app.use(flash());
 
 // Global variables
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
 	res.locals.success_msg = req.flash("success_msg");
 	res.locals.error_msg = req.flash("error_msg");
 	res.locals.error = req.flash("error");
@@ -86,7 +86,7 @@ app.use(function (req, res, next) {
 });
 
 // Logs | Routes
-app.use(morgan("dev"));
+app.use(morgan("common"));
 
 // Routes
 app.use("/", require("./routes/index.js"));
