@@ -66,24 +66,15 @@ router
 	.post(ensureAuthenticated, adminController.postAddBarDrinkPanel);
 
 // Bar Purchases | GET
-// Bar Purchases | POST
 router
 	.route("/bar-purchases")
 	.get(ensureAuthenticated, adminController.getBarPurchasesPanel)
-	.post(ensureAuthenticated, adminController.postBarPurchasesPanel);
 
-// Bar Purchases - Add Receipt Number | GET
-// Bar Purchases - Add Receipt Number | POST
+// Bar Purchases - Form | GET
+// Bar Purchases - Form | POST
 router
-	.route("/bar-purchases/add-receipt-number")
-	.get(ensureAuthenticated, adminController.getBarPurchasesNumberPanel)
-	.post(ensureAuthenticated, adminController.postBarPurchasesNumberPanel);
-
-// Bar Purchases - Add List | GET
-// Bar Purchases - Add List | POST
-router
-	.route("/bar-purchases/add-list")
-	.get(ensureAuthenticated, adminController.getBarPurchasesListPanel)
-	.post(ensureAuthenticated, adminController.postBarPurchasesListPanel);
+	.route("/bar-purchases/add")
+	.get(ensureAuthenticated, adminController.getBarPurchasesFormPanel)
+	.post(ensureAuthenticated, adminController.postBarPurchasesFormPanel);
 
 module.exports = router;

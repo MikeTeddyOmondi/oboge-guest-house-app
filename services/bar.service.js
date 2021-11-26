@@ -34,18 +34,18 @@ module.exports = {
 		// Searching for drink given the unique drink code
 		let drink;
 
-		await Customer.findOne({ drinkCode: String(drinkCode) })
+		await Drink.findOne({ drinkCode: String(drinkCode) })
 			.then((drinkFound) => {
-				console.log(`> CustomerFound: ${customerFound._id}`);
-				customer = customerFound;
+				console.log(`> Drink Found: ${drinkFound._id}`);
+				drink = drinkFound;
 			})
 			.catch((err) => {
 				console.log(
-					`> [Bar Service] An error occurred while searching for that drink - ${err}`,
+					`> [Bar Service] An error occurred while searching for that drink (${drinkCode}) - ${err}`,
 				);
 				return err;
 			});
-		return customer;
+		return drink;
 	},
 	findDrink: async (objectID) => {
 		// 		// Searching for drink given the unique Object ID
@@ -65,14 +65,14 @@ module.exports = {
 
 		return customer;
 	},
-	fetchAllDrinkCodes: async () => {
+	fetchAllDrinks: async () => {
 		// Logic here
-		let allDrinkCodes = [];
+		let allDrinks;
 
 		await Drink.find({})
 			.then((drinks) => {
-				allDrinkCodes = drinks.map(({ drinkCode }) => drinkCode);
-				console.log("codes", allDrinkCodes);
+				//allDrinkCodes = drinks.map(({ drinkCode }) => drinkCode);
+				allDrinks = drinks;
 			})
 			.catch((err) => {
 				console.log(
@@ -81,56 +81,13 @@ module.exports = {
 				return err;
 			});
 
-		return allDrinkCodes;
+		return allDrinks;
 	},
-	// findRoom: async (roomNumber) => {
-	// 	// Logic here
-	// 	let roomFound;
-
-	// 	await Room.findOne({ roomNumber })
-	// 		.then((room) => {
-	// 			console.log(`> Room Found: ${room._id}`);
-	// 			roomFound = room;
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(`> [Booking Service] error - ${err.message}`);
-	// 			return err;
-	// 		});
-
-	// 	return roomFound;
-	// },
 	saveBarPurchase: async (barPurchase) => {
 		// Bar purchase Service Logic
-		const {
-			customerId,
-			numberAdults,
-			numberKids,
-			roomRate,
-			roomID,
-			check_in_date,
-			check_out_date,
-		} = booking;
+		const {} = barPurchase;
 
-		// Total number of occupants
-		const numberOccupants = parseInt(numberAdults) + parseInt(numberKids);
-
-		// Initialized Variables
-		const vatPercentage = 16 / 100;
-		const subTotal = numberOccupants * parseInt(roomRate);
-		const VAT = vatPercentage * subTotal;
-		const total = subTotal + VAT;
-
-		let newBarPurchase = new BarPurchase({
-			customer: customerId,
-			numberAdults,
-			numberKids,
-			roomsBooked: roomID,
-			checkInDate: check_in_date,
-			checkOutDate: check_out_date,
-			vat: VAT,
-			subTotalCost: subTotal,
-			totalCost: total,
-		});
+		let newBarPurchase = new BarPurchase({});
 
 		newBarPurchase
 			.save()
@@ -139,10 +96,9 @@ module.exports = {
 			})
 			.catch((err) => {
 				console.log(
-					"> [Bar Service] An error occurred while saving the bar purchase - ",
-					err.message,
+					`> [Bar Service] An error occurred while saving the bar purchase (${barPurchase}) - ${err.message}`,
 				);
-				return err;
+				return;
 			});
 		return newBarPurchase;
 	},

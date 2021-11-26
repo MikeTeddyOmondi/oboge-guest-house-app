@@ -146,10 +146,7 @@ process.on("uncaughtException", (error) => {
 const connectWithRetry = () => {
 	mongoose
 		.connect(db_URI, {
-			useCreateIndex: true,
 			useNewUrlParser: true,
-			useFindAndModify: false,
-			useUnifiedTopology: true,
 		})
 		.then(() => {
 			startServer();
