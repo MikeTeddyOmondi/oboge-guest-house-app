@@ -5,6 +5,9 @@ const {
 	forwardAuthenticated,
 } = require("../middleware/auth");
 
+// Image Uploader Service
+const { upload } = require("../services/drinkImageUpload");
+
 // Controller | Admin Panel
 const adminController = require("../controllers/admin.controller");
 
@@ -63,12 +66,16 @@ router
 router
 	.route("/add-bar-drink")
 	.get(ensureAuthenticated, adminController.getAddBarDrinkPanel)
-	.post(ensureAuthenticated, adminController.postAddBarDrinkPanel);
+	.post(
+		ensureAuthenticated,
+		upload.single("image"),
+		adminController.postAddBarDrinkPanel,
+	);
 
 // Bar Purchases | GET
 router
 	.route("/bar-purchases")
-	.get(ensureAuthenticated, adminController.getBarPurchasesPanel)
+	.get(ensureAuthenticated, adminController.getBarPurchasesPanel);
 
 // Bar Purchases - Form | GET
 // Bar Purchases - Form | POST

@@ -23,6 +23,10 @@ const DrinkSchema = new mongoose.Schema(
 			type: Number,
 			required: true,
 		},
+		image: {
+			type: String,
+			default: "drink_image.jpg",
+		},
 	},
 	{ timestamps: true },
 );

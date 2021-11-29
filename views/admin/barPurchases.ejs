@@ -10,7 +10,7 @@
 				<div class="mt-2 mx-auto">
 					<a
 						href="/admin/bar-purchases/add"
-						class="btn btn-primary btn-lg rounded"
+						class="btn btn-primary btn-md rounded"
 						>Add New | Bar Purchase
 					</a>
 					<br><br>
@@ -24,12 +24,36 @@
 											<thead>
 												<tr>
 													<th>Receipt Number</th>
-													<th>Product</th>
-													<th>Quantity</th>
+													<th>Product Code</th>
+													<th>Product Name</th>
+													<th>Quantity (Unit of Measurement)</th>
+													<th>Stock Value</th>
 													<th>Supplier</th>
 												</tr>
 											</thead>
 											<tbody>
+											    <% purchases.forEach(purchase => { %>
+													<tr class="">
+														<td>
+															<%= purchase.receiptNumber %>
+														</td>
+														<td>
+															<%= purchase.product.drinkCode %>
+														</td>
+														<td>
+															<%= purchase.product.drinkName %>
+														</td>
+														<td>
+															<%= purchase.quantity %> <%= purchase.product.uom %>
+														</td>
+														<td>
+															<%= new Intl.NumberFormat('ke-KE', {style: 'currency', currency: 'KSH', minimumFractionDigits: 0}).format(purchase.stockValue) %>
+														</td>
+														<td>
+															<%= purchase.supplier %>
+														</td>
+													</tr>
+												<% }) %>
 											</tbody>
 										</table>
 									</div>

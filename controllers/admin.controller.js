@@ -13,7 +13,12 @@ const Room = require("../models/Room");
 const Drink = require("../models/Drink");
 
 // Import Bar Service
-const { fetchAllDrinks } = require("../services/bar.service");
+const {
+	fetchAllDrinks,
+	searchDrink,
+	saveBarPurchase,
+	fetchBarPurchases,
+} = require("../services/bar.service");
 
 // Administration | GET
 exports.getAdminPanel = (req, res) => {
@@ -442,7 +447,7 @@ exports.postAddRoomInfoPanel = (req, res) => {
 exports.getAddBarDrinkPanel = (req, res) => {
 	res.render("admin/addBarDrink", {
 		user: req.user,
-		title: "Add Bar Drink | Menu Updates",
+		title: "Add Bar Drink | Menu",
 		layout: "./layouts/adminLayout.ejs",
 	});
 };
@@ -450,12 +455,20 @@ exports.getAddBarDrinkPanel = (req, res) => {
 // Add Bar Drink | Menu Updates | POST
 exports.postAddBarDrinkPanel = (req, res) => {
 	const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice } = req.body;
+	const image = req.file;
 
-	console.log(req.body);
+	//console.log(req.body);
 
 	let errors = [];
 
-	if (!drinkName || !drinkCode || !typeOfDrink || !uom || !buyingPrice) {
+	if (
+		!drinkName ||
+		!drinkCode ||
+		!typeOfDrink ||
+		!uom ||
+		!buyingPrice ||
+		!image
+	) {
 		errors.push({ msg: "Please enter all fields" });
 	}
 
@@ -467,8 +480,9 @@ exports.postAddBarDrinkPanel = (req, res) => {
 			typeOfDrink,
 			uom,
 			buyingPrice,
+			image,
 			user: req.user,
-			title: "Add Bar Drink | Menu Updates",
+			title: "Add Bar Drink | Menu",
 			layout: "./layouts/adminLayout.ejs",
 		});
 	} else {
@@ -485,8 +499,9 @@ exports.postAddBarDrinkPanel = (req, res) => {
 					typeOfDrink,
 					uom,
 					buyingPrice,
+					image,
 					user: req.user,
-					title: "Add Bar Drink | Menu Updates",
+					title: "Add Bar Drink | Menu",
 					layout: "./layouts/adminLayout.ejs",
 				});
 			} else {
@@ -496,6 +511,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 					typeOfDrink,
 					uom,
 					buyingPrice,
+					image: image.filename,
 				});
 
 				newDrink
@@ -518,12 +534,25 @@ exports.postAddBarDrinkPanel = (req, res) => {
 
 // Bar purchases | GET
 exports.getBarPurchasesPanel = (req, res) => {
-	// render the page
-	res.render("admin/barPurchases", {
-		user: req.user,
-		title: "Bar Purchases",
-		layout: "./layouts/adminLayout.ejs",
-	});
+	// Fetching All Bar Purchases
+	fetchBarPurchases()
+		.then((purchases) => {
+			// render the page
+			res.render("admin/barPurchases", {
+				purchases,
+				user: req.user,
+				title: "Bar Purchases",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		})
+		.catch((err) => {
+			// render the page
+			res.render("admin/barPurchases", {
+				user: req.user,
+				title: "Bar Purchases",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		});
 };
 
 // Bar purchases - Add Bar Purchases Form | GET
@@ -537,7 +566,6 @@ exports.getBarPurchasesFormPanel = (req, res) => {
 			//console.log(allDrinks);
 
 			drinkCodes = allDrinks.map(({ drinkCode }) => drinkCode);
-			console.log(drinkCodes);
 
 			// render the page
 			res.render("admin/barPurchasesForm", {
@@ -554,28 +582,29 @@ exports.getBarPurchasesFormPanel = (req, res) => {
 
 // Bar purchases - Add Bar Purchases Form | POST
 exports.postBarPurchasesFormPanel = (req, res) => {
-	const { drinkCode, quantity, availability } = req.body;
+	const { receiptNumber, product, quantity, supplier } = req.body;
 
-	console.log({ drinkCode, quantity, availability });
+	console.log({ receiptNumber, product, quantity, supplier });
 
 	let errors = [];
-	let drinkCodes;
+	let drinks = {};
+	let drinkCodes = {};
+	let buyingPrice = 0;
 
 	// fetch all drink codes from database
 	fetchAllDrinks()
 		.then((allDrinks) => {
-			drinkCodes = allDrinks;
-			//console.log(drinkCodes);
+			drinks = allDrinks;
+			drinkCodes = allDrinks.map(({ drinkCode }) => drinkCode);
 
 			// Bar Purchases Logic
-			if (!drinkCode || !quantity || !availability) {
+			if (!receiptNumber || !product || !quantity || !supplier) {
 				errors.push({ msg: "Please enter all fields" });
 			}
 
 			if (errors.length > 0) {
 				res.render("admin/barPurchasesForm", {
 					errors,
-					drinkCode,
 					quantity,
 					availability,
 					drinkCodes,
@@ -584,29 +613,64 @@ exports.postBarPurchasesFormPanel = (req, res) => {
 					layout: "./layouts/adminLayout.ejs",
 				});
 			} else {
-				// const newDrink = new Drink({
-				// 	drinkName,
-				// 	drinkCode: req.body.drinkCode,
-				// 	typeOfDrink,
-				// 	uom,
-				// 	buyingPrice,
-				// });
-				// newDrink
-				// 	.save()
-				// 	.then(() => {
-				// 		req.flash("success_msg", `Drink information saved successfully!`);
-				// 		res.redirect("/admin/add-bar-drink");
-				// 	})
-				// 	.catch((err) => {
-				// 		req.flash(
-				// 			"error_msg",
-				// 			`An error occurred while saving the drink information...`,
-				// 		);
-				// 		res.redirect("/admin/add-bar-drink");
-				// 	});
+				// Get the buying price after specific product search
+				searchDrink(product)
+					.then((drinkFound) => {
+						// Get the buying price of the product
+						buyingPrice = drinkFound.buyingPrice;
+
+						// Calculate Stock value
+						let stockValue = buyingPrice * Number(quantity);
+
+						const newPurchase = {
+							receiptNumber,
+							product: drinkFound._id,
+							quantity,
+							stockValue,
+							supplier,
+						};
+
+						// Save Bar Purchase
+						saveBarPurchase(newPurchase)
+							.then((purchaseMade) => {
+								console.log(
+									`> [Controller Logs] New Bar Purchase: ${purchaseMade}`,
+								);
+								req.flash(
+									"success_msg",
+									`Saved the new bar stock purchase successfully!...`,
+								);
+								return res.redirect("/admin/bar-purchases/add");
+							})
+							.catch((err) => {
+								console.log(
+									`> [Controller Error] An error occurred while saving the data: ${err.message}`,
+								);
+								req.flash(
+									"error_msg",
+									`An error occurred while saving the data!`,
+								);
+								return res.redirect("/admin/bar-purchases/add");
+							});
+					})
+					.catch((err) => {
+						console.log(
+							`> [Controller Error] Product with that code was not found!!!...`,
+						);
+
+						req.flash(
+							"error_msg",
+							`Product with this code ${product} was not found!`,
+						);
+						return res.redirect("/admin/bar-purchases/add");
+					});
 			}
 		})
 		.catch((err) => {
-			console.log(`> An error occurred while fetching data: ${err.message}`);
+			console.log(
+				`> [Controller Error] An error occurred while fetching data: ${err.message}`,
+			);
+			req.flash("error_msg", `An error occurred while fetching data!`);
+			return res.redirect("/admin/bar-purchases/add");
 		});
 };

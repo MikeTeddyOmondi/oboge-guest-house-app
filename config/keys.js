@@ -1,13 +1,10 @@
-const {
-    MONGO_IP,
-    MONGO_PORT,
-    MONGODB_URI
-} = require("../config/config")
+const { MONGO_REMOTE_URI, MONGO_LOCAL_URI } = require("../config/config");
 
-// Database Connection | Remote network
+// Database Connection | REMOTE or LOCAL network
 //const URI = `mongodb://${MONGO_ADMIN_USER}:${MONGO_ADMIN_PASSWORD}@${MONGO_IP}:${MONGO_PORT}`;
-const URI = `mongodb://${MONGO_IP}:${MONGO_PORT}/hotel-app-db`;
+//const URI = `mongodb://${MONGO_IP}:${MONGO_PORT}/hotel-app-db`;
 
 module.exports = {
-    'mongoURI': MONGODB_URI
+	MONGO_REMOTE_URI,
+	MONGO_LOCAL_URI,
 };

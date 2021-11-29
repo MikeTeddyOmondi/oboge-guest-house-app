@@ -11,6 +11,10 @@ const BarPurchaseSchema = new mongoose.Schema(
 			required: true,
 			ref: "Drink",
 		},
+		quantity: {
+			type: Number,
+			required: true,
+		},
 		stockValue: {
 			type: Number,
 			required: true,

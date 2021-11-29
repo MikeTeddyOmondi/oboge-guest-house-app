@@ -85,9 +85,16 @@ module.exports = {
 	},
 	saveBarPurchase: async (barPurchase) => {
 		// Bar purchase Service Logic
-		const {} = barPurchase;
+		const { receiptNumber, product, quantity, stockValue, supplier } =
+			barPurchase;
 
-		let newBarPurchase = new BarPurchase({});
+		let newBarPurchase = new BarPurchase({
+			receiptNumber,
+			product,
+			quantity,
+			stockValue,
+			supplier,
+		});
 
 		newBarPurchase
 			.save()
@@ -102,4 +109,25 @@ module.exports = {
 			});
 		return newBarPurchase;
 	},
+	fetchBarPurchases: async () => {
+		// Logic here
+		let allPurchases;
+
+		await BarPurchase.find({})
+			.populate("product")
+			.then((purchasesMade) => {
+				console.log(purchasesMade);
+				allPurchases = purchasesMade;
+			})
+			.catch((err) => {
+				console.log(
+					`> [Bar Service] An error occurred while fetching data - ${err.message}`,
+				);
+				allPurchases = {};
+				return err;
+			});
+
+		return allPurchases;
+	},
+	updateStockQuantity: async () => {},
 };
