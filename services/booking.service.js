@@ -129,4 +129,54 @@ module.exports = {
 			});
 		return newBooking;
 	},
+	updateRoomStatus: async (roomNumber, boolean) => {
+		if (boolean == true) {
+			await Room.findOneAndUpdate(
+				{ roomNumber },
+				{ isBooked: true },
+				(err, doc, res) => {
+					if (err) return console.log(err.message);
+					console.log({ doc });
+				},
+			).clone();
+		} else if (boolean == false) {
+			await Room.findOneAndUpdate(
+				{ roomNumber },
+				{ isBooked: false },
+				(err, doc, res) => {
+					if (err) return console.log(err.message);
+					console.log({ doc });
+				},
+			).clone();
+		} else {
+			return console.log(
+				"> [Service error} No args provided: (roomNumber, boolean)",
+			);
+		}
+
+		return;
+	},
+	checkRoomAvailability: async (roomNumber) => {
+		let availability;
+
+		await Room.findOne({ roomNumber })
+			.then((room) => {
+				let roomFound = room;
+
+				if (roomFound.isBooked == true) {
+					console.log(`> Room is not available!`);
+					return (availability = true);
+				}
+				console.log(`> Room is available...`);
+				return (availability = false);
+			})
+			.catch((err) => {
+				console.log(
+					`> [Booking Service] error while checking availability - ${err.message}`,
+				);
+				return err;
+			});
+
+		return availability;
+	},
 };

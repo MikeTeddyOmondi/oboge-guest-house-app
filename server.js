@@ -39,7 +39,7 @@ app.use(morgan("common"));
 // DB | Config
 let DB_URI_IN_USE = "";
 const DB_REMOTE_URI = require("./config/keys").MONGO_REMOTE_URI;
-const DB_LOCAL_URI = require("./config/keys").MONGO_LOCAL_URI;
+// const DB_LOCAL_URI = require("./config/keys").MONGO_LOCAL_URI;
 
 // MongoStore | Sessions Store
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -51,7 +51,7 @@ sessionOptions = {
 	uri: DB_REMOTE_URI,
 	databaseName: "guest-house-db",
 	collection: "sessions",
-}; 
+};
 
 const sessionStore = new MongoDBStore(sessionOptions);
 
@@ -139,7 +139,7 @@ app.use((error, req, res, next) => {
 // Connection to REMOTE | LOCAL database
 const connectDB = (URI) => {
 	DB_URI_IN_USE = URI;
-	console.log({ DB_URI_IN_USE });
+	// console.log({ DB_URI_IN_USE });
 
 	mongoose
 		.connect(URI, {
@@ -148,8 +148,8 @@ const connectDB = (URI) => {
 		.then(() => {
 			startServer();
 			console.log(`_________________________________________`);
-			console.log(`> Remote database connection initiated...`);
-			console.log(`> Remote database connection successfull!!!`);
+			console.log(`> Database connection initiated...`);
+			console.log(`> Database connection successfull!!!`);
 			console.log(`_________________________________________`);
 		})
 		.catch((err) => {
@@ -157,9 +157,9 @@ const connectDB = (URI) => {
 			console.log(`Database connection error:`);
 			console.log(`_________________________________________`);
 			console.log(`> Error connecting to the remote database: ${err.message}`);
-			console.log(`> Trying connection to the local database...`);
+			console.log(`> Trying connection to the remote database once again...`);
 			setTimeout(() => {
-				connectDB(DB_LOCAL_URI);
+				connectDB(DB_REMOTE_URI);
 			}, 3000);
 		});
 };
@@ -177,18 +177,18 @@ const startServer = async () => {
 	});
 };
 
-// process.on("unhandledRejection", (error, promise) => {
-// 	console.log(`Unhandled promise rejection: ${promise}`);
-// 	console.log(`Unhandled promise error: ${error.stack || error.message}`);
-// 	// Recommended: send the information to sentry.io
-// 	// or whatever crash reporting service you use
-// });
+process.on("unhandledRejection", (error, promise) => {
+	console.log(`Unhandled promise rejection: ${promise}`);
+	console.log(`Unhandled promise error: ${error.stack || error.message}`);
+	// Recommended: send the information to sentry.io
+	// or whatever crash reporting service
+});
 
-// process.on("uncaughtException", (error) => {
-// 	console.log(`Uncaught exception occurred: `);
-// 	console.log(`_____________________________ `);
-// 	console.log(`> Node thread process exiting...`);
-// 	console.log(`> ${error.message}`);
-// 	// Recommended: send the information to sentry.io or whatever crash reporting service you use
-// 	process.exit(1); // exit application
-// });
+process.on("uncaughtException", (error) => {
+	console.log(`Uncaught exception occurred: `);
+	console.log(`_____________________________ `);
+	console.log(`> Node thread process exiting...`);
+	console.log(`> ${error.message}`);
+	// Recommended: send the information to sentry.io or whatever crash reporting service 
+	process.exit(1); // exit application
+});
