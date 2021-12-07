@@ -23,7 +23,7 @@ module.exports = {
 		newCustomer
 			.save()
 			.then(() => {
-				console.log("Saved a new customer!");
+				console.log("> Saved a new customer!");
 			})
 			.catch((err) => {
 				console.log("> [Booking Service] error - ", err.message);
@@ -128,6 +128,27 @@ module.exports = {
 				return err;
 			});
 		return newBooking;
+	},
+	fetchBookings: async () => {
+		// Logic here
+		let allBookings;
+
+		await Booking.find({})
+			.populate("customer")
+			.populate("roomBooked")
+			.then((bookingsMade) => {
+				// console.log(`Bookings made: ${bookingsMade}`);
+				allBookings = bookingsMade;
+			})
+			.catch((err) => {
+				console.log(
+					`> [Booking Service] An error occurred while fetching data - ${err.message}`,
+				);
+				allBookings = {};
+				return err;
+			});
+
+		return allBookings;
 	},
 	updateRoomStatus: async (roomNumber, boolean) => {
 		if (boolean == true) {
