@@ -42,17 +42,29 @@ router
 	.route("/users/delete/:id")
 	.get(ensureAuthenticated, adminController.deleteUsersPanel);
 
-// Add Customers | GET
-// Add Customers | POST
+// Add Customers List view| GET
+// Add Customers List View| POST
 router
-	.route("/add-customers")
-	.get(ensureAuthenticated, adminController.getAddCustomersPanel)
-	.post(ensureAuthenticated, adminController.postAddCustomersPanel);
+	.route("/customers")
+	.get(ensureAuthenticated, adminController.getCustomersListPanel);
+
+// Add Customers Form view| GET
+// Add Customers Form View| POST
+router
+	.route("/customers/add")
+	.get(ensureAuthenticated, adminController.getAddCustomersFormPanel)
+	.post(ensureAuthenticated, adminController.postAddCustomersFormPanel);
 
 // Room Booking | GET
 router
-	.route("/add-room-booking")
-	.get(ensureAuthenticated, adminController.getAddRoomBookingsPanel);
+	.route("/bookings")
+	.get(ensureAuthenticated, adminController.getAddBookingsPanel);
+
+// Room Booking | Search Customer by ID Number | GET
+router
+	.route("/bookings/search-customer")
+	.get(ensureAuthenticated, adminController.getSearchCustomerPanel)
+	.post(ensureAuthenticated, adminController.postSearchCustomerPanel);
 
 // Room Info | GET
 // Room Info | POST
