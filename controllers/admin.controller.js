@@ -11,6 +11,10 @@ const User = require("../models/User");
 const Customer = require("../models/Customer");
 const Room = require("../models/Room");
 const Drink = require("../models/Drink");
+const Booking = require("../models/Booking");
+
+// Import Booking Service
+const { saveCustomer, fetchBookings } = require("../services/booking.service");
 
 // Import Bar Service
 const {
@@ -42,7 +46,7 @@ exports.getUsersPanel = (req, res) => {
 	User.find({}, (err, users) => {
 		users !== 0 ? JSON.stringify(users) : console.log(err);
 		res.render("admin/users", {
-			users: users,
+			users,
 			user: req.user,
 			title: "Users",
 			layout: "./layouts/adminLayout.ejs",
@@ -268,8 +272,21 @@ exports.deleteUsersPanel = async (req, res) => {
 		});
 };
 
-// Add Customers | GET
-exports.getAddCustomersPanel = (req, res) => {
+// Add Customers List View | GET
+exports.getCustomersListPanel = (req, res) => {
+	Customer.find({}, (err, customers) => {
+		customers !== 0 ? JSON.stringify(customers) : console.log(err);
+		res.render("admin/customers", {
+			customers,
+			user: req.user,
+			title: "Add Customer",
+			layout: "./layouts/adminLayout.ejs",
+		});
+	});
+};
+
+// Add Customers Form View | GET
+exports.getAddCustomersFormPanel = (req, res) => {
 	res.render("admin/addCustomer", {
 		user: req.user,
 		title: "Add Customer",
@@ -277,16 +294,9 @@ exports.getAddCustomersPanel = (req, res) => {
 	});
 };
 
-// Add Customers | POST
-exports.postAddCustomersPanel = (req, res) => {
+// Add Customers Form View | POST
+exports.postAddCustomersFormPanel = (req, res) => {
 	const { firstname, lastname, id_number, phone_number, email } = req.body;
-	console.log({
-		firstname,
-		lastname,
-		id_number,
-		phone_number,
-		email,
-	});
 
 	let errors = [];
 
@@ -332,26 +342,81 @@ exports.postAddCustomersPanel = (req, res) => {
 					layout: "./layouts/adminLayout",
 				});
 			} else {
-				res.render("admin/addCustomer", {
+				// Create a customer details | Object
+				let customerDetails = {
 					firstname,
 					lastname,
 					id_number,
 					phone_number,
 					email,
-					user: req.user,
-					title: "Add Customer",
-					layout: "./layouts/adminLayout",
-				});
+				};
+				// Save the customer details
+				saveCustomer(customerDetails)
+					.then((id) => {
+						console.log(`[NEW] CustomerID: ${id}`);
+						req.flash("success_msg", `Saved a customer successfully: ${id}`);
+						res.redirect("/admin/add-customers");
+					})
+					.catch((err) => {
+						console.log(`> [Controller] error - ${err.message}`);
+						errors.push({
+							msg: `An error occurred while saving customer details!`,
+						});
+						res.render("admin/addCustomer", {
+							errors,
+							firstname,
+							lastname,
+							id_number,
+							phone_number,
+							email,
+							user: req.user,
+							title: "Add Customer",
+							layout: "./layouts/adminLayout",
+						});
+					});
 			}
 		});
 	}
 };
 
-// Room Booking | GET
-exports.getAddRoomBookingsPanel = (req, res) => {
-	res.render("admin/addRoomBookings", {
+// Room Booking List View | GET
+exports.getAddBookingsPanel = (req, res) => {
+	// Fetching All Bookings Made
+	fetchBookings()
+		.then((bookings) => {
+			console.log(bookings);
+			// render the page
+			res.render("admin/addBookings", {
+				bookings,
+				user: req.user,
+				title: "Room Bookings | Accomodation",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		})
+		.catch((err) => {
+			// render the page
+			res.render("admin/addBookings", {
+				user: req.user,
+				title: "Room Bookings | Accomodation",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		});
+};
+
+// Room Booking List View | Search Customer by ID Number | GET
+exports.getSearchCustomerPanel = (req, res) => {
+	res.render("admin/addBookingsSearch", {
 		user: req.user,
-		title: "Room Bookings",
+		title: "Room Bookings | Accomodation",
+		layout: "./layouts/adminLayout.ejs",
+	});
+};
+
+// Room Booking List View | Search Customer by ID Number | POST
+exports.postSearchCustomerPanel = (req, res) => {
+	res.render("admin/addBookingsSearch", {
+		user: req.user,
+		title: "Room Bookings | Accomodation",
 		layout: "./layouts/adminLayout.ejs",
 	});
 };
