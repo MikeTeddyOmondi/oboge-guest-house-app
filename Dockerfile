@@ -1,4 +1,4 @@
-FROM node:14.17-alpine
+FROM node:14-alpine
 
 LABEL maintainer="MikeTeddyOmondi | mike_omondi@outlook.com"
 
