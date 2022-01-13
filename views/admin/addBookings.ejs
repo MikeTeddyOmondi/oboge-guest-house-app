@@ -65,7 +65,7 @@
                                                 <a href="/admin/bookings/edit/<%= booking._id%>" class="btn border-shadow update">
                                                     <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
                                                 </a>
-                                                <a href="/admin/bookings/delete/<%= booking._id%>" class="btn border-shadow delete">
+                                                <a href="/admin/bookings/delete/<%= booking._id%>" class="btn border-shadow delete" onclick="return confirm('Are you sure you want to delete this booking?');">
                                                     <span class="text-gradient"><i class="fa fa-times"></i></span>
                                                 </a>
                                             </td>
