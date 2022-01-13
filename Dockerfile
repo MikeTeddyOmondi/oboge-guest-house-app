@@ -1,6 +1,6 @@
-FROM node:14.17-alpine
+FROM node:16.13.2-alpine
 
-LABEL maintainer="MikeTeddyOmondi | mike_omondi@outlook.com"
+LABEL maintainer="@MikeTeddyOmondi | Rancko Solutions LLC"
 
 WORKDIR /src
 
