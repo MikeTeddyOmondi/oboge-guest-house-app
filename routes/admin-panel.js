@@ -66,6 +66,17 @@ router
 	.get(ensureAuthenticated, adminController.getSearchCustomerPanel)
 	.post(ensureAuthenticated, adminController.postSearchCustomerPanel);
 
+// Admin Panel - GET & POST | Room Booking Details | Bookings Page
+router
+	.route("/bookings/booking-details")
+	.get(ensureAuthenticated, adminController.getBookingsDetailsPanel)
+	.post(ensureAuthenticated, adminController.postBookingsDetailsPanel);
+
+// Admin Panel - GET | Bookings Invoice Page
+router
+	.route("/bookings/invoice")
+	.get(ensureAuthenticated, adminController.getBookingInvoice);
+
 // Room Info | GET
 // Room Info | POST
 router
