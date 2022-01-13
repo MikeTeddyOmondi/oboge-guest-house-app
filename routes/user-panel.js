@@ -14,12 +14,6 @@ router
 	.get(ensureAuthenticated, panelController.getBoookingPanel)
 	.post(ensureAuthenticated, panelController.postBookingPanel);
 
-// User Panel - GET & POST | Bookings Details | Bookings Page
-router
-	.route("/bookings/booking-details")
-	.get(ensureAuthenticated, panelController.getBookingsDetailsPanel)
-	.post(ensureAuthenticated, panelController.postBookingsDetailsPanel);
-
 // User Panel - GET & POST | New Customer | Bookings Page
 router
 	.route("/bookings/new-customer")
@@ -32,7 +26,13 @@ router
 	.get(ensureAuthenticated, panelController.getSearchCustomerPanel)
 	.post(ensureAuthenticated, panelController.postSearchCustomerPanel);
 
-// 	User Panel - GET | Bookings Invoice Page
+// User Panel - GET & POST | Bookings Details | Bookings Page
+router
+	.route("/bookings/booking-details")
+	.get(ensureAuthenticated, panelController.getBookingsDetailsPanel)
+	.post(ensureAuthenticated, panelController.postBookingsDetailsPanel);
+
+// User Panel - GET | Bookings Invoice Page
 router
 	.route("/bookings/invoice")
 	.get(ensureAuthenticated, panelController.getBookingInvoice);

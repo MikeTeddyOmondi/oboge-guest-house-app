@@ -35,8 +35,10 @@
 									<div class="col-sm-6 text-right">
 										<span>Check-In-Date | Check-Out-Date</span>
 										<br />
-										From: <strong><%= check_in_date.toLocaleDateString() %></strong>
-										To: <strong><%= check_out_date.toLocaleDateString() %></strong>
+										From:
+										<strong><%= check_in_date.toLocaleDateString() %></strong>
+										To:
+										<strong><%= check_out_date.toLocaleDateString() %></strong>
 									</div>
 								</div>
 							</div>
@@ -45,9 +47,7 @@
 								<div class="row">
 									<div class="col-sm-6">
 										<span>Client</span>
-										<strong>
-											<%= firstname %> <%= lastname %>
-										</strong>
+										<strong> <%= firstname %> <%= lastname %> </strong>
 										<p>
 											989 <br />
 											Awasi <br />
@@ -81,16 +81,14 @@
 								<div class="items">
 									<div class="row item">
 										<div class="col-xs-4 desc">Room Type</div>
-										<div class="col-xs-3 qty">
-											<%= roomType %>
+										<div class="col-xs-3 qty"><%= roomType %></div>
+										<div class="col-xs-5 amount text-right">
+											KShs. <%= roomRate %>
 										</div>
-										<div class="col-xs-5 amount text-right">KShs. <%= roomRate %></div>
 									</div>
 									<div class="row item">
 										<div class="col-xs-4 desc">Number of Occupants</div>
-										<div class="col-xs-3 qty">
-											<%= numberOccupants %>
-										</div>
+										<div class="col-xs-3 qty"><%= numberOccupants %></div>
 										<div class="col-xs-5 amount text-right">
 											KShs. <%= subTotal %>
 										</div>
@@ -101,7 +99,9 @@
 										<strong>Extra Notes</strong> Please note the bill is subject
 										to Value Added Tax.
 									</p>
-									<div class="field">Subtotal <span>KShs. <%= subTotal %></span></div>
+									<div class="field">
+										Subtotal <span>KShs. <%= subTotal %></span>
+									</div>
 									<div class="field">V.A.T <span>KShs. <%= VAT %></span></div>
 									<div class="field grand-total">
 										Total <span>KShs. <%= totalCost %></span>

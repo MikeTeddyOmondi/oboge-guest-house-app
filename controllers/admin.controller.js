@@ -11,9 +11,27 @@ const User = require("../models/User");
 const Customer = require("../models/Customer");
 const Room = require("../models/Room");
 const Drink = require("../models/Drink");
+const Booking = require("../models/Booking");
+
+// Import Booking Service
+const {
+	saveCustomer,
+	fetchBookings,
+	searchCustomer,
+	findCustomer,
+	findRoom,
+	saveBooking,
+	checkRoomAvailability,
+	updateRoomStatus,
+} = require("../services/booking.service");
 
 // Import Bar Service
-const { fetchAllDrinkCodes } = require("../services/bar.service");
+const {
+	fetchAllDrinks,
+	searchDrink,
+	saveBarPurchase,
+	fetchBarPurchases,
+} = require("../services/bar.service");
 
 // Administration | GET
 exports.getAdminPanel = (req, res) => {
@@ -22,6 +40,10 @@ exports.getAdminPanel = (req, res) => {
 		layout: "./layouts/userLayout",
 	});
 };
+
+// ________________________________________________
+// DASHBOARD | INFORMATION
+// ________________________________________________
 
 // Admin dashboard | GET
 exports.getDashboardPanel = (req, res) => {
@@ -32,12 +54,16 @@ exports.getDashboardPanel = (req, res) => {
 	});
 };
 
+// ________________________________________________
+// USERS INFORMATION
+// ________________________________________________
+
 // Users Route | GET
 exports.getUsersPanel = (req, res) => {
 	User.find({}, (err, users) => {
 		users !== 0 ? JSON.stringify(users) : console.log(err);
 		res.render("admin/users", {
-			users: users,
+			users,
 			user: req.user,
 			title: "Users",
 			layout: "./layouts/adminLayout.ejs",
@@ -263,8 +289,25 @@ exports.deleteUsersPanel = async (req, res) => {
 		});
 };
 
-// Add Customers | GET
-exports.getAddCustomersPanel = (req, res) => {
+// ________________________________________________
+// CUSTOMERS INFORMATION
+// ________________________________________________
+
+// Add Customers List View | GET
+exports.getCustomersListPanel = (req, res) => {
+	Customer.find({}, (err, customers) => {
+		customers !== 0 ? JSON.stringify(customers) : console.log(err);
+		res.render("admin/customers", {
+			customers,
+			user: req.user,
+			title: "Add Customer",
+			layout: "./layouts/adminLayout.ejs",
+		});
+	});
+};
+
+// Add Customers Form View | GET
+exports.getAddCustomersFormPanel = (req, res) => {
 	res.render("admin/addCustomer", {
 		user: req.user,
 		title: "Add Customer",
@@ -272,16 +315,9 @@ exports.getAddCustomersPanel = (req, res) => {
 	});
 };
 
-// Add Customers | POST
-exports.postAddCustomersPanel = (req, res) => {
+// Add Customers Form View | POST
+exports.postAddCustomersFormPanel = (req, res) => {
 	const { firstname, lastname, id_number, phone_number, email } = req.body;
-	console.log({
-		firstname,
-		lastname,
-		id_number,
-		phone_number,
-		email,
-	});
 
 	let errors = [];
 
@@ -327,29 +363,287 @@ exports.postAddCustomersPanel = (req, res) => {
 					layout: "./layouts/adminLayout",
 				});
 			} else {
-				res.render("admin/addCustomer", {
+				// Create a customer details | Object
+				let customerDetails = {
 					firstname,
 					lastname,
 					id_number,
 					phone_number,
 					email,
-					user: req.user,
-					title: "Add Customer",
-					layout: "./layouts/adminLayout",
-				});
+				};
+				// Save the customer details
+				saveCustomer(customerDetails)
+					.then((id) => {
+						console.log(`[NEW] CustomerID: ${id}`);
+						req.flash("success_msg", `Saved a customer successfully: ${id}`);
+						res.redirect("/admin/add-customers");
+					})
+					.catch((err) => {
+						console.log(`> [Controller] error - ${err.message}`);
+						errors.push({
+							msg: `An error occurred while saving customer details!`,
+						});
+						res.render("admin/addCustomer", {
+							errors,
+							firstname,
+							lastname,
+							id_number,
+							phone_number,
+							email,
+							user: req.user,
+							title: "Add Customer",
+							layout: "./layouts/adminLayout",
+						});
+					});
 			}
 		});
 	}
 };
 
-// Room Booking | GET
-exports.getAddRoomBookingsPanel = (req, res) => {
-	res.render("admin/addRoomBookings", {
+// ________________________________________________
+// ADD ROOM BOOKINGS | ACCOMODATIONS | INFORMATION
+// ________________________________________________
+
+// Room Booking List View | GET
+exports.getAddBookingsPanel = (req, res) => {
+	// Fetching All Bookings Made
+	fetchBookings()
+		.then((bookings) => {
+			// console.log(bookings);
+			// render the page
+			res.render("admin/addBookings", {
+				bookings,
+				user: req.user,
+				title: "Room Bookings | Accomodation",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		})
+		.catch((err) => {
+			// render the page
+			res.render("admin/addBookings", {
+				user: req.user,
+				title: "Room Bookings | Accomodation",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		});
+};
+
+// Room Booking List View | Search Customer by ID Number | GET
+exports.getSearchCustomerPanel = (req, res) => {
+	res.render("admin/addBookingsSearch", {
 		user: req.user,
-		title: "Room Bookings",
+		title: "Room Bookings | Accomodation",
 		layout: "./layouts/adminLayout.ejs",
 	});
 };
+
+// Room Booking List View | Search Customer by ID Number | POST
+exports.postSearchCustomerPanel = async (req, res) => {
+	// Initialize customerID
+	let customerID;
+
+	// Body | Request
+	const { id_number } = req.body;
+
+	// Search customer with the id
+	await searchCustomer(id_number)
+		.then((customerFound) => {
+			console.log(`> Customer Details: ${customerFound._id}`);
+			customerID = customerFound._id;
+			req.session.customerID = customerID;
+		})
+		.catch((err) => {
+			console.log(`> [Controller] error - ${err.message}`);
+			req.flash(
+				"error_msg",
+				`There is no customer with this ID number: ${id_number}...`,
+			);
+			return res.redirect("/admin/bookings/search-customer");
+		});
+
+	res.redirect("/admin/bookings/booking-details");
+};
+
+// Admin Panel - GET | Bookings Details Page
+exports.getBookingsDetailsPanel = (req, res) => {
+	let customerID = req.session.customerID;
+	res.render("admin/addBookingsDetails", {
+		customerID,
+		user: req.user,
+		title: "Room Bookings | Accomodation",
+		layout: "./layouts/adminLayout",
+	});
+};
+
+// Admin Panel - POST | Bookings Details Page
+exports.postBookingsDetailsPanel = async (req, res) => {
+	// Body | Request
+	const {
+		customerId,
+		numberAdults,
+		numberKids,
+		roomType,
+		roomNumber,
+		check_in_date,
+		check_out_date,
+	} = req.body;
+
+	let errors = [];
+
+	// Initialize booking, customer & room details
+	let bookingDetails;
+	let customerDetails;
+	let roomDetails;
+
+	// Find customer with the customerId
+	await findCustomer(customerId)
+		.then((customerFound) => {
+			console.log(`> Customer Details: ${customerFound}`);
+			customerDetails = customerFound;
+		})
+		.catch((err) => {
+			console.log(`[Controller] error: ${err}`);
+		});
+
+	// Find room given the room number
+	await findRoom(roomNumber)
+		.catch((err) => {
+			console.log(`> [Controller] error: ${err}`);
+		})
+		.then((roomFound) => {
+			// Check Room Availability
+
+			console.log(`> Room Details: ${roomFound}`);
+			roomDetails = roomFound;
+		});
+
+	const { roomRate, _id } = roomDetails;
+	const roomID = _id;
+
+	// Check room if its available
+	let availability = await checkRoomAvailability(roomNumber);
+	console.log("> Is room booked? ", availability);
+
+	// Booking Logic
+	let numberOccupants = parseInt(numberAdults) + parseInt(numberKids);
+
+	if (
+		!numberAdults ||
+		!numberKids ||
+		!roomType ||
+		!roomNumber ||
+		!check_in_date ||
+		!check_out_date
+	) {
+		errors.push({ msg: "Please enter all fields" });
+	}
+
+	if (numberOccupants > roomDetails.roomCapacity) {
+		errors.push({ msg: "Room capacity of the chosen room has been exceeded!" });
+	}
+
+	if (availability == true) {
+		errors.push({ msg: "Room is not available. Try another room!" });
+	}
+
+	if (errors.length > 0) {
+		return res.render("admin/addBookingsDetails", {
+			errors,
+			customerID: req.session.customerID,
+			numberAdults,
+			numberKids,
+			roomType,
+			roomNumber,
+			check_in_date,
+			check_out_date,
+			user: req.user,
+			title: "Room Bookings | Accomodation",
+			layout: "./layouts/adminLayout",
+		});
+	}
+	bookingDetails = {
+		customerId,
+		numberAdults,
+		numberKids,
+		roomID,
+		roomType,
+		roomNumber,
+		roomRate,
+		check_in_date,
+		check_out_date,
+	};
+
+	// Update room status to >>> isBooked: true
+	let result = await updateRoomStatus(roomNumber, true);
+
+	// Save booking
+	await saveBooking(bookingDetails)
+		.then((invoiceInfo) => {
+			console.log(`> [NEW] Booking Info: ${invoiceInfo}`);
+
+			// Load invoice information into the session | request object
+			req.session.bookingID = invoiceInfo._id;
+			req.session.firstname = customerDetails.firstname;
+			req.session.lastname = customerDetails.lastname;
+			req.session.phoneNumber = customerDetails.phone_number;
+			req.session.email = customerDetails.email;
+			req.session.roomType = bookingDetails.roomType;
+			req.session.roomRate = bookingDetails.roomRate;
+			req.session.numberOccupants = numberOccupants;
+			req.session.check_in_date = invoiceInfo.checkInDate;
+			req.session.check_out_date = invoiceInfo.checkOutDate;
+			req.session.subTotal = invoiceInfo.subTotalCost;
+			req.session.VAT = invoiceInfo.vat;
+			req.session.totalCost = invoiceInfo.totalCost;
+
+			// Redirect to Customer Invoice
+			res.redirect("/admin/bookings/invoice");
+		})
+		.catch((err) => {
+			console.log(`> [Controller] error: ${err}`);
+		});
+};
+
+// Admin Panel - GET | Bookings Invoice Page
+exports.getBookingInvoice = (req, res) => {
+	const {
+		bookingID,
+		firstname,
+		lastname,
+		phoneNumber,
+		email,
+		roomType,
+		roomRate,
+		numberOccupants,
+		check_in_date,
+		check_out_date,
+		subTotal,
+		VAT,
+		totalCost,
+	} = req.session;
+	res.render("admin/bookingsInvoice", {
+		bookingID,
+		firstname,
+		lastname,
+		phoneNumber,
+		email,
+		roomType,
+		roomRate,
+		numberOccupants,
+		check_in_date,
+		check_out_date,
+		subTotal,
+		VAT,
+		totalCost,
+		user: req.user,
+		title: "Room Bookings | Accomodation | Invoice",
+		layout: "./layouts/adminLayout",
+	});
+};
+
+// ______________________________________
+// ADD ROOM INFORMATION
+// ______________________________________
 
 // Room Info | GET
 exports.getAddRoomInfoPanel = (req, res) => {
@@ -438,11 +732,15 @@ exports.postAddRoomInfoPanel = (req, res) => {
 	}
 };
 
+// ______________________________________
+// ADD BAR DRINKS INFORMATION
+// ______________________________________
+
 // Add Bar Drink | Menu Updates | GET
 exports.getAddBarDrinkPanel = (req, res) => {
 	res.render("admin/addBarDrink", {
 		user: req.user,
-		title: "Add Bar Drink | Menu Updates",
+		title: "Add Bar Drink | Menu",
 		layout: "./layouts/adminLayout.ejs",
 	});
 };
@@ -450,12 +748,20 @@ exports.getAddBarDrinkPanel = (req, res) => {
 // Add Bar Drink | Menu Updates | POST
 exports.postAddBarDrinkPanel = (req, res) => {
 	const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice } = req.body;
+	const image = req.file;
 
-	console.log(req.body);
+	//console.log(req.body);
 
 	let errors = [];
 
-	if (!drinkName || !drinkCode || !typeOfDrink || !uom || !buyingPrice) {
+	if (
+		!drinkName ||
+		!drinkCode ||
+		!typeOfDrink ||
+		!uom ||
+		!buyingPrice ||
+		!image
+	) {
 		errors.push({ msg: "Please enter all fields" });
 	}
 
@@ -467,8 +773,9 @@ exports.postAddBarDrinkPanel = (req, res) => {
 			typeOfDrink,
 			uom,
 			buyingPrice,
+			image,
 			user: req.user,
-			title: "Add Bar Drink | Menu Updates",
+			title: "Add Bar Drink | Menu",
 			layout: "./layouts/adminLayout.ejs",
 		});
 	} else {
@@ -485,8 +792,9 @@ exports.postAddBarDrinkPanel = (req, res) => {
 					typeOfDrink,
 					uom,
 					buyingPrice,
+					image,
 					user: req.user,
-					title: "Add Bar Drink | Menu Updates",
+					title: "Add Bar Drink | Menu",
 					layout: "./layouts/adminLayout.ejs",
 				});
 			} else {
@@ -496,6 +804,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 					typeOfDrink,
 					uom,
 					buyingPrice,
+					image: image.filename,
 				});
 
 				newDrink
@@ -516,22 +825,50 @@ exports.postAddBarDrinkPanel = (req, res) => {
 	}
 };
 
+// ______________________________________
+// ADD BAR PURCHASES INFORMATION
+// ______________________________________
+
 // Bar purchases | GET
 exports.getBarPurchasesPanel = (req, res) => {
-	// Initialize drink codes to display
-	let drinkCodes;
-
-	// fetch all drink codes from database
-	fetchAllDrinkCodes()
-		.then((allDrinkCodes) => {
-			drinkCodes = allDrinkCodes;
-			console.log(drinkCodes);
-
+	// Fetching All Bar Purchases
+	fetchBarPurchases()
+		.then((purchases) => {
 			// render the page
 			res.render("admin/barPurchases", {
-				drinkCodes,
+				purchases,
 				user: req.user,
 				title: "Bar Purchases",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		})
+		.catch((err) => {
+			// render the page
+			res.render("admin/barPurchases", {
+				user: req.user,
+				title: "Bar Purchases",
+				layout: "./layouts/adminLayout.ejs",
+			});
+		});
+};
+
+// Bar purchases - Add Bar Purchases Form | GET
+exports.getBarPurchasesFormPanel = (req, res) => {
+	// Initialize drink codes to display
+	let drinkCodes = {};
+
+	// fetch all drink codes from database
+	fetchAllDrinks()
+		.then((allDrinks) => {
+			//console.log(allDrinks);
+
+			drinkCodes = allDrinks.map(({ drinkCode }) => drinkCode);
+
+			// render the page
+			res.render("admin/barPurchasesForm", {
+				drinkCodes,
+				user: req.user,
+				title: "Bar Purchases - Add List",
 				layout: "./layouts/adminLayout.ejs",
 			});
 		})
@@ -540,61 +877,97 @@ exports.getBarPurchasesPanel = (req, res) => {
 		});
 };
 
-// Bar purchases | POST
-exports.postBarPurchasesPanel = (req, res) => {
-	const { drinkCode, quantity, availability } = req.body;
+// Bar purchases - Add Bar Purchases Form | POST
+exports.postBarPurchasesFormPanel = (req, res) => {
+	const { receiptNumber, product, quantity, supplier } = req.body;
 
-	console.log({ drinkCode, quantity, availability });
+	console.log({ receiptNumber, product, quantity, supplier });
 
 	let errors = [];
-	let drinkCodes;
+	let drinks = {};
+	let drinkCodes = {};
+	let buyingPrice = 0;
 
 	// fetch all drink codes from database
-	fetchAllDrinkCodes()
-		.then((allDrinkCodes) => {
-			drinkCodes = allDrinkCodes;
-			console.log(drinkCodes);
+	fetchAllDrinks()
+		.then((allDrinks) => {
+			drinks = allDrinks;
+			drinkCodes = allDrinks.map(({ drinkCode }) => drinkCode);
 
 			// Bar Purchases Logic
-			if (!drinkCode || !quantity || !availability) {
+			if (!receiptNumber || !product || !quantity || !supplier) {
 				errors.push({ msg: "Please enter all fields" });
 			}
 
 			if (errors.length > 0) {
-				res.render("admin/barPurchases", {
+				res.render("admin/barPurchasesForm", {
 					errors,
-					drinkCode,
 					quantity,
 					availability,
 					drinkCodes,
 					user: req.user,
-					title: "Bar Purchases",
+					title: "Bar Purchases | Add List",
 					layout: "./layouts/adminLayout.ejs",
 				});
 			} else {
-				// const newDrink = new Drink({
-				// 	drinkName,
-				// 	drinkCode: req.body.drinkCode,
-				// 	typeOfDrink,
-				// 	uom,
-				// 	buyingPrice,
-				// });
-				// newDrink
-				// 	.save()
-				// 	.then(() => {
-				// 		req.flash("success_msg", `Drink information saved successfully!`);
-				// 		res.redirect("/admin/add-bar-drink");
-				// 	})
-				// 	.catch((err) => {
-				// 		req.flash(
-				// 			"error_msg",
-				// 			`An error occurred while saving the drink information...`,
-				// 		);
-				// 		res.redirect("/admin/add-bar-drink");
-				// 	});
+				// Get the buying price after specific product search
+				searchDrink(product)
+					.then((drinkFound) => {
+						// Get the buying price of the product
+						buyingPrice = drinkFound.buyingPrice;
+
+						// Calculate Stock value
+						let stockValue = buyingPrice * Number(quantity);
+
+						const newPurchase = {
+							receiptNumber,
+							product: drinkFound._id,
+							quantity,
+							stockValue,
+							supplier,
+						};
+
+						// Save Bar Purchase
+						saveBarPurchase(newPurchase)
+							.then((purchaseMade) => {
+								console.log(
+									`> [Controller Logs] New Bar Purchase: ${purchaseMade}`,
+								);
+								req.flash(
+									"success_msg",
+									`Saved the new bar stock purchase successfully!...`,
+								);
+								return res.redirect("/admin/bar-purchases/add");
+							})
+							.catch((err) => {
+								console.log(
+									`> [Controller Error] An error occurred while saving the data: ${err.message}`,
+								);
+								req.flash(
+									"error_msg",
+									`An error occurred while saving the data!`,
+								);
+								return res.redirect("/admin/bar-purchases/add");
+							});
+					})
+					.catch((err) => {
+						console.log(
+							`> [Controller Error] Product with that code was not found!!!...`,
+						);
+
+						req.flash(
+							"error_msg",
+							`Product with this code ${product} was not found!`,
+						);
+						return res.redirect("/admin/bar-purchases/add");
+					});
 			}
 		})
 		.catch((err) => {
-			console.log(`> An error occurred while fetching data: ${err.message}`);
+			console.log(
+				`> [Controller Error] An error occurred while fetching data: ${err.message}`,
+			);
+			req.flash("error_msg", `An error occurred while fetching data!`);
+			return res.redirect("/admin/bar-purchases/add");
 		});
 };

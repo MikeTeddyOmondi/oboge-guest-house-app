@@ -35,7 +35,7 @@
                                                     <a href="/admin/users/edit/<%= user._id%>" class="btn border-shadow update">
                                                         <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
                                                     </a>
-                                                    <a href="/admin/users/delete/<%= user._id%>" class="btn border-shadow delete">
+                                                    <a href="/admin/users/delete/<%= user._id%>" class="btn border-shadow delete" onclick="return confirm('Are you sure you want to delete this user?');">
                                                         <span class="text-gradient"><i class="fa fa-times"></i></span>
                                                     </a>
                                                 </td>

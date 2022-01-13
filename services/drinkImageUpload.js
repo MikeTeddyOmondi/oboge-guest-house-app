@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
 
 	//add back the extension
 	filename: function (request, file, callback) {
-		callback(null, `ErrorScreenshot-${file.originalname}_${Date.now()}`);
+		callback(null, `Drink_Image-${file.originalname}`);
 	},
 });
 
@@ -23,4 +23,4 @@ const upload = multer({
 	},
 });
 
-module.exports = { upload: upload };
+module.exports = { upload };

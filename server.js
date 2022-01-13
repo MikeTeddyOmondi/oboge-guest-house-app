@@ -21,9 +21,6 @@ require("./config/passport")(passport);
 app.use(express.static(path.join(__dirname, "assets")));
 app.use(favicon(path.join(__dirname, "assets", "favicon.ico")));
 
-// DB | Config
-const db_URI = require("./config/keys").mongoURI;
-
 // EJS
 app.use(expressLayouts);
 app.set("view engine", "ejs");
@@ -36,23 +33,25 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Logs | Routes
+process.env.NODE_ENV === "production" ? app.use(morgan("common")) : app.use(morgan("dev")); 
+
+// DB | Configs
+const DB_REMOTE_URI = require("./config/keys").MONGO_REMOTE_URI;
+
 // MongoStore | Sessions Store
 const MongoDBStore = require("connect-mongodb-session")(session);
 
 // Session Storage
-const sessionStore = new MongoDBStore({
-	uri: db_URI,
+let sessionOptions = {};
+
+sessionOptions = {
+	uri: DB_REMOTE_URI,
 	databaseName: "guest-house-db",
 	collection: "sessions",
-});
+};
 
-sessionStore.on("error", function (error) {
-	// Error catched and thrown to handler
-	console.log(`_________________________________________`);
-	console.log(`Session error:`);
-	console.log(`_________________________________________`);
-	console.log(`> ${error.message}`);
-});
+const sessionStore = new MongoDBStore(sessionOptions);
 
 // Express session
 app.use(
@@ -77,6 +76,17 @@ app.use(passport.session());
 // Connect flash
 app.use(flash());
 
+// Check for errors before making a session
+sessionStore.on("error", function (error) {
+	// Error catched and thrown to handler
+	console.log(`_________________________________________`);
+	console.log(`Sessions error:`);
+	console.log(`_________________________________________`);
+	console.log(`> Unable to initiate sessions from database:`);
+	console.log(`> ${error.message}`);
+	console.log(`_________________________________________`);
+});
+
 // Global variables
 app.use(function (req, res, next) {
 	res.locals.success_msg = req.flash("success_msg");
@@ -84,9 +94,6 @@ app.use(function (req, res, next) {
 	res.locals.error = req.flash("error");
 	next();
 });
-
-// Logs | Routes
-app.use(morgan("dev"));
 
 // Routes
 app.use("/", require("./routes/index.js"));
@@ -127,29 +134,14 @@ app.use((error, req, res, next) => {
 	next();
 });
 
-process.on("unhandledRejection", (error, promise) => {
-	console.log(`Unhandled promise rejection: ${promise}`);
-	console.log(`Unhandled promise error: ${error.stack || error.message}`);
-	// Recommended: send the information to sentry.io
-	// or whatever crash reporting service you use
-});
+// Connection to REMOTE | LOCAL database
+const connectDB = (URI) => {
+	DB_URI_IN_USE = URI;
+	// console.log({ DB_URI_IN_USE });
 
-process.on("uncaughtException", (error) => {
-	console.log(`Uncaught exception occurred: `);
-	console.log(`_____________________________ `);
-	console.log(`> ${error}`);
-	// Recommended: send the information to sentry.io or whatever crash reporting service you use
-	process.exit(1); // exit application
-});
-
-// Connection to database
-const connectWithRetry = () => {
 	mongoose
-		.connect(db_URI, {
-			useCreateIndex: true,
+		.connect(URI, {
 			useNewUrlParser: true,
-			useFindAndModify: false,
-			useUnifiedTopology: true,
 		})
 		.then(() => {
 			startServer();
@@ -159,13 +151,19 @@ const connectWithRetry = () => {
 			console.log(`_________________________________________`);
 		})
 		.catch((err) => {
-			console.log(`> Error connecting to the database: ${err.message}`);
-			setTimeout(connectWithRetry, 5000);
+			console.log(`_________________________________________`);
+			console.log(`Database connection error:`);
+			console.log(`_________________________________________`);
+			console.log(`> Error connecting to the remote database: ${err.message}`);
+			console.log(`> Trying connection to the remote database once again...`);
+			setTimeout(() => {
+				connectDB(DB_REMOTE_URI);
+			}, 3000);
 		});
 };
 
 // Ping | Database Connection
-connectWithRetry();
+connectDB(DB_REMOTE_URI);
 
 // Start the server
 const startServer = async () => {
@@ -176,3 +174,19 @@ const startServer = async () => {
 		console.log(`_________________________________________ `);
 	});
 };
+
+process.on("unhandledRejection", (error, promise) => {
+	console.log(`Unhandled promise rejection: ${promise}`);
+	console.log(`Unhandled promise error: ${error.stack || error.message}`);
+	// Recommended: send the information to sentry.io
+	// or whatever crash reporting service
+});
+
+process.on("uncaughtException", (error) => {
+	console.log(`Uncaught exception occurred: `);
+	console.log(`_____________________________ `);
+	console.log(`> Node thread process exiting...`);
+	console.log(`> ${error.message}`);
+	// Recommended: send the information to sentry.io or whatever crash reporting service 
+	process.exit(1); // exit application
+});

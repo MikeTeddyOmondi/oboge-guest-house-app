@@ -5,6 +5,9 @@ const {
 	forwardAuthenticated,
 } = require("../middleware/auth");
 
+// Image Uploader Service
+const { upload } = require("../services/drinkImageUpload");
+
 // Controller | Admin Panel
 const adminController = require("../controllers/admin.controller");
 
@@ -39,17 +42,40 @@ router
 	.route("/users/delete/:id")
 	.get(ensureAuthenticated, adminController.deleteUsersPanel);
 
-// Add Customers | GET
-// Add Customers | POST
+// Add Customers List view| GET
+// Add Customers List View| POST
 router
-	.route("/add-customers")
-	.get(ensureAuthenticated, adminController.getAddCustomersPanel)
-	.post(ensureAuthenticated, adminController.postAddCustomersPanel);
+	.route("/customers")
+	.get(ensureAuthenticated, adminController.getCustomersListPanel);
+
+// Add Customers Form view| GET
+// Add Customers Form View| POST
+router
+	.route("/customers/add")
+	.get(ensureAuthenticated, adminController.getAddCustomersFormPanel)
+	.post(ensureAuthenticated, adminController.postAddCustomersFormPanel);
 
 // Room Booking | GET
 router
-	.route("/add-room-booking")
-	.get(ensureAuthenticated, adminController.getAddRoomBookingsPanel);
+	.route("/bookings")
+	.get(ensureAuthenticated, adminController.getAddBookingsPanel);
+
+// Room Booking | Search Customer by ID Number | GET
+router
+	.route("/bookings/search-customer")
+	.get(ensureAuthenticated, adminController.getSearchCustomerPanel)
+	.post(ensureAuthenticated, adminController.postSearchCustomerPanel);
+
+// Admin Panel - GET & POST | Room Booking Details | Bookings Page
+router
+	.route("/bookings/booking-details")
+	.get(ensureAuthenticated, adminController.getBookingsDetailsPanel)
+	.post(ensureAuthenticated, adminController.postBookingsDetailsPanel);
+
+// Admin Panel - GET | Bookings Invoice Page
+router
+	.route("/bookings/invoice")
+	.get(ensureAuthenticated, adminController.getBookingInvoice);
 
 // Room Info | GET
 // Room Info | POST
@@ -63,13 +89,22 @@ router
 router
 	.route("/add-bar-drink")
 	.get(ensureAuthenticated, adminController.getAddBarDrinkPanel)
-	.post(ensureAuthenticated, adminController.postAddBarDrinkPanel);
+	.post(
+		ensureAuthenticated,
+		upload.single("image"),
+		adminController.postAddBarDrinkPanel,
+	);
 
 // Bar Purchases | GET
-// Bar Purchases | POST
 router
 	.route("/bar-purchases")
-	.get(ensureAuthenticated, adminController.getBarPurchasesPanel)
-	.post(ensureAuthenticated, adminController.postBarPurchasesPanel);
+	.get(ensureAuthenticated, adminController.getBarPurchasesPanel);
+
+// Bar Purchases - Form | GET
+// Bar Purchases - Form | POST
+router
+	.route("/bar-purchases/add")
+	.get(ensureAuthenticated, adminController.getBarPurchasesFormPanel)
+	.post(ensureAuthenticated, adminController.postBarPurchasesFormPanel);
 
 module.exports = router;

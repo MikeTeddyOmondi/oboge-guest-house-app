@@ -8,6 +8,8 @@ const {
 	findCustomer, // search by customer's unique Object ID
 	findRoom,
 	saveBooking,
+	updateRoomStatus,
+	checkRoomAvailability,
 } = require("../services/booking.service");
 
 // User Panel | Dashboard Page
@@ -212,6 +214,8 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 			console.log(`> [Controller] error: ${err}`);
 		})
 		.then((roomFound) => {
+			// Check Room Availability
+
 			console.log(`> Room Details: ${roomFound}`);
 			roomDetails = roomFound;
 		});
@@ -219,9 +223,12 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 	const { roomRate, _id } = roomDetails;
 	const roomID = _id;
 
+	// Check room if its available
+	let availability = await checkRoomAvailability(roomNumber);
+	console.log("> Is room booked? ", availability);
+
 	// Booking Logic
 	let numberOccupants = parseInt(numberAdults) + parseInt(numberKids);
-	let VAT = 0.16;
 
 	if (
 		!numberAdults ||
@@ -238,8 +245,12 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 		errors.push({ msg: "Room capacity of the chosen room has been exceeded!" });
 	}
 
+	if (availability == true) {
+		errors.push({ msg: "Room is not available. Try another room!" });
+	}
+
 	if (errors.length > 0) {
-		res.render("panel/bookingsDetails", {
+		return res.render("panel/bookingsDetails", {
 			errors,
 			customerID: req.session.customerID,
 			numberAdults,
@@ -265,6 +276,9 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 		check_out_date,
 	};
 
+	// Update room status to >>> isBooked: true
+	let result = await updateRoomStatus(roomNumber, true);
+
 	// Save booking
 	await saveBooking(bookingDetails)
 		.then((invoiceInfo) => {
@@ -285,6 +299,7 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 			req.session.VAT = invoiceInfo.vat;
 			req.session.totalCost = invoiceInfo.totalCost;
 
+			// Redirect to Customer Invoice
 			res.redirect("/user-panel/bookings/invoice");
 		})
 		.catch((err) => {

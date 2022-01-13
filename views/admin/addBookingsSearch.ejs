@@ -1,0 +1,56 @@
+<
+<div id="page-wrapper">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Bookings | Accomodations</h1>
+			</div>
+		</div>
+		<%- include ('../partials/messages') %>
+		<form
+			id="searchForm"
+			class="form"
+			action="/admin/bookings/search-customer"
+			method="POST"
+		>
+			<div class="form row">
+				<fieldset>
+					<legend class="mb-3">Search Customer:</legend>
+					<div class="col-md">
+						<div class="form-floating">
+							<label for="floatingInputGrid">Search by: ID Number</label>
+							<br />
+							<input
+								type="text"
+								class="form-control"
+								id="id_number"
+								name="id_number"
+								placeholder="ID Number/ Passport/ Driver License"
+								required
+							/>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<br />
+			<div class="form row">
+				<div class="mt-3 mb-2">
+					<input
+						type="button"
+						name="cancel"
+						class="btn btn-secondary btn-md m-2"
+						onclick="window.location='/admin/bookings';"
+						value="Cancel"
+					/>
+					<input
+						type="submit"
+						class="btn btn-primary"
+						value="Search"
+						name="Search"
+					/>
+				</div>
+			</div>
+		</form>
+		<hr />
+	</div>
+</div>

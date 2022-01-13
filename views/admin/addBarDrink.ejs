@@ -20,6 +20,7 @@
 									class="form"
 									action="/admin/add-bar-drink"
 									method="POST"
+									enctype="multipart/form-data"
 								>
 									<div class="form">
 										<h3 class="text-center text-info">Add Bar Drink Information</h3>
@@ -96,6 +97,10 @@
 												class="form-control"
 												value="<%= typeof buyingPrice != 'undefined' ? buyingPrice : '' %>"
 											/>
+										</div>
+										<div class="form-group">
+											<label for="image" class="text-info">Image:</label>
+											<input type="file" class="form-control" id="image" name="image" aria-describedby="image" aria-label="Upload" value="<%= typeof image != 'undefined' ? image : '' %>"/>
 										</div>
 										<div
 											class="form-group"
