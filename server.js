@@ -34,12 +34,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Logs | Routes
-app.use(morgan("common"));
+process.env.NODE_ENV === "production" ? app.use(morgan("common")) : app.use(morgan("dev")); 
 
-// DB | Config
-let DB_URI_IN_USE = "";
+// DB | Configs
 const DB_REMOTE_URI = require("./config/keys").MONGO_REMOTE_URI;
-// const DB_LOCAL_URI = require("./config/keys").MONGO_LOCAL_URI;
 
 // MongoStore | Sessions Store
 const MongoDBStore = require("connect-mongodb-session")(session);
