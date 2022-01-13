@@ -229,7 +229,6 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 
 	// Booking Logic
 	let numberOccupants = parseInt(numberAdults) + parseInt(numberKids);
-	let VAT = 0.16;
 
 	if (
 		!numberAdults ||
