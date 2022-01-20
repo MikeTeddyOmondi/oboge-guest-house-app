@@ -201,7 +201,7 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 	// Find customer with the customerId
 	await findCustomer(customerId)
 		.then((customerFound) => {
-			console.log(`> Customer Details: ${customerFound}`);
+			// console.log(`> Customer Details: ${customerFound}`);
 			customerDetails = customerFound;
 		})
 		.catch((err) => {
@@ -216,7 +216,7 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 		.then((roomFound) => {
 			// Check Room Availability
 
-			console.log(`> Room Details: ${roomFound}`);
+			// console.log(`> Room Details: ${roomFound}`);
 			roomDetails = roomFound;
 		});
 
@@ -282,7 +282,7 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 	// Save booking
 	await saveBooking(bookingDetails)
 		.then((invoiceInfo) => {
-			console.log(`> [NEW] Booking Info: ${invoiceInfo}`);
+			// console.log(`> [NEW] Booking Info: ${invoiceInfo}`);
 
 			// Load invoice information into the session | request object
 			req.session.bookingID = invoiceInfo._id;
@@ -305,15 +305,6 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 		.catch((err) => {
 			console.log(`> [Controller] error: ${err}`);
 		});
-
-	// res.render("panel/bookingsInvoice", {
-	// 	customerDetails,
-	// 	roomDetails,
-	// 	bookingDetails,
-	// 	user: req.user,
-	// 	title: "Hotel Booking Invoice | Receipt",
-	// 	layout: "./layouts/panelLayout",
-	// });
 };
 
 // User Panel - GET | Bookings Invoice Page
