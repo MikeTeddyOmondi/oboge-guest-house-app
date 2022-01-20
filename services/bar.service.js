@@ -6,7 +6,8 @@ const BarPurchase = require("../models/BarPurchases");
 module.exports = {
 	saveDrink: async (drink) => {
 		// Logic here
-		const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice } = drink;
+		const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice, image } =
+			drink;
 
 		let newDrink = new Drink({
 			drinkName,
@@ -14,9 +15,10 @@ module.exports = {
 			typeOfDrink,
 			uom,
 			buyingPrice,
+			image,
 		});
 
-		newDrink
+		await newDrink
 			.save()
 			.then(() => {
 				console.log("> Saved a new drink!");
@@ -32,12 +34,16 @@ module.exports = {
 	},
 	searchDrink: async (drinkCode) => {
 		// Searching for drink given the unique drink code
-		let drink;
+		let drink = {};
 
 		await Drink.findOne({ drinkCode: String(drinkCode) })
 			.then((drinkFound) => {
-				console.log(`> Drink Found: ${drinkFound._id}`);
-				drink = drinkFound;
+				if (drinkFound) {
+					console.log(`> Drink Found: ${drinkFound._id}`)
+					return (drink = drinkFound);
+				} 
+				return drink = {};
+				
 			})
 			.catch((err) => {
 				console.log(
@@ -116,7 +122,7 @@ module.exports = {
 		await BarPurchase.find({})
 			.populate("product")
 			.then((purchasesMade) => {
-				console.log(purchasesMade);
+				// console.log(purchasesMade);
 				allPurchases = purchasesMade;
 			})
 			.catch((err) => {
@@ -129,5 +135,26 @@ module.exports = {
 
 		return allPurchases;
 	},
-	updateStockQuantity: async () => {},
+	updateStockQuantity: async (drink, quantity) => {
+		await Drink.updateOne(
+			{ _id: drink._id },
+			{
+				$set: {
+					inStock: true,
+					stockQty: parseInt(drink.stockQty) + parseInt(quantity),
+				},
+			},
+		)
+			.then(() => {
+				console.log(
+					`> [Bar Service] Updated drink ${drink.drinkCode} stock data successfully`,
+				);
+			})
+			.catch((err) => {
+				console.log(
+					`> [Bar Service] An error occurred while updating drink data - ${err.message}`,
+				);
+				return err;
+			});
+	},
 };

@@ -23,6 +23,14 @@ const DrinkSchema = new mongoose.Schema(
 			type: Number,
 			required: true,
 		},
+		stockQty: {
+			type: Number,
+			default: 0,
+		},
+		inStock: {
+			type: Boolean,
+			default: false,
+		},
 		image: {
 			type: String,
 			default: "drink_image.jpg",
