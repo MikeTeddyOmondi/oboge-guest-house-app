@@ -5,8 +5,12 @@ services:
             context: .
             args:
                NODE_ENV: production
+        volumes:
+            - image_uploads:/src/assets/uploads
         environment:
             - NODE_ENV=production
         env_file:
             - ./.env
         command: node server.js
+volumes:
+    image_uploads:

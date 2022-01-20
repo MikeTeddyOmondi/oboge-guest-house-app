@@ -8,6 +8,7 @@ services:
       volumes:
          - ./:/src:ro
          - /src/node_modules
+         - image_uploads:/src/assets/uploads
       environment:
          - NODE_ENV=development
          - MONGO_ADMIN_USER=dbadmin
@@ -17,3 +18,5 @@ services:
       env_file:
          - ./.env
       command: npm run dev
+volumes: 
+   image_uploads:
