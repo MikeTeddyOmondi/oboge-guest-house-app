@@ -11,7 +11,6 @@ const User = require("../models/User");
 const Customer = require("../models/Customer");
 const Room = require("../models/Room");
 const Drink = require("../models/Drink");
-const Booking = require("../models/Booking");
 
 // Import Booking Service
 const {
@@ -27,10 +26,12 @@ const {
 
 // Import Bar Service
 const {
-	fetchAllDrinks,
+	saveDrink,
 	searchDrink,
+	fetchAllDrinks,
 	saveBarPurchase,
 	fetchBarPurchases,
+	updateStockQuantity,
 } = require("../services/bar.service");
 
 // Administration | GET
@@ -498,7 +499,7 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 	// Find customer with the customerId
 	await findCustomer(customerId)
 		.then((customerFound) => {
-			console.log(`> Customer Details: ${customerFound}`);
+			// console.log(`> Customer Details: ${customerFound}`);
 			customerDetails = customerFound;
 		})
 		.catch((err) => {
@@ -513,7 +514,7 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 		.then((roomFound) => {
 			// Check Room Availability
 
-			console.log(`> Room Details: ${roomFound}`);
+			// console.log(`> Room Details: ${roomFound}`);
 			roomDetails = roomFound;
 		});
 
@@ -579,7 +580,7 @@ exports.postBookingsDetailsPanel = async (req, res) => {
 	// Save booking
 	await saveBooking(bookingDetails)
 		.then((invoiceInfo) => {
-			console.log(`> [NEW] Booking Info: ${invoiceInfo}`);
+			// console.log(`> [NEW] Booking Info: ${invoiceInfo}`);
 
 			// Load invoice information into the session | request object
 			req.session.bookingID = invoiceInfo._id;
@@ -750,7 +751,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 	const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice } = req.body;
 	const image = req.file;
 
-	//console.log(req.body);
+	// console.log({ drinkName, drinkCode, typeOfDrink, uom, buyingPrice, image });
 
 	let errors = [];
 
@@ -780,7 +781,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 		});
 	} else {
 		// Check if the drink code exists in the database
-		Drink.findOne({ drinkCode: drinkCode }).then((drinkCode) => {
+		searchDrink(drinkCode).then(({ drinkCode }) => {
 			if (drinkCode) {
 				errors.push({
 					msg: `That drink code already exists!`,
@@ -807,13 +808,16 @@ exports.postAddBarDrinkPanel = (req, res) => {
 					image: image.filename,
 				});
 
-				newDrink
-					.save()
-					.then(() => {
-						req.flash("success_msg", `Drink information saved successfully!`);
+				saveDrink(newDrink)
+					.then(({ drinkCode }) => {
+						req.flash(
+							"success_msg",
+							`Drink: ${drinkCode} information saved successfully!`,
+						);
 						res.redirect("/admin/add-bar-drink");
 					})
 					.catch((err) => {
+						// console.log({err})
 						req.flash(
 							"error_msg",
 							`An error occurred while saving the drink information...`,
@@ -927,6 +931,9 @@ exports.postBarPurchasesFormPanel = (req, res) => {
 							supplier,
 						};
 
+						// Drink to update stock quantity & inStock status
+						const drinkToUpdate = drinkFound;
+
 						// Save Bar Purchase
 						saveBarPurchase(newPurchase)
 							.then((purchaseMade) => {
@@ -935,9 +942,22 @@ exports.postBarPurchasesFormPanel = (req, res) => {
 								);
 								req.flash(
 									"success_msg",
-									`Saved the new bar stock purchase successfully!...`,
+									`Saved the new bar stock purchase successfully! `,
 								);
-								return res.redirect("/admin/bar-purchases/add");
+							})
+							.then(() => {
+								// Update Stock Quantity
+								updateStockQuantity(drinkToUpdate, quantity)
+									.then(() => {
+										req.flash(
+											"success_msg",
+											`Updated the drink stocks successfully!`,
+										);
+										return res.redirect("/admin/bar-purchases/add");
+									})
+									.catch((err) => {
+										throw err;
+									});
 							})
 							.catch((err) => {
 								console.log(
