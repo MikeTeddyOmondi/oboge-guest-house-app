@@ -34,22 +34,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Logs | Routes
-process.env.NODE_ENV === "production" ? app.use(morgan("common")) : app.use(morgan("dev")); 
+process.env.NODE_ENV === "production"
+	? app.use(morgan("common"))
+	: app.use(morgan("dev"));
 
 // DB | Configs
-const DB_REMOTE_URI = require("./config/keys").MONGO_REMOTE_URI;
+const DB_URI = require("./config/keys").DB_URI;
 
 // MongoStore | Sessions Store
 const MongoDBStore = require("connect-mongodb-session")(session);
 
 // Session Storage
 let sessionOptions = {};
-
-sessionOptions = {
-	uri: DB_REMOTE_URI,
-	databaseName: "guest-house-db",
-	collection: "sessions",
-};
+sessionOptions.uri = DB_URI;
+sessionOptions.databaseName = "guest-house-db";
+sessionOptions.collection = "sessions";
 
 const sessionStore = new MongoDBStore(sessionOptions);
 
@@ -136,9 +135,6 @@ app.use((error, req, res, next) => {
 
 // Connection to REMOTE | LOCAL database
 const connectDB = (URI) => {
-	DB_URI_IN_USE = URI;
-	// console.log({ DB_URI_IN_USE });
-
 	mongoose
 		.connect(URI, {
 			useNewUrlParser: true,
@@ -157,25 +153,28 @@ const connectDB = (URI) => {
 			console.log(`> Error connecting to the remote database: ${err.message}`);
 			console.log(`> Trying connection to the remote database once again...`);
 			setTimeout(() => {
-				connectDB(DB_REMOTE_URI);
+				connectDB(DB_URI);
 			}, 3000);
 		});
 };
 
 // Ping | Database Connection
-connectDB(DB_REMOTE_URI);
+connectDB(DB_URI);
 
 // Start the server
 const startServer = async () => {
 	app.listen(PORT, () => {
 		console.log(`_________________________________________ `);
 		console.log(`> Backend services server initiated...`);
-		console.log(`> Backend services served on port: ${PORT}`);
+		console.log(
+			`> Backend services served on port ${PORT} in ${process.env.NODE_ENV} mode`,
+		);
 		console.log(`_________________________________________ `);
 	});
 };
 
 process.on("unhandledRejection", (error, promise) => {
+	console.log(`_____________________________ `);
 	console.log(`Unhandled promise rejection: ${promise}`);
 	console.log(`Unhandled promise error: ${error.stack || error.message}`);
 	// Recommended: send the information to sentry.io
@@ -183,10 +182,11 @@ process.on("unhandledRejection", (error, promise) => {
 });
 
 process.on("uncaughtException", (error) => {
+	console.log(`_____________________________ `);
 	console.log(`Uncaught exception occurred: `);
 	console.log(`_____________________________ `);
 	console.log(`> Node thread process exiting...`);
 	console.log(`> ${error.message}`);
-	// Recommended: send the information to sentry.io or whatever crash reporting service 
+	// Recommended: send the information to sentry.io or whatever crash reporting service
 	process.exit(1); // exit application
 });
