@@ -150,8 +150,8 @@ const connectDB = (URI) => {
 			console.log(`_________________________________________`);
 			console.log(`Database connection error:`);
 			console.log(`_________________________________________`);
-			console.log(`> Error connecting to the remote database: ${err.message}`);
-			console.log(`> Trying connection to the remote database once again...`);
+			console.log(`> Error connecting to the database: ${err.message}`);
+			console.log(`> Trying connection to the database once again...`);
 			setTimeout(() => {
 				connectDB(DB_URI);
 			}, 3000);

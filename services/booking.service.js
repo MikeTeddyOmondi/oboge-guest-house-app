@@ -31,6 +31,24 @@ module.exports = {
 			});
 		return newCustomer._id;
 	},
+	fetchAllCustomers: async () => {
+		// Logic here
+		let customers;
+
+		await Customer.find({})
+			.then((allCustomers) => {
+				// All Customers
+				customers = allCustomers;
+			})
+			.catch((err) => {
+				console.log(
+					`> [Booking Service] An error occurred while fetching data - ${err.message}`,
+				);
+				return err;
+			});
+
+		return customers;
+	},
 	searchCustomer: async (customerID) => {
 		// Searching for customer given the ID number
 		let customer;

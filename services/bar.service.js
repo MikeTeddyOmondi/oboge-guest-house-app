@@ -39,11 +39,10 @@ module.exports = {
 		await Drink.findOne({ drinkCode: String(drinkCode) })
 			.then((drinkFound) => {
 				if (drinkFound) {
-					console.log(`> Drink Found: ${drinkFound._id}`)
+					console.log(`> Drink Found: ${drinkFound._id}`);
 					return (drink = drinkFound);
-				} 
-				return drink = {};
-				
+				}
+				return (drink = {});
 			})
 			.catch((err) => {
 				console.log(

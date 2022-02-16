@@ -8,61 +8,72 @@
 			<div class="col-md-10 mx-auto">
 				<div class="card" style="box-shadow:0 0 25px 0 lightgrey;">
 				  <div class="card-header">
-				   	<h4>New Orders</h4>
+				   	<h4>New Order</h4>
 				  </div>
 				  <div class="card-body">
-				  	<form id="get_order_data" onsubmit="return false">
+				  	<form id="get_bar_order_data" action="" method="POST">
 				  		<div class="form-group row">
 				  			<label class="col-sm-3 col-form-label" align="right">Order Date</label>
 				  			<div class="col-sm-6">
-				  				<input type="text" id="order_date" name="order_date" readonly class="form-control form-control-sm" value="">
+				  				<input type="text" id="order_date" name="order_date" readonly class="form-control form-control-sm" value="<%= Date.now() %>">
 				  			</div>
 				  		</div>
 				  		<div class="form-group row">
-				  			<label class="col-sm-3 col-form-label" align="right">Customer Name*</label>
+				  			<label class="col-sm-3 col-form-label" align="right">Customer Name</label>
 				  			<div class="col-sm-6">
 				  				<input type="text" id="cust_name" name="cust_name"class="form-control form-control-sm" placeholder="Enter Customer Name" required/>
 				  			</div>
 				  		</div>
 
-
 				  		<div class="card" style="box-shadow:0 0 15px 0 lightgrey;">
 				  			<div class="card-body">
-				  				<h3>Make a order list</h3>
-				  				<table align="center" style="width:800px;">
-		                            <thead>
-		                              <tr>
-		                                <th>#</th>
-		                                <th style="text-align:center;">Item Name</th>
-		                                <th style="text-align:center;">Total Quantity</th>
-		                                <th style="text-align:center;">Quantity</th>
-		                                <th style="text-align:center;">Price</th>
-		                                <th>Total</th>
-		                              </tr>
-		                            </thead>
-		                            <tbody id="invoice_item">
-                                    <tr>
-                                        <td><b id="number">1</b></td>
-                                        <td>
-                                            <select name="pid[]" class="form-control form-control-sm" required>
-                                                <option>Washing Machine</option>
-                                            </select>
-                                        </td>
-                                        <td><input name="tqty[]" readonly type="text" class="form-control form-control-sm"></td>   
-                                        <td><input name="qty[]" type="text" class="form-control form-control-sm" required></td>
-                                        <td><input name="price[]" type="text" class="form-control form-control-sm" readonly></td>
-                                        <td>Rs.1540</td>
-                                    </tr>
-		                            </tbody>
-		                        </table> <!--Table Ends-->
-		                        <center style="padding:10px;">
-		                        	<button id="add" style="width:150px;" class="btn btn-success">Add</button>
-		                        	<button id="remove" style="width:150px;" class="btn btn-danger">Remove</button>
-		                        </center>
+				  				<h3>Order List</h3>
+                    <div class="form-group row">
+                      <label for="sub_total" class="col-sm-3 col-form-label" align="right">Drink:</label>
+                      <div class="col-sm-6">
+                        <select id="drinksDropDown" name="pid[]" class="form-control form-control-sm" required>
+                          <option hidden disabled selected value> -- select a drink -- </option>
+                            <% drinks.forEach(drink => { %>
+                              <option
+                                data-drink-drinkID="<%= drink._id %>"
+                                data-drink-drinkName="<%= drink.drinkName %>"
+                              >
+                                <%= drink.drinkName %>
+                              </option>
+                            <% }) %>
+                        </select>
+                      </div>  
+                    </div>
+                    <div class="form-group row">
+                      <label for="sub_total" class="col-sm-3 col-form-label" align="right">Quantity:</label>
+                      <div class="col-sm-6">
+                        <input type="number" id="drinkQty" name="drinkQty" class="form-control form-control-sm" required/>
+                      </div>
+                    </div>
+                    <center style="padding:10px;">
+                      <button type="button" id="add" style="width:150px;" class="btn btn-success">Add</button>
+                      <button type="button" id="remove" style="width:150px;" class="btn btn-danger">Remove</button>
+                    </center>
 				  			</div> <!--Crad Body Ends-->
 				  		</div> <!-- Order List Crad Ends-->
-
-				  	<p></p>
+                          <center>
+                            <table align="center" style="width:600px;">
+		                            <thead>
+		                              <tr>
+		                                <th style="text-align:center;">ID</th>
+		                                <th style="text-align:center;">Drink Name</th>
+		                                <th style="text-align:center;">Quantity</th>
+		                              </tr>
+		                            </thead>
+		                            <tbody id="order_items">
+                                  <tr>
+                                    <td><b id="drinkID"></b></td>
+                                    <td></td>
+                                    <td></td>   
+                                  </tr>
+		                            </tbody>
+		                        </table>
+                          </center>
                     <div class="form-group row">
                       <label for="sub_total" class="col-sm-3 col-form-label" align="right">Sub Total</label>
                       <div class="col-sm-6">
@@ -104,8 +115,8 @@
                       <div class="col-sm-6">
                         <select name="payment_type" class="form-control form-control-sm" id="payment_type" required/>
                           <option>Cash</option>
+                          <option>Mpesa</option>
                           <option>Card</option>
-                          <option>Draft</option>
                           <option>Cheque</option>
                         </select>
                       </div>
@@ -113,7 +124,7 @@
 
                     <center>
                       <input type="submit" id="order_form" style="width:150px;" class="btn btn-info" value="Order">
-                      <input type="submit" id="print_invoice" style="width:150px;" class="btn btn-success d-none" value="Print Invoice">
+                      <input type="submit" id="print_invoice" style="width:150px;" class="btn btn-success" value="Print Invoice">
                     </center>
 
 
@@ -125,3 +136,34 @@
 		</div>
 	</div>
 </div>
+
+<script>
+  const drinksDropDown = document.querySelector("#drinksDropDown")
+  const drinkQty = document.querySelector("#drinkQty")
+  const addBtn = document.querySelector("#add")
+  const removeBtn = document.querySelector("#remove")
+
+  drinksDropDown.addEventListener("input", function(e) {
+    const optionIndex = e.target.selectedIndex // displays the index of the selected option
+    const item = e.target.options[optionIndex]
+
+    console.log(item.getAttribute("data-drink-drinkID"))
+    console.log(item.getAttribute("data-drink-drinkName"))
+  })  
+
+  addBtn.addEventListener("click", function(e){
+    // let order = {}
+    // order.drink = drinkCode
+    // order.quantity = saleQty.value
+    // console.log({order})
+    drinksDropDown.selectedIndex = 0
+    drinkQty.value = ""
+
+  })
+
+
+  // function addToCart() {
+
+  // }
+
+</script>

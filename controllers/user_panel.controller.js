@@ -4,6 +4,7 @@ const Customer = require("../models/Customer");
 // Import Booking Service
 const {
 	saveCustomer,
+	fetchAllCustomers,
 	searchCustomer, // search by customer's ID number
 	findCustomer, // search by customer's unique Object ID
 	findRoom,
@@ -11,6 +12,9 @@ const {
 	updateRoomStatus,
 	checkRoomAvailability,
 } = require("../services/booking.service");
+
+// Importing Bar Service
+const { fetchAllDrinks } = require("../services/bar.service");
 
 // User Panel | Dashboard Page
 exports.getUserPanel = (req, res) => {
@@ -344,9 +348,13 @@ exports.getBookingInvoice = (req, res) => {
 	});
 };
 
-// User Panel - POST | Bar Page
-exports.getBarPanel = (req, res) => {
+// User Panel - GET | Bar Page
+exports.getBarPanel = async (req, res) => {
+	let drinks = await fetchAllDrinks();
+	let customers = await fetchAllCustomers();
+
 	res.render("panel/bar", {
+		drinks,
 		user: req.user,
 		title: "Bar",
 		layout: "./layouts/panelLayout",
