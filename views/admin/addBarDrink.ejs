@@ -99,6 +99,17 @@
 											/>
 										</div>
 										<div class="form-group">
+											<label for="buyingPrice" class="text-info">Selling Price:</label
+											><br />
+											<input
+												type="number"
+												name="sellingPrice"
+												id="sellingPrice"
+												class="form-control"
+												value="<%= typeof sellingPrice != 'undefined' ? sellingPrice : '' %>"
+											/>
+										</div>
+										<div class="form-group">
 											<label for="image" class="text-info">Image:</label>
 											<input type="file" class="form-control" id="image" name="image" aria-describedby="image" aria-label="Upload" value="<%= typeof image != 'undefined' ? image : '' %>"/>
 										</div>
