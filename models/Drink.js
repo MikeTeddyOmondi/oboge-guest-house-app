@@ -23,6 +23,10 @@ const DrinkSchema = new mongoose.Schema(
 			type: Number,
 			required: true,
 		},
+		sellingPrice: {
+			type: Number,
+			required: true,
+		},
 		stockQty: {
 			type: Number,
 			default: 0,
