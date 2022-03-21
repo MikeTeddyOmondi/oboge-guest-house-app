@@ -1,3 +1,5 @@
+const localstorage = require("store2");
+
 // Import model
 const Customer = require("../models/Customer");
 
@@ -14,7 +16,7 @@ const {
 } = require("../services/booking.service");
 
 // Importing Bar Service
-const { fetchAllDrinks } = require("../services/bar.service");
+const { fetchAllDrinks, saveBarSale } = require("../services/bar.service");
 
 // User Panel | Dashboard Page
 exports.getUserPanel = (req, res) => {
@@ -348,13 +350,58 @@ exports.getBookingInvoice = (req, res) => {
 	});
 };
 
-// User Panel - GET | Bar Page
+// User Panel - GET | Bar Panel Page
 exports.getBarPanel = async (req, res) => {
 	let drinks = await fetchAllDrinks();
 	let customers = await fetchAllCustomers();
 
 	res.render("panel/bar", {
 		drinks,
+		customers,
+		user: req.user,
+		title: "Bar",
+		layout: "./layouts/panelLayout",
+	});
+};
+
+// User Panel - POST | Bar Panel Page
+exports.postBarPanel = async (req, res) => {
+	let drinks = await fetchAllDrinks();
+	let customers = await fetchAllCustomers();
+
+	console.log(req.body);
+
+	// localstorage((key, data) => {
+	// 	console.log({ key });
+	// 	console.log({ data });
+	// });
+	// console.log(localstorage.size());
+
+	// res.redirect("/user-panel/bar/invoice");
+	// if (data) {
+	// 	console.log(req);
+	// 	console.log(data);
+	// 	// res.json(data);
+	// 	// res.redirect("/user-panel/bar/invoice");
+	// }
+
+	// res.render("panel/bar", {
+	// 	drinks,
+	// 	customers,
+	// 	user: req.user,
+	// 	title: "Bar",
+	// 	layout: "./layouts/panelLayout",
+	// });
+};
+
+// User Panel - GET | Bar Invoice Page
+exports.getBarInvoice = async (req, res) => {
+	let drinks = await fetchAllDrinks();
+	let customers = await fetchAllCustomers();
+
+	res.render("panel/barInvoice", {
+		drinks,
+		customers,
 		user: req.user,
 		title: "Bar",
 		layout: "./layouts/panelLayout",

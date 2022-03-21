@@ -7,7 +7,9 @@ const BarSaleSchema = new mongoose.Schema(
 			required: true,
 		},
 		customer: {
-			type: String,
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Customer",
+			default: null,
 		},
 		drinks: [
 			{
@@ -28,7 +30,11 @@ const BarSaleSchema = new mongoose.Schema(
 		],
 		totalStockValue: {
 			type: Number,
-			required: true,
+			default: function () {
+				return drinks.reduce(function (prev, cur) {
+					return prev + cur.stockValue;
+				}, 0);
+			},
 		},
 	},
 	{ timestamps: true },
