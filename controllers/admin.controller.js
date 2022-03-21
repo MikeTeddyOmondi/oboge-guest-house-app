@@ -748,10 +748,11 @@ exports.getAddBarDrinkPanel = (req, res) => {
 
 // Add Bar Drink | Menu Updates | POST
 exports.postAddBarDrinkPanel = (req, res) => {
-	const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice } = req.body;
+	const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice, sellingPrice } =
+		req.body;
 	const image = req.file;
 
-	// console.log({ drinkName, drinkCode, typeOfDrink, uom, buyingPrice, image });
+	// console.log({ drinkName, drinkCode, typeOfDrink, uom, buyingPrice, sellingPrice, image });
 
 	let errors = [];
 
@@ -761,6 +762,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 		!typeOfDrink ||
 		!uom ||
 		!buyingPrice ||
+		!sellingPrice ||
 		!image
 	) {
 		errors.push({ msg: "Please enter all fields" });
@@ -774,6 +776,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 			typeOfDrink,
 			uom,
 			buyingPrice,
+			sellingPrice,
 			image,
 			user: req.user,
 			title: "Add Bar Drink | Menu",
@@ -793,6 +796,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 					typeOfDrink,
 					uom,
 					buyingPrice,
+					sellingPrice,
 					image,
 					user: req.user,
 					title: "Add Bar Drink | Menu",
@@ -805,6 +809,7 @@ exports.postAddBarDrinkPanel = (req, res) => {
 					typeOfDrink,
 					uom,
 					buyingPrice,
+					sellingPrice,
 					image: image.filename,
 				});
 
