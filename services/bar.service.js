@@ -1,13 +1,21 @@
 // Models
 const Drink = require("../models/Drink");
 const BarPurchase = require("../models/BarPurchases");
+const BarSale = require("../models/BarSale");
 
 // Booking Logic | Customer
 module.exports = {
 	saveDrink: async (drink) => {
 		// Logic here
-		const { drinkName, drinkCode, typeOfDrink, uom, buyingPrice, image } =
-			drink;
+		const {
+			drinkName,
+			drinkCode,
+			typeOfDrink,
+			uom,
+			buyingPrice,
+			sellingPrice,
+			image,
+		} = drink;
 
 		let newDrink = new Drink({
 			drinkName,
@@ -15,6 +23,7 @@ module.exports = {
 			typeOfDrink,
 			uom,
 			buyingPrice,
+			sellingPrice,
 			image,
 		});
 
@@ -155,5 +164,27 @@ module.exports = {
 				);
 				return err;
 			});
+	},
+	saveBarSale: async (barSale) => {
+		const { customer, drinks } = barSale;
+
+		let newBarSale = new BarSale({
+			customer,
+			drinks,
+		});
+
+		await newBarSale
+			.save()
+			.then(() => {
+				conseole.log(`> [Bar Service] Added a drink sale data successfully`);
+			})
+			.catch((err) => {
+				console.log(
+					`> [Bar Service] An error occurred while saving the drink sale data - ${err.message}`,
+				);
+				return err;
+			});
+
+		return newBarSale;
 	},
 };
