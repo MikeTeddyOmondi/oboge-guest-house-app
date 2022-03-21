@@ -1,0 +1,120 @@
+<div id="main-row" class="row">
+	<div class="mt-2">
+		<a href="/user-panel/bar" class="btn btn-secondary rounded"
+			>&#x21d0;</a
+		>
+		<div class="print" style="float: right">
+			<a
+				href="#"
+				class="btn btn-secondary rounded"
+				onClick="printInvoice('print_section')"
+			>
+				<i class="fas fa-print"></i> Print Invoice
+			</a>
+		</div>
+	</div>
+	<div id="print_section" class="print-section">
+		<h1 style="text-align: center">Bar Invoice</h1>
+		<hr />
+		<div class="receipt-content mt-1">
+			<div class="container bootstrap snippets bootdey">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="invoice-wrapper">
+							<div class="intro">
+								Hi <strong><%=  %></strong>, <br />
+								This is the invoice for the payment of your accomodation fee.
+							</div>
+
+							<div class="payment-info">
+								<div class="row">
+									<div class="col-sm-6">
+										<span>Payment No.</span>
+										<strong><%=  %></strong>
+									</div>
+									<div class="col-sm-6 text-right">
+										<span>Check-In-Date | Check-Out-Date</span>
+										<br />
+										From:
+										<strong><%=  %></strong>
+										To:
+										<strong><%=  %></strong>
+									</div>
+								</div>
+							</div>
+
+							<div class="payment-details">
+								<div class="row">
+									<div class="col-sm-6">
+										<span>Client</span>
+										<strong> <%=  %> <%=  %> </strong>
+										<p>
+											989 <br />
+											Awasi <br />
+											+<%=  %> <br />
+											Kenya <br />
+											<a href="#"> <%=  %> </a>
+										</p>
+									</div>
+									<div class="col-sm-6 text-right">
+										<span>Payment To</span>
+										<strong> Oboge Guest House </strong>
+										<p>
+											6592 G.P.O <br />
+											Nairobi <br />
+											00100 <br />
+											Kenya <br />
+											<a href="#"> noreply.obogeguesthouse@gmail.com </a>
+										</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="line-items">
+								<div class="headers clearfix">
+									<div class="row">
+										<div class="col-xs-4">Particulars</div>
+										<div class="col-xs-3">Description</div>
+										<div class="col-xs-5 text-right">Amount</div>
+									</div>
+								</div>
+								<div class="items">
+									<div class="row item">
+										<div class="col-xs-4 desc">Room Type</div>
+										<div class="col-xs-3 qty"><%=  %></div>
+										<div class="col-xs-5 amount text-right">
+											KShs. <%=  %>
+										</div>
+									</div>
+									<div class="row item">
+										<div class="col-xs-4 desc">Number of Occupants</div>
+										<div class="col-xs-3 qty"><%=  %></div>
+										<div class="col-xs-5 amount text-right">
+											KShs. <%=  %>
+										</div>
+									</div>
+								</div>
+								<div class="total text-right">
+									<p class="extra-notes">
+										<strong>Extra Notes</strong> Please note the bill is subject
+										to Value Added Tax.
+									</p>
+									<div class="field">
+										Subtotal <span>KShs. <%=  %></span>
+									</div>
+									<div class="field">V.A.T <span>KShs. <%=  %></span></div>
+									<div class="field grand-total">
+										Total <span>KShs. <%=  %></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="footer">
+							Copyright © <%= new Date().getFullYear();%> | Oboge Guest House
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

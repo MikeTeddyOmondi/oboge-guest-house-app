@@ -2,94 +2,166 @@
 	<div class="mt-2">
 		<a href="/user-panel" class="btn btn-secondary rounded">&#x21d0;</a>
 	</div>
-  <h1>Bar</h1>
-  	<div class="container">
+	<h1>Bar</h1>
+	<div class="container">
 		<div class="row">
 			<div class="col-md-10 mx-auto">
-				<div class="card" style="box-shadow:0 0 25px 0 lightgrey;">
-				  <div class="card-header">
-				   	<h4>New Order</h4>
-				  </div>
-				  <div class="card-body">
-				  	<form id="get_bar_order_data" action="" method="POST">
-				  		<div class="form-group row">
-				  			<label class="col-sm-3 col-form-label" align="right">Order Date</label>
-				  			<div class="col-sm-6">
-				  				<input type="text" id="order_date" name="order_date" readonly class="form-control form-control-sm" value="<%= Date.now() %>">
-				  			</div>
-				  		</div>
-				  		<div class="form-group row">
-				  			<label class="col-sm-3 col-form-label" align="right">Customer Name</label>
-				  			<div class="col-sm-6">
-				  				<input type="text" id="cust_name" name="cust_name"class="form-control form-control-sm" placeholder="Enter Customer Name" required/>
-				  			</div>
-				  		</div>
+				<div class="card" style="box-shadow: 0 0 25px 0 lightgrey">
+					<div class="card-header">
+						<h4>New Order</h4>
+					</div>
+					<div class="card-body">
+						<form
+							id="get_bar_order_data"
+							action="/user-panel/bar"
+							method="POST"
+						>
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label" align="right"
+									>Order Date</label
+								>
+								<div class="col-sm-6">
+									<input
+										type="text"
+										id="order_date"
+										name="order_date"
+										readonly
+										class="form-control form-control-sm"
+										value="<%= Date.now() %>"
+									/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label" align="right"
+									>Customer Name</label
+								>
+								<div class="col-sm-6">
+									<select
+										id="customersDropDown"
+										name="cid"
+										class="form-control form-control-sm"
+									>
+										<option hidden disabled selected value>
+											-- select a customer --
+										</option>
+										<% customers.forEach(customer => { %>
+										<option
+											data-customer-customerID="<%= customer._id %>"
+											data-customer-customerIDNumber="<%= customer.id_number %>"
+											data-customer-customerPhoneNumber="<%= customer.phone_number %>"
+										>
+											<%= customer.firstname %> <%= customer.lastname %>
+										</option>
+										<% }) %>
+									</select>
+								</div>
+							</div>
 
-				  		<div class="card" style="box-shadow:0 0 15px 0 lightgrey;">
-				  			<div class="card-body">
-				  				<h3>Order List</h3>
-                    <div class="form-group row">
-                      <label for="sub_total" class="col-sm-3 col-form-label" align="right">Drink:</label>
-                      <div class="col-sm-6">
-                        <select id="drinksDropDown" name="pid[]" class="form-control form-control-sm" required>
-                          <option hidden disabled selected value> -- select a drink -- </option>
-                            <% drinks.forEach(drink => { %>
-                              <option
-                                data-drink-drinkID="<%= drink._id %>"
-                                data-drink-drinkName="<%= drink.drinkName %>"
-                              >
-                                <%= drink.drinkName %>
-                              </option>
-                            <% }) %>
-                        </select>
-                      </div>  
-                    </div>
-                    <div class="form-group row">
-                      <label for="sub_total" class="col-sm-3 col-form-label" align="right">Quantity:</label>
-                      <div class="col-sm-6">
-                        <input type="number" id="drinkQty" name="drinkQty" class="form-control form-control-sm" required/>
-                      </div>
-                    </div>
-                    <center style="padding:10px;">
-                      <button type="button" id="add" style="width:150px;" class="btn btn-success">Add</button>
-                      <button type="button" id="remove" style="width:150px;" class="btn btn-danger">Remove</button>
-                    </center>
-				  			</div> <!--Crad Body Ends-->
-				  		</div> <!-- Order List Crad Ends-->
-                          <center>
-                            <table align="center" style="width:600px;">
-		                            <thead>
-		                              <tr>
-		                                <th style="text-align:center;">ID</th>
-		                                <th style="text-align:center;">Drink Name</th>
-		                                <th style="text-align:center;">Quantity</th>
-		                              </tr>
-		                            </thead>
-		                            <tbody id="order_items">
-                                  <tr>
-                                    <td><b id="drinkID"></b></td>
-                                    <td></td>
-                                    <td></td>   
-                                  </tr>
-		                            </tbody>
-		                        </table>
-                          </center>
-                    <div class="form-group row">
+							<div class="card" style="box-shadow: 0 0 15px 0 lightgrey">
+								<div class="card-body">
+									<h3>Order List</h3>
+									<div class="form-group row">
+										<label
+											for="sub_total"
+											class="col-sm-3 col-form-label"
+											align="right"
+											>Drink:</label
+										>
+										<div class="col-sm-6">
+											<select
+												id="drinksDropDown"
+												name="pid[]"
+												class="form-control form-control-sm"
+											>
+												<option hidden disabled selected value>
+													-- select a drink --
+												</option>
+												<% drinks.forEach(drink => { %>
+												<option
+													data-drink-drinkID="<%= drink._id %>"
+													data-drink-drinkName="<%= drink.drinkName %>"
+													data-drink-sellingPrice="<%= drink.sellingPrice %>"
+												>
+													<%= drink.drinkName %>
+												</option>
+												<% }) %>
+											</select>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label
+											for="sub_total"
+											class="col-sm-3 col-form-label"
+											align="right"
+											>Quantity:</label
+										>
+										<div class="col-sm-6">
+											<input
+												type="number"
+												id="drinkQty"
+												name="drinkQty"
+												class="form-control form-control-sm"
+											/>
+										</div>
+									</div>
+									<center style="padding: 10px">
+										<button
+											type="button"
+											id="add"
+											style="width: 150px"
+											class="btn btn-success"
+										>
+											Add
+										</button>
+										<button
+											type="button"
+											id="remove"
+											style="width: 150px"
+											class="btn btn-danger"
+											onclick="deleteRow('orderTable')"
+										>
+											Remove
+										</button>
+									</center>
+								</div>
+								<!--Card Body Ends-->
+								<center>
+									<table
+										align="center"
+										style="width: 600px"
+										class="table"
+										id="orderTable"
+									>
+										<thead class="thead-dark">
+											<tr>
+												<th style="text-align: center">#</th>
+												<th style="text-align: center">ID</th>
+												<th style="text-align: center">Drink Name</th>
+												<th style="text-align: center">Quantity</th>
+												<th style="text-align: center">Price</th>
+											</tr>
+										</thead>
+										<tbody id="orderedItems"></tbody>
+									</table>
+								</center>
+							</div>
+							<!-- Order List Crad Ends-->
+							<!-- <div class="form-group row mt-3">
                       <label for="sub_total" class="col-sm-3 col-form-label" align="right">Sub Total</label>
                       <div class="col-sm-6">
                         <input type="text" readonly name="sub_total" class="form-control form-control-sm" id="sub_total" required/>
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="gst" class="col-sm-3 col-form-label" align="right">GST (18%)</label>
+                      <label for="gst" class="col-sm-3 col-form-label" align="right">VAT (16%)</label>
                       <div class="col-sm-6">
-                        <input type="text" readonly name="gst" class="form-control form-control-sm" id="gst" required/>
+                        <input type="text" readonly name="gst" class="form-control form-control-sm" id="vat" required/>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label for="discount" class="col-sm-3 col-form-label" align="right">Discount</label>
                       <div class="col-sm-6">
-                        <input type="text" name="discount" class="form-control form-control-sm" id="discount" required/>
+                        <input type="text" readonly name="discount" class="form-control form-control-sm" id="discount" value="0" required/>
                       </div>
                     </div>
                     <div class="form-group row">
@@ -107,63 +179,186 @@
                     <div class="form-group row">
                       <label for="due" class="col-sm-3 col-form-label" align="right">Due</label>
                       <div class="col-sm-6">
-                        <input type="text" readonly name="due" class="form-control form-control-sm" id="due" required/>
+                        <input type="text" readonly name="due" class="form-control form-control-sm" id="due"  value="<%= Date.now() %>" required/>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label for="payment_type" class="col-sm-3 col-form-label" align="right">Payment Method</label>
                       <div class="col-sm-6">
                         <select name="payment_type" class="form-control form-control-sm" id="payment_type" required/>
+                          <option hidden disabled selected value> -- select payment method -- </option>
                           <option>Cash</option>
                           <option>Mpesa</option>
                           <option>Card</option>
                           <option>Cheque</option>
                         </select>
                       </div>
-                    </div>
+                    </div> -->
+							<center class="mt-3">
+								<input
+									type="button"
+									id="orderBtn"
+									style="width: 150px"
+									class="btn btn-info"
+									value="Order"
+									onclick="addToCart()"
+								/>
 
-                    <center>
-                      <input type="submit" id="order_form" style="width:150px;" class="btn btn-info" value="Order">
-                      <input type="submit" id="print_invoice" style="width:150px;" class="btn btn-success" value="Print Invoice">
-                    </center>
-
-
-				  	</form>
-
-				  </div>
+								<input
+									type="button"
+									id="print_invoice"
+									style="width: 150px"
+									class="btn btn-success"
+									value="Print Invoice"
+								/>
+							</center>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<script>
-  const drinksDropDown = document.querySelector("#drinksDropDown")
-  const drinkQty = document.querySelector("#drinkQty")
-  const addBtn = document.querySelector("#add")
-  const removeBtn = document.querySelector("#remove")
+<script lang="">
+	const drinksDropDown = document.querySelector("#drinksDropDown");
+	const customersDropDown = document.querySelector("#customersDropDown");
+	const drinkQty = document.querySelector("#drinkQty");
+	const addBtn = document.querySelector("#add");
+	const removeBtn = document.querySelector("#remove");
+	const orderTable = document.querySelector("#orderTable");
+	const tBody = document.querySelector("#orderedItems");
+	const orderBtn = document.querySelector("#orderBtn");
 
-  drinksDropDown.addEventListener("input", function(e) {
-    const optionIndex = e.target.selectedIndex // displays the index of the selected option
-    const item = e.target.options[optionIndex]
+	let drinkIDValue;
+	let drinkNameValue;
+	let drinkPriceValue;
+	let customerIDValue;
 
-    console.log(item.getAttribute("data-drink-drinkID"))
-    console.log(item.getAttribute("data-drink-drinkName"))
-  })  
+	const orders = [];
 
-  addBtn.addEventListener("click", function(e){
-    // let order = {}
-    // order.drink = drinkCode
-    // order.quantity = saleQty.value
-    // console.log({order})
-    drinksDropDown.selectedIndex = 0
-    drinkQty.value = ""
+	customersDropDown.addEventListener("input", function (e) {
+		const optionIndex = e.target.selectedIndex; // displays the index of the selected option
+		const item = e.target.options[optionIndex];
 
-  })
+		customerIDValue = item.getAttribute("data-customer-customerID");
+	});
 
+	drinksDropDown.addEventListener("input", function (e) {
+		const optionIndex = e.target.selectedIndex; // displays the index of the selected option
+		const item = e.target.options[optionIndex];
 
-  // function addToCart() {
+		console.log(item.getAttribute("data-drink-drinkID"));
 
-  // }
+		drinkIDValue = item.getAttribute("data-drink-drinkID");
+		drinkNameValue = item.getAttribute("data-drink-drinkName");
+		drinkPriceValue = item.getAttribute("data-drink-sellingPrice");
+	});
 
+	addBtn.addEventListener("click", function (e) {
+		let tableRow = "";
+
+		// var tds = document.querySelectorAll('#orderTable td'), i;
+		// for(i = 0; i < tds.length; ++i) {
+		//     // do something here
+		//     console.log(i)
+		// }
+
+		if (drinkQty.value == 0 || drinksDropDown.selectedIndex == 0) {
+			return alert("Please select a drink and it's quantity value!");
+		}
+
+		if (drinkQty.value < 0) {
+			return alert("Please select a positive drink quantity value!");
+		}
+
+		tableRow = `
+	     <tr>
+	       <td><input type="checkbox" name="chk"/></td>
+	       <td id="drinkID" style="text-align:center;"><b>${drinkIDValue}</b></td>
+	       <td style="text-align:center;">${drinkNameValue}</td>
+	       <td id="drinkQtyValue" style="text-align:center;">${drinkQty.value}</td>
+	       <td id="drinkSellingPriceValue" style="text-align:center;">${drinkPriceValue}</td>
+	     </tr>
+	   `;
+
+		// let KEY = Math.floor(Math.random() * 1000000);
+		let KEY = drinkIDValue;
+		let STOCK_VALUE = drinkPriceValue * drinkQty.value;
+
+		orders.push(KEY);
+
+		localStorage.setItem(
+			KEY,
+			JSON.stringify({
+				productID: drinkIDValue,
+				qtyBought: parseInt(drinkQty.value),
+				stockValue: STOCK_VALUE,
+			}),
+		);
+
+		tBody.innerHTML += tableRow;
+		drinksDropDown.selectedIndex = 0;
+		drinkQty.value = "";
+	});
+
+	function deleteRow(tableID) {
+		try {
+			console.log("Delete button clicked...");
+			var rowCount = orderTable.rows.length;
+
+			for (var i = 0; i < rowCount; i++) {
+				var row = orderTable.rows[i];
+				var chkbox = row.cells[0].childNodes[0];
+				if (null != chkbox && true == chkbox.checked) {
+					if (rowCount <= 1) {
+						alert("Cannot delete all the rows.");
+						break;
+					}
+					orderTable.deleteRow(i);
+					rowCount--;
+					i--;
+				}
+			}
+		} catch (e) {
+			alert(e);
+		}
+	}
+
+	function addToCart() {
+		let data = [];
+
+		// Get data from localstorage
+		orders.forEach((key) => {
+			data.push(localStorage.getItem(key));
+		});
+
+		// console.log(data);
+
+		let postData = {
+			customer: customerIDValue,
+			drinks: data,
+		};
+
+		console.log(postData);
+
+		// POST Data to route
+		fetch(`/user-panel/bar`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(postData),
+			// credentials: "same-origin",
+		})
+			.then((data) => {
+				console.log("Posted data: ", data);
+			})
+			.catch((err) => {
+				console.log(err);
+				alert(err);
+			});
+
+		localStorage.clear();
+	}
 </script>
