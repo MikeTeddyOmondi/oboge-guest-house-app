@@ -37,8 +37,16 @@ router
 	.route("/bookings/invoice")
 	.get(ensureAuthenticated, panelController.getBookingInvoice);
 
-// User Panel | Bar Page
-router.route("/bar").get(ensureAuthenticated, panelController.getBarPanel);
+// User Panel | Bar Panel Page
+router
+	.route("/bar")
+	.get(ensureAuthenticated, panelController.getBarPanel)
+	.post(ensureAuthenticated, panelController.postBarPanel);
+
+// User Panel | Bar Invoice Page
+router
+	.route("/bar/invoice")
+	.get(ensureAuthenticated, panelController.getBarInvoice);
 
 // User Panel | Restaurant Page
 router
