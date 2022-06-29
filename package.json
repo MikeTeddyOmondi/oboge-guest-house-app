@@ -38,7 +38,7 @@
     "neverbounce": "^4.4.1",
     "node-html-parser": "^2.0.2",
     "nodemailer": "^6.6.1",
-    "passport": "^0.4.1",
+    "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "serve-favicon": "^2.5.0"
   },
