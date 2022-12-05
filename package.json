@@ -25,7 +25,7 @@
     "dotenv": "^8.6.0",
     "ejs": "^3.1.6",
     "email-verifier": "^0.4.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.17.2",
     "googleapis": "^92.0.0",
