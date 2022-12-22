@@ -29,7 +29,7 @@
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.17.2",
     "googleapis": "^92.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "luxon": "^2.0.2",
     "mongoose": "^6.0.4",
     "morgan": "^1.10.0",
