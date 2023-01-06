@@ -30,7 +30,7 @@
     "express-session": "^1.17.2",
     "googleapis": "^92.0.0",
     "jsonwebtoken": "^8.5.1",
-    "luxon": "^2.0.2",
+    "luxon": "^2.5.2",
     "mongoose": "^6.0.4",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
