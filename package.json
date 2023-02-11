@@ -43,7 +43,7 @@
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.14",
+    "nodemon": "^2.0.20",
     "snyk": "^1.833.0"
   }
 }
