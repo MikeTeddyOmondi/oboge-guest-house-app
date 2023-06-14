@@ -110,7 +110,7 @@ module.exports = {
 			customer: customerId,
 			numberAdults,
 			numberKids,
-			roomsBooked: roomID,
+			roomBooked: roomID,
 			checkInDate: check_in_date,
 			checkOutDate: check_out_date,
 			vat: VAT,
