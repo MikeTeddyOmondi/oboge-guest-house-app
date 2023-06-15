@@ -1,4 +1,4 @@
-FROM node:16.13.2-alpine
+FROM node:16.19.1-alpine
 
 LABEL maintainer="@MikeTeddyOmondi | Rancko Solutions LLC"
 
