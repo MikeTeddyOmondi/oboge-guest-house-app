@@ -34,7 +34,7 @@
     "mongoose": "^6.0.4",
     "morgan": "^1.10.0",
     "multer": "^1.3.0",
-    "multer-gridfs-storage": "^1.3.0",
+    "multer-gridfs-storage": "^2.0.0",
     "neverbounce": "^4.4.1",
     "node-html-parser": "^2.0.2",
     "nodemailer": "^6.6.1",
