@@ -33,7 +33,7 @@
     "luxon": "^2.0.2",
     "mongoose": "^6.0.4",
     "morgan": "^1.10.0",
-    "multer": "^1.3.0",
+    "multer": "^2.0.1",
     "multer-gridfs-storage": "^1.3.0",
     "neverbounce": "^4.4.1",
     "node-html-parser": "^2.0.2",
